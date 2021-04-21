@@ -1,0 +1,251 @@
+html,body{
+    scroll-behavior: smooth;
+}
+*{
+    box-sizing: border-box;
+    text-decoration: none;
+    font-family: 'Poppins', sans-serif !important;
+}
+h1,h2,h3,h4,h5,h6,p{
+    margin: 0;
+    padding: 0;
+}
+a{
+    color:#757575;
+}
+@mixin d-fl{
+    display:flex;
+    align-items: center;
+}
+@mixin d-ss {
+    @include d-fl;
+    justify-content: center;
+} 
+@mixin d-sb {
+    @include d-fl;
+    justify-content: space-between;         
+} 
+@mixin d-sa {
+    @include d-fl;
+    justify-content: space-around;
+} 
+.app-bar-items{
+    @include d-sb;
+    width: 100%;
+    h2{
+        font-weight: 500;
+    }
+}
+.card-part{
+    @include d-sa;
+    flex-wrap: wrap;
+    width: 100%;
+    height: auto;
+    .card{
+        flex-grow: 1;
+        margin: 10px;
+        color: #fff;
+    }
+    .card2 {
+        flex-grow: 1;
+        margin: 10px;
+        color: #fff;
+    }
+    .card:nth-child(1){
+        background-color: rgb(247,93,129);
+    }
+    .card:nth-child(2){
+        background-color: rgba(125,212,32,0.8);
+    }
+    .card:nth-child(3){
+        background-color: rgb(66,165,254);
+    }
+    .card:nth-child(4){
+        background-color: rgb(114,103,185);
+    }
+    .card-wrapper{
+        @include d-sb;
+        padding: 10px;
+        margin: 10px;
+    }
+    .card-wrapper2 {
+        @include d-sb;
+        padding: 3px;
+        margin: 3px;
+    }
+}
+.chart-part{
+    &-wrapper{
+        @include d-ss;
+        .card-chart{
+            flex:1;
+            max-width: 100%;
+            min-width: 300px;
+            margin: 10px;
+            padding: 10px;
+        }
+        @media (max-width:775px){
+            &{
+                flex-wrap: wrap;
+            }
+        }
+    }
+}
+
+.admin-product{
+    
+    &-edit{
+        width: 100%;
+        margin-bottom: 20px;
+        &-add{
+            display:flex;
+            align-items: center;
+            justify-content:space-between;
+            padding: 20px;
+            div:nth-child(1){
+                flex-grow: 1;
+            }
+            input{
+                padding: 0;
+            }
+            .textInput{
+                width: 80%;
+            }
+            .btn-admin-add{
+                width: 100px;
+                margin-top: 20px;
+                padding: 4px 15%;
+            }
+            .uploadPictureContainer{
+                max-width: 450px;
+            }
+        }
+    }
+}
+
+.books{
+    margin-top: 10px;
+}
+.table-data{
+    width: 98.5%;
+    margin: 10px auto;
+}
+
+//ADMIN PERSONAL PAGE
+.tabPage{
+    line-height:2.2rem;
+}
+.tab-first{
+    text-align: center;
+    div{
+        display: inline-block;
+        text-align: left;
+    }
+}
+.tab-second{
+    @include d-ss;
+    flex-direction: column;
+
+    #outlined-basic{
+        width: 400px;
+        padding: 0;
+    }
+    .btn-tab{
+        margin-top: 20px;
+    }
+}
+.MuiBox-root-107{
+    background-color:transparent !important;
+}
+.container-login{
+    @include d-ss;
+    text-align:center;
+    &-card{
+        width: 500px;
+        height:auto;
+        padding: 30px;
+        margin-top: 50px;
+    }
+    .login{
+        @include d-ss;
+        width: 100%;
+        height: auto;
+        padding: 10px;
+
+        form{
+            width: 100%;
+            min-width: 200px;
+            
+            input{
+                margin: 10px 0;
+            }
+
+            p{
+                color:red;
+            }
+
+            .btn-auth{
+                margin-top: 20px;
+            }
+        }
+    }
+}
+.add-category{
+    &-card{
+        padding: 10px;
+        margin: 0 auto;
+        form{
+            @include d-sa;
+            justify-content: center;
+            flex-direction: column;
+            span{
+                text-align: center;
+                @include d-sa;
+            }
+        }
+        .card-input{
+            width: 400px;
+            padding: 0;
+            margin: 20px auto;    
+        }
+        .btn-category{
+            margin-left: 40px;
+        }
+    }
+}
+.imageUpload{
+    position:relative;
+    width: 400px;
+    height: 200px;
+    text-align: center;
+    
+    &-btn{
+        position:absolute;
+        bottom:-10%;
+        // top:100%;
+    }
+}
+
+
+td {
+    img {
+        height: 50px;
+        width: 70px;
+        object-fit: cover;
+    }
+}
+
+.admin-categories, .admin-products {
+    .MuiListItem-gutters {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+}
+
+td, th {
+  padding-left: 23px !important;
+}
+
+tr td:last-child, tr th:last-child {
+    text-align: center;
+}

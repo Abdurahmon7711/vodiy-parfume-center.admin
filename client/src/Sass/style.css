@@ -1,0 +1,363 @@
+html, body {
+  scroll-behavior: smooth;
+}
+
+* {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  text-decoration: none;
+  font-family: 'Poppins', sans-serif !important;
+}
+
+h1, h2, h3, h4, h5, h6, p {
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  color: #757575;
+}
+
+.app-bar-items {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  width: 100%;
+}
+
+.app-bar-items h2 {
+  font-weight: 500;
+}
+
+.card-part {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  /* -ms-flex-wrap: wrap;
+      flex-wrap: wrap; */
+  width: 100%;
+  height: auto;
+}
+
+.card-part .card {
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+  margin: 10px;
+  color: #fff;
+}
+
+.card-part .card2 {
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+  margin: 10px;
+  color: #fff;
+}
+
+.card-part .card:nth-child(1) {
+  background-color: #f75d81;
+}
+
+.card-part .card:nth-child(2) {
+  background-color: rgba(125, 212, 32, 0.8);
+}
+
+.card-part .card:nth-child(3) {
+  background-color: #42a5fe;
+}
+
+.card-part .card:nth-child(4) {
+  background-color: #7267b9;
+}
+
+.card-part .card-wrapper {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  padding: 10px;
+  margin: 10px;
+}
+
+.card-part .card-wrapper2 {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  padding: 3px;
+  margin: 3px;
+}
+
+.chart-part-wrapper {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.chart-part-wrapper .card-chart {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  max-width: 100%;
+  min-width: 300px;
+  margin: 10px;
+  padding: 10px;
+}
+
+@media (max-width: 775px) {
+  .chart-part-wrapper {
+    -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+  }
+}
+
+.admin-product-edit {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.admin-product-edit-add {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  padding: 20px;
+}
+
+.admin-product-edit-add div:nth-child(1) {
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+}
+
+.admin-product-edit-add input {
+  padding: 0;
+}
+
+.admin-product-edit-add .textInput {
+  width: 80%;
+}
+
+.admin-product-edit-add .btn-admin-add {
+  width: 100px;
+  margin-top: 20px;
+  padding: 4px 15%;
+}
+
+.admin-product-edit-add .uploadPictureContainer {
+  max-width: 450px;
+}
+
+.books {
+  margin-top: 10px;
+}
+
+.table-data {
+  width: 98.5%;
+  margin: 10px auto;
+}
+
+.tabPage {
+  line-height: 2.2rem;
+}
+
+.tab-first {
+  text-align: center;
+}
+
+.tab-first div {
+  display: inline-block;
+  text-align: left;
+}
+
+.tab-second {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.tab-second #outlined-basic {
+  width: 400px;
+  padding: 0;
+}
+
+.tab-second .btn-tab {
+  margin-top: 20px;
+}
+
+.MuiBox-root-107 {
+  background-color: transparent !important;
+}
+
+.container-login {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  text-align: center;
+}
+
+.container-login-card {
+  width: 500px;
+  height: auto;
+  padding: 30px;
+  margin-top: 50px;
+}
+
+.container-login .login {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  width: 100%;
+  height: auto;
+  padding: 10px;
+}
+
+.container-login .login form {
+  width: 100%;
+  min-width: 200px;
+}
+
+.container-login .login form input {
+  margin: 10px 0;
+}
+
+.container-login .login form p {
+  color: red;
+}
+
+.container-login .login form .btn-auth {
+  margin-top: 20px;
+}
+
+.add-category-card {
+  padding: 10px;
+  margin: 0 auto;
+}
+
+.add-category-card form {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.add-category-card form span {
+  text-align: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+}
+
+.add-category-card .card-input {
+  width: 400px;
+  padding: 0;
+  margin: 20px auto;
+}
+
+.add-category-card .btn-category {
+  margin-left: 40px;
+}
+
+.imageUpload {
+  position: relative;
+  width: 400px;
+  height: 200px;
+  text-align: center;
+}
+
+.imageUpload-btn {
+  position: absolute;
+  bottom: -10%;
+}
+
+td img {
+  height: 50px;
+  width: 70px;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+
+.admin-categories .MuiListItem-gutters, .admin-products .MuiListItem-gutters {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+td, th {
+  padding-left: 23px !important;
+}
+
+tr td:last-child, tr th:last-child {
+  text-align: center;
+}
+/*# sourceMappingURL=style.css.map */

@@ -1,0 +1,47 @@
+{
+    "product":
+    [
+        { "product": "Mehmet", 
+            "inform": "Baran", 
+            "data":"12/12/2021", 
+            "cost": 1987, 
+            "category": "998993455214", 
+            "imageUrl":"https://picsum.photos/200/100"
+        },
+        { "product": "Mehmet", 
+            "inform": "Baran", 
+            "data":"12/12/2021", 
+            "cost": 1987, 
+            "category": "998993455214", 
+            "imageUrl":"https://picsum.photos/200/100"
+        },
+        { "product": "Mehmet", 
+            "inform": "Baran", 
+            "data":"12/12/2021", 
+            "cost": 1987, 
+            "category": "998993455214", 
+            "imageUrl":"https://picsum.photos/200/100"
+        },
+        { "product": "Mehmet", 
+            "inform": "Baran", 
+            "data":"12/12/2021", 
+            "cost": 1987, 
+            "category": "998993455214", 
+            "imageUrl":"https://picsum.photos/200/100"
+        },
+        { "product": "Mehmet", 
+            "inform": "Baran", 
+            "data":"12/12/2021", 
+            "cost": 1987, 
+            "category": "998993455214", 
+            "imageUrl":"https://picsum.photos/200/100"
+        },
+        { "product": "Mehmet", 
+            "inform": "Baran", 
+            "data":"12/12/2021", 
+            "cost": 1987, 
+            "category": "998993455214", 
+            "imageUrl":"https://picsum.photos/200/100"
+        }
+    ]
+}

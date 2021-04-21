@@ -1,0 +1,35 @@
+{
+    "users": 
+    [
+        {
+            "name":"Abdulhamid",
+            "surname":"Soniy",
+            "password":1234,
+            "phone":"+998994445533"
+        },
+        {
+            "name":"Abdulhamid",
+            "surname":"Soniy",
+            "password":1234,
+            "phone":"+998994445533"
+        },
+        {
+            "name":"Abdulhamid",
+            "surname":"Soniy",
+            "password":1234,
+            "phone":"+998994445533"
+        },
+        {
+            "name":"Abdulhamid",
+            "surname":"Soniy",
+            "password":1234,
+            "phone":"+998994445533"
+        },
+        {
+            "name":"Abdulaziz",
+            "surname":"Soniy",
+            "password":1234,
+            "phone":"+998994445533"
+        }
+    ]
+}
