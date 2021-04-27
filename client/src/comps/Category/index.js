@@ -70,14 +70,17 @@ const Products = () => {
 
       let formData = new FormData();
       formData.append("file", file);
-      console.log(formData);
       setLoading(true);
-      const res = await axios.post("/api/upload", formData, {
-        headers: {
-          "content-type": "multipart/form-data",
-          Authorization: token,
-        },
-      });
+      const res = await axios
+        .post("/api/upload", formData, {
+          headers: {
+            "content-type": "multipart/form-data",
+            Authorization: token,
+          },
+        })
+        .then((res) => {
+          toast.success(res.data.msg);
+        });
       setLoading(false);
       setImages(res.data);
     } catch (err) {
@@ -102,14 +105,17 @@ const Products = () => {
 
       let formData = new FormData();
       formData.append("file", file);
-      console.log(formData);
       setLoading(true);
-      const res = await axios.post("/api/upload", formData, {
-        headers: {
-          "content-type": "multipart/form-data",
-          Authorization: token,
-        },
-      });
+      const res = await axios
+        .post("/api/upload", formData, {
+          headers: {
+            "content-type": "multipart/form-data",
+            Authorization: token,
+          },
+        })
+        .then((res) => {
+          toast.success(res.data.msg);
+        });
       setLoading(false);
       setEimages(res.data);
     } catch (err) {
@@ -120,13 +126,17 @@ const Products = () => {
     try {
       if (!isAdmin) return toast.warn("Siz admin emassiz");
       setLoading(true);
-      await axios.post(
-        "/api/destroy",
-        { public_id: images.public_id },
-        {
-          headers: { Authorization: token },
-        }
-      );
+      await axios
+        .post(
+          "/api/destroy",
+          { public_id: images.public_id },
+          {
+            headers: { Authorization: token },
+          }
+        )
+        .then((res) => {
+          toast.success(res.data.msg);
+        });
       setLoading(false);
       setImages(false);
     } catch (err) {
@@ -137,13 +147,17 @@ const Products = () => {
     try {
       if (!isAdmin) return toast.warn("Siz admin emassiz");
       setLoading(true);
-      await axios.post(
-        "/api/destroy",
-        { public_id: eimages.public_id },
-        {
-          headers: { Authorization: token },
-        }
-      );
+      await axios
+        .post(
+          "/api/destroy",
+          { public_id: eimages.public_id },
+          {
+            headers: { Authorization: token },
+          }
+        )
+        .then((res) => {
+          toast.success(res.data.msg);
+        });
       setLoading(false);
       setEimages(false);
     } catch (err) {
@@ -156,17 +170,20 @@ const Products = () => {
     try {
       if (!isAdmin) return toast.warn("Siz admin emassiz");
       if (!images) return toast.warn("Siz rasm joylamadingiz !");
-      await axios.post(
-        "/api/category",
-        { name: category, images },
-        {
-          headers: { Authorization: token },
-        }
-      );
+      await axios
+        .post(
+          "/api/category",
+          { name: category, images },
+          {
+            headers: { Authorization: token },
+          }
+        )
+        .then((res) => {
+          toast.success(res.data.msg);
+        });
       setCallback(!callback);
       setOpenAdd(!openAdd);
     } catch (err) {
-      console.log(err);
       toast.error(err.response.data.msg);
     }
   };
@@ -176,18 +193,20 @@ const Products = () => {
     try {
       if (!isAdmin) return toast.warn("Siz admin emassiz");
       if (!eimages) return toast.warn("Siz rasm joylamadingiz !");
-      await axios.put(
-        `/api/category/${catId}`,
-        { name: ecategory, images: eimages },
-        {
-          headers: { Authorization: token },
-        }
-      );
-      console.log(eimages);
+      await axios
+        .put(
+          `/api/category/${catId}`,
+          { name: ecategory, images: eimages },
+          {
+            headers: { Authorization: token },
+          }
+        )
+        .then((res) => {
+          toast.success(res.data.msg);
+        });
       setCallback(!callback);
       setOpen(!open);
     } catch (err) {
-      console.log(err);
       toast.error(err.response.data.msg);
     }
   };
@@ -195,16 +214,24 @@ const Products = () => {
   const deleteCategory = async (id, public_id) => {
     try {
       setLoading(true);
-      const destroyImg = axios.post(
-        "/api/destroy",
-        { public_id },
-        {
+      const destroyImg = axios
+        .post(
+          "/api/destroy",
+          { public_id },
+          {
+            headers: { Authorization: token },
+          }
+        )
+        .then((res) => {
+          toast.success(res.data.msg);
+        });
+      const deleteProduct = axios
+        .delete(`/api/category/${id}`, {
           headers: { Authorization: token },
-        }
-      );
-      const deleteProduct = axios.delete(`/api/category/${id}`, {
-        headers: { Authorization: token },
-      });
+        })
+        .then((res) => {
+          toast.success(res.data.msg);
+        });
 
       await destroyImg;
       await deleteProduct;
@@ -229,7 +256,6 @@ const Products = () => {
 
   const [open, setOpen] = useState(false);
   const handleClick = (rowData) => {
-    console.log(rowData);
     setEcategory(rowData.name);
     setEimages(rowData.images);
     setCatId(rowData._id);
@@ -360,7 +386,7 @@ const Products = () => {
         </Collapse>
       </div>
       <div>
-{/*         <ListItem button onClick={handleClick}>
+        {/*         <ListItem button onClick={handleClick}>
           <ListItemIcon>
             <InboxIcon />
           </ListItemIcon>

@@ -69,7 +69,6 @@ const SoldOutProducts = () => {
   }, [setNumber]);
 
   const handleClick = (rowData) => {
-    console.log(rowData);
     setEproduct({
       title: rowData.title,
       price: rowData.price,
@@ -101,7 +100,6 @@ const SoldOutProducts = () => {
 
       let formData = new FormData();
       formData.append("file", file);
-      console.log(formData);
       setLoading(true);
       const res = await axios.post("/api/upload", formData, {
         headers: {
@@ -171,7 +169,6 @@ const SoldOutProducts = () => {
       }
       setCallback(!callback);
     } catch (err) {
-      console.log(err);
       toast.error(err.response.data.msg);
     }
   };
@@ -186,9 +183,13 @@ const SoldOutProducts = () => {
           headers: { Authorization: token },
         }
       );
-      const deleteProduct = axios.delete(`/api/products/${id}`, {
-        headers: { Authorization: token },
-      });
+      const deleteProduct = axios
+        .delete(`/api/products/${id}`, {
+          headers: { Authorization: token },
+        })
+        .then((res) => {
+          toast.success(res.data.msg);
+        });
 
       await destroyImg;
       await deleteProduct;
@@ -310,7 +311,7 @@ const SoldOutProducts = () => {
                       value={
                         categories[
                           categories.findIndex(
-                            (item) => item.name === eproduct.category
+                            (item) => item._id === eproduct.category
                           )
                         ]
                       }
@@ -318,7 +319,7 @@ const SoldOutProducts = () => {
                       id="combo-box-demo"
                       getOptionLabel={(option) => option.name}
                       onChange={(event, newValue) => {
-                        setEproduct({ ...eproduct, category: newValue.name });
+                        setEproduct({ ...eproduct, category: newValue._id });
                       }}
                       name="category"
                       renderInput={(params) => (
@@ -387,9 +388,8 @@ const SoldOutProducts = () => {
           }
           onChange={(event, newValue) => {
             newValue
-              ? setCategory("category=" + newValue._id)
+              ? setCategory("category=" + newValue.name)
               : setCategory("");
-            console.log(newValue?._id);
           }}
           options={categories}
           getOptionLabel={(option) => option.name}

@@ -5,7 +5,6 @@ import AddBox from "@material-ui/icons/AddBox";
 import ArrowDownward from "@material-ui/icons/ArrowDownward";
 import Button from "@material-ui/core/Button";
 import Check from "@material-ui/icons/Check";
-import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
 import ChevronLeft from "@material-ui/icons/ChevronLeft";
 import ChevronRight from "@material-ui/icons/ChevronRight";
 import Clear from "@material-ui/icons/Clear";
@@ -29,7 +28,6 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
-import { toast } from "react-toastify";
 
 function getModalStyle() {
   const top = 50;
@@ -66,8 +64,7 @@ function SoldPro() {
   const classes = useStyles();
   const [modalStyle] = React.useState(getModalStyle);
   const [open, setOpen] = React.useState(false);
-  const [callback, setCallback] = useState(false);
-  const [st_callback, setStcallback] = state.statics.callback;
+
   useEffect(() => {
     if (token) {
       const getHistory = async () => {
@@ -80,25 +77,23 @@ function SoldPro() {
       };
       getHistory();
     }
-  }, [callback, token, isAdmin, setHistory]);
+  }, [token, isAdmin, setHistory]);
+
+  // const payments = state.paymentsAPI.payments;
 
   const handleOpen = (data) => {
     setOpen(true);
     setRowData(data);
-    console.log(data);
   };
 
   const handleClose = () => {
     setOpen(false);
   };
 
-  const handleClick = (data) => {
-    console.log(data);
-    axios
-      .put("/api/payment/" + data._id)
-      .then((res) => toast.success(res.data.msg));
-    setCallback(!callback);
-    setStcallback(!st_callback);
+  const totalSum = (data) => {
+    let s = 0;
+    data.cart.map((item) => (s += item.quantity * item.price));
+    return s;
   };
 
   const body = (
@@ -108,7 +103,7 @@ function SoldPro() {
       <h3>Sana: {rowData.createdAt}</h3>
       <h3>Xabar: {rowData.comment}</h3>
       <hr />
-      {
+      {Object.keys(rowData).length !== 0 ? (
         <TableContainer component={Paper}>
           <Table className={classes.table} aria-label="simple table">
             <TableHead>
@@ -119,19 +114,22 @@ function SoldPro() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {Object.keys(rowData).length !== 0
-                ? rowData.cart.map((row) => (
-                    <TableRow key={row.name}>
-                      <TableCell align="left">{row.title}</TableCell>
-                      <TableCell align="center">{row.quantity}</TableCell>
-                      <TableCell align="right">{row.price}</TableCell>
-                    </TableRow>
-                  ))
-                : ""}
+              {rowData.cart.map((row) => (
+                <TableRow key={row.name}>
+                  <TableCell align="left">{row.title}</TableCell>
+                  <TableCell align="center">{row.quantity}</TableCell>
+                  <TableCell align="right">{row.price}</TableCell>
+                </TableRow>
+              ))}
             </TableBody>
           </Table>
+          <div style={{ display: "flex", justifyContent: "flex-end" }}>
+            <Button>Jami: {totalSum(rowData)}</Button>
+          </div>
         </TableContainer>
-      }
+      ) : (
+        ""
+      )}
     </div>
   );
   const tableIcons = {
@@ -185,12 +183,16 @@ function SoldPro() {
           </Button>
         ),
     },
-    { title: "Holati", field: "status", render: rowData => rowData &&  <p>Yetkazib berilgan</p> },
+    {
+      title: "Holati",
+      field: "status",
+      render: (rowData) => rowData && <p>Yetkazib berilgan</p>,
+    },
   ];
   return (
     <div className="table-data">
       <MaterialTable
-        title="Buyurtmalar"
+        title="Yetkazilgan buyurtmalar"
         icons={tableIcons}
         data={history}
         columns={column}

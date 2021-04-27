@@ -163,7 +163,6 @@ const userCtrl = {
           cart: cart,
         }
       );
-      console.log(cart);
       return res.json({ msg: "Kartaga qo'shildi" });
     } catch (err) {
       return res.status(500).json({ msg: err.message });

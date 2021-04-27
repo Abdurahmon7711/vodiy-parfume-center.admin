@@ -6,6 +6,7 @@ import UsersAPI from "../Api/UsersAPI";
 import CategoriesAPI from "../Api/CategoriesAPI";
 import ProductsAPI from "../Api/ProductsAPI";
 import StaticsAPI from "../Api/StaticsAPI";
+import PaymentsAPI from "../Api/PaymentsAPI";
 
 export const StoreG = createContext();
 
@@ -18,7 +19,6 @@ const Store = (props) => {
       const refreshToken = async () => {
         try {
           const res = await axios.get("/user/refresh_token");
-          console.log(res);
 
           setToken(res.data.accesstoken);
 
@@ -26,7 +26,6 @@ const Store = (props) => {
             refreshToken();
           }, 10 * 60 * 1000);
         } catch (err) {
-          console.log(err);
           toast.error(err.response.data.msg);
         }
       };
@@ -41,6 +40,7 @@ const Store = (props) => {
     usersAPI: UsersAPI(),
     statics: StaticsAPI(),
     categoriesAPI: CategoriesAPI(),
+    paymentsAPI: PaymentsAPI(token),
   };
 
   return <StoreG.Provider value={state}>{props.children}</StoreG.Provider>;

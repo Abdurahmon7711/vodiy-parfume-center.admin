@@ -72,13 +72,12 @@ class APIfeatures {
     } else {
       this.query = this.query.sort("-createdAt");
     }
-
     return this;
   }
 
   paginating() {
     const page = this.queryString.page * 1 || 1;
-    const limit = this.queryString.limit * 1 || 9;
+    const limit = this.queryString.limit * 1 || 10;
     const skip = (page - 1) * limit;
     this.query = this.query.skip(skip).limit(limit);
     return this;
@@ -97,7 +96,7 @@ const productCtrl = {
 
       res.json({
         status: "success",
-        result: products.length,
+        result: (await Products.find()).length,
         products: products,
       });
     } catch (err) {
@@ -183,7 +182,6 @@ const productCtrl = {
       await newProduct.save();
       res.json({ msg: "Mahsulot yaratildi" });
     } catch (err) {
-      console.log(err);
       return res.status(500).json({ msg: err.message });
     }
   },

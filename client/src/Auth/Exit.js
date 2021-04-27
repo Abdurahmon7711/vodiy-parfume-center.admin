@@ -26,7 +26,6 @@ const Exit = () => {
           : toast.error("Siz admin emassiz");
       });
     } catch (err) {
-      console.log(err);
       toast.error(err.response.data.msg);
     }
   };

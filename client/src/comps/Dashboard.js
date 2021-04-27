@@ -293,7 +293,7 @@ export default function MiniDrawer() {
           </List>
           <Divider />
           <List>
-            {["Sotilgan-tovarlar"].map((text, index) => (
+            {["Yetkazilganlar"].map((text, index) => (
               <NavLink to={`${text}`} key={index}>
                 <ListItem button>
                   <ListItemIcon>
@@ -345,7 +345,7 @@ export default function MiniDrawer() {
               isAuth={isAuth}
             />
             <ProtectedRoute
-              path="/Sotilgan-tovarlar"
+              path="/Yetkazilganlar"
               component={SoldPro}
               isAuth={isAuth}
             />

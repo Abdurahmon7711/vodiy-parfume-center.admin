@@ -18,7 +18,6 @@ export default function UploadButtons() {
     const classes = useStyles();
     const upLoad = (e) => {
         setImageUrl(e.target.value)
-        console.log(e.target.files[0]);
     }
     return (
         <div className="imageUpload">

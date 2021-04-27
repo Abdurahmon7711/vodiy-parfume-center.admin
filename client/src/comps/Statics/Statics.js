@@ -110,7 +110,7 @@ const Statics = () => {
       </div>
       <div className="table-data">
         <MaterialTable
-          title="Sotilgan-mahsulotlar"
+          title="Yetkazilgan buyurtmalar"
           icons={tableIcons}
           data={data.length !== 0 ? data.days_products[day].products : data}
           columns={column}

@@ -86,7 +86,6 @@ export function Editable() {
   const handleOpen = (data) => {
     setOpen(true);
     setRowData(data);
-    console.log(data);
   };
 
   const handleClose = () => {
@@ -94,12 +93,17 @@ export function Editable() {
   };
 
   const handleClick = (data) => {
-    console.log(data);
     axios
       .put("/api/payment/" + data._id)
       .then((res) => toast.success(res.data.msg));
     setCallback(!callback);
     setStcallback(!st_callback);
+  };
+  
+  const totalSum = (data) => {
+    let s = 0;
+    data.cart.map((item) => (s += item.quantity * item.price));
+    return s;
   };
 
   const body = (
@@ -109,7 +113,7 @@ export function Editable() {
       <h3>Sana: {rowData.createdAt}</h3>
       <h3>Xabar: {rowData.comment}</h3>
       <hr />
-      {
+      {Object.keys(rowData).length !== 0 ? (
         <TableContainer component={Paper}>
           <Table className={classes.table} aria-label="simple table">
             <TableHead>
@@ -120,19 +124,22 @@ export function Editable() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {Object.keys(rowData).length !== 0
-                ? rowData.cart.map((row) => (
-                    <TableRow key={row.name}>
-                      <TableCell align="left">{row.title}</TableCell>
-                      <TableCell align="center">{row.quantity}</TableCell>
-                      <TableCell align="right">{row.price}</TableCell>
-                    </TableRow>
-                  ))
-                : ""}
+              {rowData.cart.map((row) => (
+                <TableRow key={row.name}>
+                  <TableCell align="left">{row.title}</TableCell>
+                  <TableCell align="center">{row.quantity}</TableCell>
+                  <TableCell align="right">{row.price}</TableCell>
+                </TableRow>
+              ))}
             </TableBody>
           </Table>
+          <div style={{ display: "flex", justifyContent: "flex-end" }}>
+            <Button>Jami: {totalSum(rowData)}</Button>
+          </div>
         </TableContainer>
-      }
+      ) : (
+        ""
+      )}
     </div>
   );
   const tableIcons = {
@@ -186,7 +193,11 @@ export function Editable() {
           </Button>
         ),
     },
-    { title: "Holati", field: "status", render: rowData => rowData && <p>Bajarilmagan</p> },
+    {
+      title: "Holati",
+      field: "status",
+      render: (rowData) => rowData && <p>Bajarilmagan</p>,
+    },
     {
       title: "Holati",
       field: "done",

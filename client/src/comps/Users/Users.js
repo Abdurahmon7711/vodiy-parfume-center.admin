@@ -75,12 +75,10 @@ const Users = () => {
         headers: { Authorization: token },
       });
       setUsers(res.data);
-      console.log(res.data);
     };
 
     getUsers();
   }, [callback, token]);
-  console.log(users);
   // useEffect(() =>{
   //     axios.post('https://jsonplaceholder.typicode.com/posts',
   //         {malumot:data},
@@ -96,7 +94,6 @@ const Users = () => {
 
   const deleteUser = async (id) => {
     try {
-      console.log(id);
       //   setLoading(true);
       const deleteProduct = axios.delete(`/user/users/${id}`, {
         headers: { Authorization: token },
@@ -111,7 +108,6 @@ const Users = () => {
   };
   const updateUser = async (id, newData) => {
     try {
-      console.log(id);
       //   setLoading(true);
       const deleteProduct = axios.put(`/user/users/${id}`, newData, {
         headers: { Authorization: token },

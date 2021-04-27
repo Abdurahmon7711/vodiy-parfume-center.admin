@@ -34,6 +34,7 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import Loading from "../../utils/loading/Loading";
 import Autocomplete from "@material-ui/lab/Autocomplete";
+import ReactPaginate from "react-paginate";
 
 const initialState = {
   title: "",
@@ -56,6 +57,9 @@ const Products = () => {
   const [loading, setLoading] = useState(false);
   const [category, setCategory] = state.productsAPI.category;
   const [, setNumber] = state.productsAPI.number;
+  const [, setPage] = state.productsAPI.page;
+  const [result] = state.productsAPI.result;
+  const [limit] = state.productsAPI.limit;
 
   const [isAdmin] = state.userAPI.isAdmin;
   const [token] = state.token;
@@ -79,7 +83,6 @@ const Products = () => {
   const [open, setOpen] = useState(false);
 
   const handleClick = (rowData) => {
-    console.log(rowData);
     setEproduct({
       title: rowData.title,
       price: rowData.price,
@@ -111,7 +114,6 @@ const Products = () => {
 
       let formData = new FormData();
       formData.append("file", file);
-      console.log(formData);
       setLoading(true);
       const res = await axios.post("/api/upload", formData, {
         headers: {
@@ -159,29 +161,38 @@ const Products = () => {
         return toast.warn("Siz rasm joylamadingiz !");
 
       if (edit) {
-        await axios.put(
-          `/api/products/${productId}`,
-          { ...eproduct, images: eimages },
-          {
-            headers: { Authorization: token },
-          }
-        );
+        await axios
+          .put(
+            `/api/products/${productId}`,
+            { ...eproduct, images: eimages },
+            {
+              headers: { Authorization: token },
+            }
+          )
+          .then((res) => {
+            toast.success(res.data.msg);
+          });
         setOpen(!open);
         setEdit(false);
       } else {
-        await axios.post(
-          "/api/products",
-          { ...product, images },
-          {
-            headers: { Authorization: token },
-          }
-        );
-        setProduct({});
-        setOpenAdd(!openAdd);
+        await axios
+          .post(
+            "/api/products",
+            { ...product, images },
+            {
+              headers: { Authorization: token },
+            }
+          )
+          .then((res) => {
+            setProduct({});
+            setOpenAdd(!openAdd);
+            setImages(false);
+            toast.success(res.data.msg);
+            console.log(res);
+          });
       }
       setCallback(!callback);
     } catch (err) {
-      console.log(err);
       toast.error(err.response.data.msg);
     }
   };
@@ -196,9 +207,11 @@ const Products = () => {
           headers: { Authorization: token },
         }
       );
-      const deleteProduct = axios.delete(`/api/products/${id}`, {
-        headers: { Authorization: token },
-      });
+      const deleteProduct = axios
+        .delete(`/api/products/${id}`, {
+          headers: { Authorization: token },
+        })
+        .then((res) => toast.success(res.data.msg));
 
       await destroyImg;
       await deleteProduct;
@@ -310,7 +323,7 @@ const Products = () => {
                       onChange={handleChangeInput}
                     />
                     <TextField
-                      name="price"
+                      name="number"
                       label="Mahsulot soni"
                       type="number"
                       className="textInput"
@@ -321,7 +334,7 @@ const Products = () => {
                       id="combo-box-demo"
                       getOptionLabel={(option) => option.name}
                       onChange={(event, newValue) => {
-                        setProduct({ ...product, category: newValue.name });
+                        setProduct({ ...product, category: newValue._id });
                       }}
                       name="category"
                       renderInput={(params) => (
@@ -339,7 +352,7 @@ const Products = () => {
                       variant="contained"
                       className="btn-admin-add"
                     >
-                      Add
+                      Qo'shish
                     </Button>
                   </form>
                   <div>
@@ -418,7 +431,7 @@ const Products = () => {
                       value={
                         categories[
                           categories.findIndex(
-                            (item) => item.name === eproduct.category
+                            (item) => item._id === eproduct.category
                           )
                         ]
                       }
@@ -426,7 +439,7 @@ const Products = () => {
                       id="combo-box-demo"
                       getOptionLabel={(option) => option.name}
                       onChange={(event, newValue) => {
-                        setEproduct({ ...eproduct, category: newValue.name });
+                        setEproduct({ ...eproduct, category: newValue._id });
                       }}
                       name="category"
                       renderInput={(params) => (
@@ -491,13 +504,12 @@ const Products = () => {
         <Autocomplete
           id="combo-box-demo"
           value={
-            categories[categories.findIndex((item) => item.name === category)]
+            categories[categories.findIndex((item) => item._id === category)]
           }
           onChange={(event, newValue) => {
             newValue
               ? setCategory("category=" + newValue._id)
               : setCategory("");
-            console.log(newValue?._id);
           }}
           options={categories}
           getOptionLabel={(option) => option.name}
@@ -523,6 +535,17 @@ const Products = () => {
               }, 1000);
             }),
         }}
+      />
+      <ReactPaginate
+        previousLabel={"Oldingi"}
+        nextLabel={"Keyingi"}
+        pageCount={Math.ceil(result / limit)}
+        onPageChange={({ selected }) => setPage(selected + 1)}
+        containerClassName={"paginationBttns"}
+        previousLinkClassName={"previousBttn"}
+        nextLinkClassName={"nextBttn"}
+        disabledClassName={"paginationDisabled"}
+        activeClassName={"paginationActive"}
       />
     </div>
   );
