@@ -42,13 +42,13 @@ const initialState = {
 const SoldOutProducts = () => {
 
   const history = useHistory()
-  useEffect(()=>{
+  useEffect(() => {
     const gogo = localStorage.getItem("admin")
-    if(!gogo && gogo !== "1"){
+    if (!gogo && gogo !== "1") {
       history.push("/")
       history.go()
     }
-  },[]) 
+  }, [])
 
   const [openAdd, setOpenAdd] = useState(false);
 
@@ -278,177 +278,173 @@ const SoldOutProducts = () => {
   };
 
   return (
-    <div style={!loaderUp ? {}: {height:"75vh",display:"flex", alignItems:"center", justifyContent:"center"}}>
-      {
-        loaderUp ? (
-          <Loader
-            type="ThreeDots"
-            color="#00BFFF"
-            height={50}
-            width={50}
-            timeout={3000} //3 secs
-          />
-        ) : (
-          <div className="admin-products">
-            <div>
-              <Collapse in={open} timeout="auto" unmountOnExit>
-                <List component="div" disablePadding>
-                  <ListItem>
-                    <div className="admin-product-edit">
-                      <Card className="admin-product-edit-add">
-                        <form onSubmit={handleSubmit}>
+    <div>
+      <div className="admin-products">
+        <div>
+          <Collapse in={open} timeout="auto" unmountOnExit>
+            <List component="div" disablePadding>
+              <ListItem>
+                <div className="admin-product-edit">
+                  <Card className="admin-product-edit-add">
+                    <form onSubmit={handleSubmit}>
+                      <TextField
+                        name="title"
+                        label="Product"
+                        className="textInput"
+                        onChange={handleChangeInput}
+                        value={eproduct.title}
+                      />
+                      <TextField
+                        name="description"
+                        value={eproduct.description}
+                        label="Ma'lumot"
+                        className="textInput"
+                        onChange={handleChangeInput}
+                      />
+                      <TextField
+                        name="price"
+                        value={eproduct.price}
+                        label="Narx"
+                        type="number"
+                        className="textInput"
+                        onChange={handleChangeInput}
+                      />
+                      <TextField
+                        name="number"
+                        value={eproduct.number}
+                        label="Soni"
+                        type="number"
+                        className="textInput"
+                        onChange={handleChangeInput}
+                      />
+                      <Autocomplete
+                        value={
+                          categories[
+                          categories.findIndex(
+                            (item) => item._id === eproduct.category
+                          )
+                          ]
+                        }
+                        options={categories}
+                        id="combo-box-demo"
+                        getOptionLabel={(option) => option.name}
+                        onChange={(event, newValue) => {
+                          setEproduct({ ...eproduct, category: newValue._id });
+                        }}
+                        name="category"
+                        renderInput={(params) => (
                           <TextField
-                            name="title"
-                            label="Product"
                             className="textInput"
-                            onChange={handleChangeInput}
-                            value={eproduct.title}
+                            {...params}
+                            label="Kategoriya"
+                            margin="normal"
                           />
-                          <TextField
-                            name="description"
-                            value={eproduct.description}
-                            label="Ma'lumot"
-                            className="textInput"
-                            onChange={handleChangeInput}
-                          />
-                          <TextField
-                            name="price"
-                            value={eproduct.price}
-                            label="Narx"
-                            type="number"
-                            className="textInput"
-                            onChange={handleChangeInput}
-                          />
-                          <TextField
-                            name="number"
-                            value={eproduct.number}
-                            label="Soni"
-                            type="number"
-                            className="textInput"
-                            onChange={handleChangeInput}
-                          />
-                          <Autocomplete
-                            value={
-                              categories[
-                              categories.findIndex(
-                                (item) => item._id === eproduct.category
-                              )
-                              ]
-                            }
-                            options={categories}
-                            id="combo-box-demo"
-                            getOptionLabel={(option) => option.name}
-                            onChange={(event, newValue) => {
-                              setEproduct({ ...eproduct, category: newValue._id });
-                            }}
-                            name="category"
-                            renderInput={(params) => (
-                              <TextField
-                                className="textInput"
-                                {...params}
-                                label="Kategoriya"
-                                margin="normal"
-                              />
-                            )}
-                          />
-                          <Button
-                            type="submit"
-                            color="primary"
-                            variant="contained"
-                            className="btn-admin-add"
-                          >
-                            Yangilash
+                        )}
+                      />
+                      <Button
+                        type="submit"
+                        color="primary"
+                        variant="contained"
+                        className="btn-admin-add"
+                      >
+                        Yangilash
                     </Button>
-                        </form>
-                        <div>
-                          <span className="admin-add-img">
-                            <div className="upload">
-                              <input
-                                type="file"
-                                name="file"
-                                id="file_up"
-                                onChange={handleUpload}
-                              />
-                              {loading ? (
-                                <div id="file_img">
-                                  <Loading />
-                                </div>
-                              ) : (
-                                <div id="file_img" style={estyleUpload}>
-                                  <img src={eimages ? eimages.url : ""} alt="" />
-                                  <span onClick={handleDestroy}>X</span>
-                                </div>
-                              )}
+                    </form>
+                    <div>
+                      <span className="admin-add-img">
+                        <div className="upload">
+                          <input
+                            type="file"
+                            name="file"
+                            id="file_up"
+                            onChange={handleUpload}
+                          />
+                          {loading ? (
+                            <div id="file_img">
+                              <Loading />
                             </div>
-                          </span>
+                          ) : (
+                            <div id="file_img" style={estyleUpload}>
+                              <img src={eimages ? eimages.url : ""} alt="" />
+                              <span onClick={handleDestroy}>X</span>
+                            </div>
+                          )}
                         </div>
-                      </Card>
+                      </span>
                     </div>
-                  </ListItem>
-                </List>
-              </Collapse>
-            </div>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-              }}
-            >
-              <Card
-                className="card"
-                style={{ width: "48%", padding: "20px", textAlign: "center" }}
-              >
-                <h2>Kategoriya bo'yicha tartiblash</h2>
-              </Card>
-              <Autocomplete
-                id="combo-box-demo"
-                value={
-                  categories[categories.findIndex((item) => item.name === category)]
-                }
-                onChange={(event, newValue) => {
-                  newValue
-                    ? setCategory("category=" + newValue.name)
-                    : setCategory("");
-                }}
-                options={categories}
-                getOptionLabel={(option) => option.name}
-                style={{ width: "50%", margin: "10px 0" }}
-                renderInput={(params) => (
-                  <TextField {...params} label="Kategoriya" variant="outlined" />
-                )}
-              />
-            </div>
-            <MaterialTable
-              title={productInfo.name}
-              columns={columns}
-              data={products}
-              icons={tableIcons}
-              options={{ exportButton: true }}
-              responsive={true}
-              editable={{
-                onRowDelete: (oldData) =>
-                  new Promise((resolve, reject) => {
-                    setTimeout(() => {
-                      deleteProduct(oldData._id, oldData.images.public_id);
-                      resolve();
-                    }, 1000);
-                  }),
-              }}
-              localization={{
-                body: {
-                  editRow: {
-                    deleteText: "Ma'lumotni o'chirishni tasdiqlaysizmi ?",
-                  },
-                },
-                toolbar: {
-                  searchPlaceholder: "qidiruv"
-                },
-              }}
-            />
-          </div>
-        )
-      }
+                  </Card>
+                </div>
+              </ListItem>
+            </List>
+          </Collapse>
+        </div>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
+          <Card
+            className="card"
+            style={{ width: "48%", padding: "20px", textAlign: "center" }}
+          >
+            <h2>Kategoriya bo'yicha tartiblash</h2>
+          </Card>
+          <Autocomplete
+            id="combo-box-demo"
+            value={
+              categories[categories.findIndex((item) => item.name === category)]
+            }
+            onChange={(event, newValue) => {
+              newValue
+                ? setCategory("category=" + newValue.name)
+                : setCategory("");
+            }}
+            options={categories}
+            getOptionLabel={(option) => option.name}
+            style={{ width: "50%", margin: "10px 0" }}
+            renderInput={(params) => (
+              <TextField {...params} label="Kategoriya" variant="outlined" />
+            )}
+          />
+        </div>
+        <Loader
+          type="ThreeDots"
+          style={loaderUp ? {textAlign: 'center'}:{display:"none"}}
+          color="#00BFFF"
+          height={50}
+          width={50}
+          timeout={500} //3 secs
+        />
+        <MaterialTable
+          title={productInfo.name}
+          columns={columns}
+          data={products}
+          icons={tableIcons}
+          options={{ exportButton: true }}
+          responsive={true}
+          editable={{
+            onRowDelete: (oldData) =>
+              new Promise((resolve, reject) => {
+                setTimeout(() => {
+                  deleteProduct(oldData._id, oldData.images.public_id);
+                  resolve();
+                }, 1000);
+              }),
+          }}
+          localization={{
+            body: {
+              editRow: {
+                deleteText: "Ma'lumotni o'chirishni tasdiqlaysizmi ?",
+              },
+            },
+            toolbar: {
+              searchPlaceholder: "qidiruv"
+            },
+          }}
+        />
+      </div>
     </div>
 
   );
