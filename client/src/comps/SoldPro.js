@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 import { forwardRef } from "react";
 import MaterialTable from "material-table";
 import AddBox from "@material-ui/icons/AddBox";
@@ -57,6 +58,16 @@ const newDate = (a) => {
 };
 
 function SoldPro() {
+
+  const historyUrl = useHistory()
+  useEffect(()=>{
+    const gogo = localStorage.getItem("admin")
+    if(!gogo && gogo !== "1"){
+      historyUrl.push("/")
+      historyUrl.go()
+    }
+  },[]) 
+
   const state = useContext(StoreG);
   const [isAdmin] = state.userAPI.isAdmin;
   const [token] = state.token;

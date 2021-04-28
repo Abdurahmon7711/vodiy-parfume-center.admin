@@ -24,7 +24,7 @@ import ChevronRight from "@material-ui/icons/ChevronRight";
 import ArrowDownward from "@material-ui/icons/ArrowDownward";
 import DeleteOutline from "@material-ui/icons/DeleteOutline";
 import IconButton from "@material-ui/core/IconButton";
-import { withRouter } from "react-router-dom";
+import { useHistory, withRouter } from "react-router-dom";
 import { StoreG } from "../../Store/Store";
 import { toast } from "react-toastify";
 import axios from "axios";
@@ -40,6 +40,16 @@ const initialState = {
 };
 
 const SoldOutProducts = () => {
+
+  const history = useHistory()
+  useEffect(()=>{
+    const gogo = localStorage.getItem("admin")
+    if(!gogo && gogo !== "1"){
+      history.push("/")
+      history.go()
+    }
+  },[]) 
+
   const [openAdd, setOpenAdd] = useState(false);
 
   const state = useContext(StoreG);

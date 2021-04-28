@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import Loader from "react-loader-spinner"
@@ -6,6 +6,10 @@ import { toast } from "react-toastify";
 import axios from "axios";
 
 const Exit = () => {
+
+  useEffect(()=>{
+    localStorage.removeItem("admin")
+  },[])
 
   const [loader, setLoader] = useState(false)
 

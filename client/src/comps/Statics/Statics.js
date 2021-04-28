@@ -1,4 +1,5 @@
 import { Button, Card } from "@material-ui/core";
+import { useHistory } from "react-router-dom";
 import MaterialTable from "material-table";
 import React, { forwardRef, useContext, useEffect, useState } from "react";
 import { StoreG } from "../../Store/Store";
@@ -34,6 +35,16 @@ const column = [
 ];
 
 const Statics = () => {
+
+  const history = useHistory()
+  useEffect(()=>{
+    const gogo = localStorage.getItem("admin")
+    if(!gogo && gogo !== "1"){
+      history.push("/")
+      history.go()
+    }
+  },[]) 
+
   const state = useContext(StoreG);
   const [statics] = state.statics.statics;
   const [data, setData] = useState([]);

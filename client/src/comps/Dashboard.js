@@ -170,6 +170,7 @@ export default function MiniDrawer() {
     localStorage.removeItem("admin");
     window.location.href = "/";
   };
+  // console.log(isAuth)
   return (
     <React.Fragment>
       <Dialog

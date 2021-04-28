@@ -1,5 +1,6 @@
 import React, { useEffect, useContext } from "react";
 import axios from "axios";
+import { useHistory } from "react-router-dom";
 import { forwardRef } from "react";
 import MaterialTable from "material-table";
 import Edit from "@material-ui/icons/Edit";
@@ -23,6 +24,17 @@ import { StoreG } from "../../Store/Store";
 import { toast } from "react-toastify";
 
 const Users = () => {
+
+  const history = useHistory()
+  useEffect(()=>{
+    const gogo = localStorage.getItem("admin")
+    if(!gogo && gogo !== "1"){
+      history.push("/")
+      history.go()
+    }
+  },[]) 
+
+
   const state = useContext(StoreG);
 
   const productInfo = {

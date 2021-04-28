@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { forwardRef } from "react";
+import { useHistory } from "react-router-dom";
 import Card from "@material-ui/core/Card";
 import List from "@material-ui/core/List";
 import MaterialTable from "material-table";
@@ -46,6 +47,16 @@ const initialState = {
 };
 
 const Products = () => {
+
+  const history = useHistory()
+  useEffect(()=>{
+    const gogo = localStorage.getItem("admin")
+    if(!gogo && gogo !== "1"){
+      history.push("/")
+      history.go()
+    }
+  },[]) 
+
   const [openAdd, setOpenAdd] = useState(false);
   const [loaderUp, setLoaderUP] = useState(true)
   const state = useContext(StoreG);
