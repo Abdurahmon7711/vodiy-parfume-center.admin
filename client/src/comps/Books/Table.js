@@ -67,8 +67,7 @@ export function Editable() {
   const classes = useStyles();
   const [modalStyle] = React.useState(getModalStyle);
   const [open, setOpen] = React.useState(false);
-  const [callback, setCallback] = useState(false);
-  const [st_callback, setStcallback] = state.statics.callback;
+  const [callback, setCallback] = state.statics.callback;
   useEffect(() => {
     if (token) {
       const getHistory = async () => {
@@ -81,7 +80,7 @@ export function Editable() {
       };
       getHistory();
     }
-  }, [callback, token, isAdmin, setHistory]);
+  }, [token, isAdmin, setHistory]);
 
   const handleOpen = (data) => {
     setOpen(true);
@@ -96,10 +95,18 @@ export function Editable() {
     axios
       .put("/api/payment/" + data._id)
       .then((res) => toast.success(res.data.msg));
+    const getHistory = async () => {
+      if (isAdmin) {
+        const res = await axios.get("/api/payment/false", {
+          headers: { Authorization: token },
+        });
+        setHistory(res.data);
+      }
+    };
+    getHistory();
     setCallback(!callback);
-    setStcallback(!st_callback);
   };
-  
+
   const totalSum = (data) => {
     let s = 0;
     data.cart.map((item) => (s += item.quantity * item.price));

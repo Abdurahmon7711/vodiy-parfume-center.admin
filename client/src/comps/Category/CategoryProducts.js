@@ -1,10 +1,9 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { forwardRef } from "react";
 import Card from "@material-ui/core/Card";
 import List from "@material-ui/core/List";
 import MaterialTable from "material-table";
 import Edit from "@material-ui/icons/Edit";
-// import DeleteIcon from "@material-ui/icons/Delete";
 import Clear from "@material-ui/icons/Clear";
 import Check from "@material-ui/icons/Check";
 import Button from "@material-ui/core/Button";
@@ -29,29 +28,79 @@ import ChevronRight from "@material-ui/icons/ChevronRight";
 import ArrowDownward from "@material-ui/icons/ArrowDownward";
 import DeleteOutline from "@material-ui/icons/DeleteOutline";
 import IconButton from "@material-ui/core/IconButton";
-import { Link, withRouter } from "react-router-dom";
-import "./ImgUploadStyle.css";
+import { withRouter } from "react-router-dom";
 import { StoreG } from "../../Store/Store";
 import { toast } from "react-toastify";
 import axios from "axios";
 import Loading from "../../utils/loading/Loading";
 
-const Products = () => {
+const CategoryProducts = (props) => {
+  const initialState = {
+    title: "",
+    price: 0,
+    description: "",
+    number: 0,
+    category: props.match.params.id,
+  };
+
+  const productInfo = {
+    name: "Mahsulotlar",
+  };
   const [openAdd, setOpenAdd] = useState(false);
+
   const state = useContext(StoreG);
-  const [category, setCategory] = useState("");
-  const [ecategory, setEcategory] = useState("");
-  const [catId, setCatId] = useState("");
+  const [product, setProduct] = useState(initialState);
+  const [eproduct, setEproduct] = useState({});
+  const [productId, setId] = useState("");
+  const [categories] = state.categoriesAPI.categories;
   const [images, setImages] = useState(false);
   const [eimages, setEimages] = useState(false);
   const [loading, setLoading] = useState(false);
+  const category = props.match.params.id;
 
   const [isAdmin] = state.userAPI.isAdmin;
   const [token] = state.token;
 
-  const [categories] = state.categoriesAPI.categories;
+  const [products, setProducts] = useState([]);
 
-  const [callback, setCallback] = state.categoriesAPI.callback;
+  const [edit, setEdit] = useState(false);
+  const [callback, setCallback] = state.productsAPI.callback;
+
+  const handleClickAdd = () => {
+    setOpenAdd(!openAdd);
+  };
+
+  useEffect(() => {
+    const getProducts = async () => {
+      const res = await axios.get(
+        `/api/products?limit=${100}&category=${props.match.params.id}`
+      );
+      setProducts(res.data.products);
+      setLoading(false);
+    };
+    getProducts();
+  }, [props]);
+
+  useEffect(() => {
+    document.title = "VodiyParfum | Mahsulotlar";
+  }, []);
+
+  const [open, setOpen] = useState(false);
+
+  const handleClick = (rowData) => {
+    setEproduct({
+      title: rowData.title,
+      price: rowData.price,
+      description: rowData.description,
+      number: rowData.number,
+      category: rowData.category,
+    });
+    setId(rowData._id);
+    setEimages(rowData.images);
+    setOpen(!open);
+    setEdit(true);
+  };
+
   const handleUpload = async (e) => {
     e.preventDefault();
     try {
@@ -71,167 +120,103 @@ const Products = () => {
       let formData = new FormData();
       formData.append("file", file);
       setLoading(true);
-      const res = await axios
-        .post("/api/upload", formData, {
-          headers: {
-            "content-type": "multipart/form-data",
-            Authorization: token,
-          },
-        })
-        .then((res) => {
-          toast.success(res.data.msg);
-        });
+      const res = await axios.post("/api/upload", formData, {
+        headers: {
+          "content-type": "multipart/form-data",
+          Authorization: token,
+        },
+      });
       setLoading(false);
-      setImages(res.data);
+      edit ? setEimages(res.data) : setImages(res.data);
     } catch (err) {
       toast.error(err.response.data.msg);
     }
   };
-  const ehandleUpload = async (e) => {
-    e.preventDefault();
-    try {
-      if (!isAdmin) return toast.warn("Siz admin emassiz");
-      const file = e.target.files[0];
 
-      if (!file) return toast.warn("Fayl mavjud emas");
-
-      if (file.size > 1024 * 1024)
-        // 1mb
-        return toast.warn("Fayl juda katta!");
-
-      if (file.type !== "image/jpeg" && file.type !== "image/png")
-        // 1mb
-        return toast.warn("Fayl formati noto'g'ri");
-
-      let formData = new FormData();
-      formData.append("file", file);
-      setLoading(true);
-      const res = await axios
-        .post("/api/upload", formData, {
-          headers: {
-            "content-type": "multipart/form-data",
-            Authorization: token,
-          },
-        })
-        .then((res) => {
-          toast.success(res.data.msg);
-        });
-      setLoading(false);
-      setEimages(res.data);
-    } catch (err) {
-      toast.error(err.response.data.msg);
-    }
-  };
   const handleDestroy = async () => {
     try {
       if (!isAdmin) return toast.warn("Siz admin emassiz");
       setLoading(true);
-      await axios
-        .post(
-          "/api/destroy",
-          { public_id: images.public_id },
-          {
-            headers: { Authorization: token },
-          }
-        )
-        .then((res) => {
-          toast.success(res.data.msg);
-        });
+      await axios.post(
+        "/api/destroy",
+        { public_id: edit ? eimages.public_id : images.public_id },
+        {
+          headers: { Authorization: token },
+        }
+      );
       setLoading(false);
-      setImages(false);
+      edit ? setEimages(false) : setImages(false);
     } catch (err) {
       toast.error(err.response.data.msg);
     }
   };
-  const ehandleDestroy = async () => {
-    try {
-      if (!isAdmin) return toast.warn("Siz admin emassiz");
-      setLoading(true);
-      await axios
-        .post(
-          "/api/destroy",
-          { public_id: eimages.public_id },
-          {
-            headers: { Authorization: token },
-          }
-        )
-        .then((res) => {
-          toast.success(res.data.msg);
-        });
-      setLoading(false);
-      setEimages(false);
-    } catch (err) {
-      toast.error(err.response.data.msg);
-    }
+
+  const handleChangeInput = (e) => {
+    const { name, value } = e.target;
+    edit
+      ? setEproduct({ ...eproduct, [name]: value })
+      : setProduct({ ...product, [name]: value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       if (!isAdmin) return toast.warn("Siz admin emassiz");
-      if (!images) return toast.warn("Siz rasm joylamadingiz !");
-      await axios
-        .post(
-          "/api/category",
-          { name: category, images },
-          {
-            headers: { Authorization: token },
-          }
-        )
-        .then((res) => {
-          toast.success(res.data.msg);
-        });
+      if (!(edit ? eimages : images))
+        return toast.warn("Siz rasm joylamadingiz !");
+
+      if (edit) {
+        await axios
+          .put(
+            `/api/products/${productId}`,
+            { ...eproduct, images: eimages },
+            {
+              headers: { Authorization: token },
+            }
+          )
+          .then((res) => {
+            toast.success(res.data.msg);
+          });
+        setOpen(!open);
+        setEdit(false);
+      } else {
+        await axios
+          .post(
+            "/api/products",
+            { ...product, images },
+            {
+              headers: { Authorization: token },
+            }
+          )
+          .then((res) => {
+            setProduct({});
+            setOpenAdd(!openAdd);
+            setImages(false);
+            toast.success(res.data.msg);
+            console.log(res);
+          });
+      }
       setCallback(!callback);
-      setOpenAdd(!openAdd);
     } catch (err) {
       toast.error(err.response.data.msg);
     }
   };
 
-  const ehandleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      if (!isAdmin) return toast.warn("Siz admin emassiz");
-      if (!eimages) return toast.warn("Siz rasm joylamadingiz !");
-      await axios
-        .put(
-          `/api/category/${catId}`,
-          { name: ecategory, images: eimages },
-          {
-            headers: { Authorization: token },
-          }
-        )
-        .then((res) => {
-          toast.success(res.data.msg);
-        });
-      setCallback(!callback);
-      setOpen(!open);
-    } catch (err) {
-      toast.error(err.response.data.msg);
-    }
-  };
-
-  const deleteCategory = async (id, public_id) => {
+  const deleteProduct = async (id, public_id) => {
     try {
       setLoading(true);
-      const destroyImg = axios
-        .post(
-          "/api/destroy",
-          { public_id },
-          {
-            headers: { Authorization: token },
-          }
-        )
-        .then((res) => {
-          toast.success(res.data.msg);
-        });
+      const destroyImg = axios.post(
+        "/api/destroy",
+        { public_id },
+        {
+          headers: { Authorization: token },
+        }
+      );
       const deleteProduct = axios
-        .delete(`/api/category/${id}`, {
+        .delete(`/api/products/${id}`, {
           headers: { Authorization: token },
         })
-        .then((res) => {
-          toast.success(res.data.msg);
-        });
+        .then((res) => toast.success(res.data.msg));
 
       await destroyImg;
       await deleteProduct;
@@ -240,30 +225,6 @@ const Products = () => {
     } catch (err) {
       toast.error(err.response.data.msg);
     }
-  };
-
-  const handleChangeInput = (e) => {
-    setCategory(e.target.value);
-  };
-
-  const ehandleChangeInput = (e) => {
-    setEcategory(e.target.value);
-  };
-
-  const handleClickAdd = () => {
-    setOpenAdd(!openAdd);
-  };
-
-  const [open, setOpen] = useState(false);
-  const handleClick = (rowData) => {
-    setEcategory(rowData.name);
-    setEimages(rowData.images);
-    setCatId(rowData._id);
-    setOpen(!open);
-  };
-
-  const productInfo = {
-    name: "Kategoriya",
   };
 
   const tableIcons = {
@@ -295,23 +256,20 @@ const Products = () => {
   };
 
   const [columns] = useState([
-    { title: "Kategoriya", field: "name", width: "30%" },
+    { title: "Mahsulot", field: "title", width: "30%" },
+    { title: "Soni", field: "number", type: "numeric", width: "10%" },
+    { title: "Narx", field: "price", type: "numeric", width: "10%" },
+    { title: "Kategoriya", field: "category", width: "20%" },
+    { title: "Malumot", field: "description", width: "25%" },
     {
       title: "Rasm",
       field: "imageUrl",
       render: (rowData) => <img src={rowData.images.url} alt="asd" />,
     },
     {
-      title: "Mahsulotlarni ko'rish",
-      field: "_id",
-      render: (rowData) => (
-        <Link to={"/Kategoriya/" + rowData._id}>Kategoriya mahsulotlari</Link>
-      ),
-    },
-    {
-      title: "Edit",
+      title: "Custom Add",
       field: "internal_action",
-      width: "10%",
+      width: "5%",
       editable: false,
       render: (rowData) =>
         rowData && (
@@ -322,22 +280,22 @@ const Products = () => {
     },
   ]);
 
-  const estyleUpload = {
-    display: eimages ? "block" : "none",
-  };
-
   const styleUpload = {
     display: images ? "block" : "none",
   };
 
+  const estyleUpload = {
+    display: eimages ? "block" : "none",
+  };
+
   return (
-    <div className="admin-categories">
+    <div className="admin-products">
       <div>
         <ListItem button onClick={handleClickAdd}>
           <ListItemIcon>
             <InboxIcon />
           </ListItemIcon>
-          <ListItemText primary="Kategoriya qo'shish" />
+          <ListItemText primary="Mahsulot qo'shish" />
           {openAdd ? <ExpandLess /> : <ExpandMore />}
         </ListItem>
         <Collapse in={openAdd} timeout="auto" unmountOnExit>
@@ -346,22 +304,40 @@ const Products = () => {
               <div className="admin-product-edit">
                 <Card className="admin-product-edit-add">
                   <form onSubmit={handleSubmit}>
-                    <div>
-                      <TextField
-                        className="textInput"
-                        value={category}
-                        label="Kategoriya nomi"
-                        onChange={handleChangeInput}
-                      />
-                      <Button
-                        className="btn-admin-add"
-                        variant="contained"
-                        color="primary"
-                        type="submit"
-                      >
-                        Add
-                      </Button>
-                    </div>
+                    <TextField
+                      name="title"
+                      label="Product"
+                      className="textInput"
+                      onChange={handleChangeInput}
+                    />
+                    <TextField
+                      name="description"
+                      label="Ma'lumot"
+                      className="textInput"
+                      onChange={handleChangeInput}
+                    />
+                    <TextField
+                      name="price"
+                      label="Narx"
+                      type="number"
+                      className="textInput"
+                      onChange={handleChangeInput}
+                    />
+                    <TextField
+                      name="number"
+                      label="Mahsulot soni"
+                      type="number"
+                      className="textInput"
+                      onChange={handleChangeInput}
+                    />
+                    <Button
+                      type="submit"
+                      color="primary"
+                      variant="contained"
+                      className="btn-admin-add"
+                    >
+                      Qo'shish
+                    </Button>
                   </form>
                   <div>
                     <span className="admin-add-img">
@@ -396,7 +372,7 @@ const Products = () => {
           <ListItemIcon>
             <InboxIcon />
           </ListItemIcon>
-          <ListItemText primary="Kategoriyani yangilash" />
+          <ListItemText primary="Mahsulotni yangilash" />
           {open ? <ExpandLess /> : <ExpandMore />}
         </ListItem> */}
         <Collapse in={open} timeout="auto" unmountOnExit>
@@ -404,24 +380,45 @@ const Products = () => {
             <ListItem>
               <div className="admin-product-edit">
                 <Card className="admin-product-edit-add">
-                  <form onSubmit={ehandleSubmit}>
-                    <div>
-                      <TextField
-                        className="textInput"
-                        value={ecategory}
-                        placeholder="Kategoriya nomi"
-                        onChange={ehandleChangeInput}
-                        //   label="Kategoriya"
-                      />
-                      <Button
-                        type="submit"
-                        className="btn-admin-add"
-                        variant="contained"
-                        color="primary"
-                      >
-                        Yangilash
-                      </Button>
-                    </div>
+                  <form onSubmit={handleSubmit}>
+                    <TextField
+                      name="title"
+                      label="Product"
+                      className="textInput"
+                      onChange={handleChangeInput}
+                      value={eproduct.title}
+                    />
+                    <TextField
+                      name="description"
+                      value={eproduct.description}
+                      label="Ma'lumot"
+                      className="textInput"
+                      onChange={handleChangeInput}
+                    />
+                    <TextField
+                      name="price"
+                      value={eproduct.price}
+                      label="Narx"
+                      type="number"
+                      className="textInput"
+                      onChange={handleChangeInput}
+                    />
+                    <TextField
+                      name="number"
+                      value={eproduct.number}
+                      label="Soni"
+                      type="number"
+                      className="textInput"
+                      onChange={handleChangeInput}
+                    />
+                    <Button
+                      type="submit"
+                      color="primary"
+                      variant="contained"
+                      className="btn-admin-add"
+                    >
+                      Yangilash
+                    </Button>
                   </form>
                   <div>
                     <span className="admin-add-img">
@@ -430,7 +427,7 @@ const Products = () => {
                           type="file"
                           name="file"
                           id="file_up"
-                          onChange={ehandleUpload}
+                          onChange={handleUpload}
                         />
                         {loading ? (
                           <div id="file_img">
@@ -439,7 +436,7 @@ const Products = () => {
                         ) : (
                           <div id="file_img" style={estyleUpload}>
                             <img src={eimages ? eimages.url : ""} alt="" />
-                            <span onClick={ehandleDestroy}>X</span>
+                            <span onClick={handleDestroy}>X</span>
                           </div>
                         )}
                       </div>
@@ -451,10 +448,34 @@ const Products = () => {
           </List>
         </Collapse>
       </div>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
+        <Card
+          className="card"
+          style={{
+            width: "100%",
+            padding: "10px",
+            margin: "0 0 15px 0",
+            textAlign: "center",
+          }}
+        >
+          <h2>
+            {categories.length !== 0 &&
+              categories[categories.findIndex((item) => item._id === category)]
+                .name}{" "}
+            kategoriyasi
+          </h2>
+        </Card>
+      </div>
       <MaterialTable
         title={productInfo.name}
         columns={columns}
-        data={categories}
+        data={products}
         icons={tableIcons}
         options={{ exportButton: true }}
         responsive={true}
@@ -462,7 +483,7 @@ const Products = () => {
           onRowDelete: (oldData) =>
             new Promise((resolve, reject) => {
               setTimeout(() => {
-                deleteCategory(oldData._id, oldData.images.public_id);
+                deleteProduct(oldData._id, oldData.images.public_id);
                 resolve();
               }, 1000);
             }),
@@ -472,4 +493,4 @@ const Products = () => {
   );
 };
 
-export default withRouter(Products);
+export default withRouter(CategoryProducts);

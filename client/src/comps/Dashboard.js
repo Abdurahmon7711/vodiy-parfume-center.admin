@@ -50,6 +50,7 @@ import {
 import axios from "axios";
 import SoldOutProducts from "./SoldOutProducts/SoldOutProducts";
 import Statics from "./Statics/Statics";
+import CategoryProducts from "./Category/CategoryProducts";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -347,6 +348,11 @@ export default function MiniDrawer() {
             <ProtectedRoute
               path="/Yetkazilganlar"
               component={SoldPro}
+              isAuth={isAuth}
+            />
+            <ProtectedRoute
+              path="/Kategoriya/:id"
+              component={CategoryProducts}
               isAuth={isAuth}
             />
             <ProtectedRoute
