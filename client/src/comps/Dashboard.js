@@ -51,6 +51,7 @@ import axios from "axios";
 import SoldOutProducts from "./SoldOutProducts/SoldOutProducts";
 import Statics from "./Statics/Statics";
 import CategoryProducts from "./Category/CategoryProducts";
+import NotFound from "./NotFound";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -132,6 +133,17 @@ export default function MiniDrawer() {
   const state = useContext(StoreG);
   const [open, setOpen] = React.useState(false);
   const [isAuth] = state.userAPI.isAdmin;
+  const [urlLink] = React.useState(
+    [
+      "/Statistika",
+      "/Buyurtmalar",
+      "/Foydalanuvchilar",
+      "/Tovarlar",
+      "/Tugagan-tovarlar",
+      "/Kategoriya",
+      "/Yetkazilganlar"
+    ]
+  )
 
   let location = useLocation();
 
@@ -158,6 +170,7 @@ export default function MiniDrawer() {
     localStorage.removeItem("admin");
     window.location.href = "/";
   };
+  // console.log(isAuth)
   return (
     <React.Fragment>
       <Dialog
@@ -186,11 +199,11 @@ export default function MiniDrawer() {
         <AppBar
           position="fixed"
           className={
-            location.pathname === "/"
+            (location.pathname === "/" || (! urlLink.includes(location.pathname)) )
               ? classes.appBarAuth
               : clsx(classes.appBar, {
-                  [classes.appBarShift]: open,
-                })
+                [classes.appBarShift]: open,
+              })
           }
         >
           <Toolbar>
@@ -237,12 +250,12 @@ export default function MiniDrawer() {
         <Drawer
           variant="permanent"
           className={
-            location.pathname === "/"
+             (location.pathname === "/" || (! urlLink.includes(location.pathname)) )
               ? classes.drawerAuth
               : clsx(classes.drawer, {
-                  [classes.drawerOpen]: open,
-                  [classes.drawerClose]: !open,
-                })
+                [classes.drawerOpen]: open,
+                [classes.drawerClose]: !open,
+              })
           }
           classes={{
             paper: clsx({
@@ -365,6 +378,9 @@ export default function MiniDrawer() {
               component={AdminPage}
               isAuth={isAuth}
             />
+            <Route path="*">
+              <NotFound />
+            </Route>
           </Switch>
         </main>
       </div>

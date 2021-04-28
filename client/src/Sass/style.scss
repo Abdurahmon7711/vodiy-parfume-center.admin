@@ -249,3 +249,18 @@ td, th {
 tr td:last-child, tr th:last-child {
     text-align: center;
 }
+.MuiList-root{
+   a.active{
+       color: #fff;
+       .MuiListItem-button{
+           background-color: #3f51b5;
+       }
+       .MuiSvgIcon-root{
+           color: #fff !important;
+       }
+       &:hover{
+           color: #fff !important;
+       }
+   } 
+
+}

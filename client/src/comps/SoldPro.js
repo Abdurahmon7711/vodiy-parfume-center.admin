@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 import { forwardRef } from "react";
 import MaterialTable from "material-table";
 import AddBox from "@material-ui/icons/AddBox";
@@ -17,6 +18,7 @@ import Remove from "@material-ui/icons/Remove";
 import SaveAlt from "@material-ui/icons/SaveAlt";
 import Search from "@material-ui/icons/Search";
 import ViewColumn from "@material-ui/icons/ViewColumn";
+import Loader from "react-loader-spinner"
 import { makeStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
 import { StoreG } from "../Store/Store";
@@ -56,6 +58,16 @@ const newDate = (a) => {
 };
 
 function SoldPro() {
+
+  const historyUrl = useHistory()
+  useEffect(()=>{
+    const gogo = localStorage.getItem("admin")
+    if(!gogo && gogo !== "1"){
+      historyUrl.push("/")
+      historyUrl.go()
+    }
+  },[]) 
+
   const state = useContext(StoreG);
   const [isAdmin] = state.userAPI.isAdmin;
   const [token] = state.token;
@@ -64,6 +76,7 @@ function SoldPro() {
   const classes = useStyles();
   const [modalStyle] = React.useState(getModalStyle);
   const [open, setOpen] = React.useState(false);
+  const [loaderUp, setLoaderUp] = useState(true)
 
   useEffect(() => {
     if (token) {
@@ -73,6 +86,7 @@ function SoldPro() {
             headers: { Authorization: token },
           });
           setHistory(res.data);
+          setLoaderUp(false)
         }
       };
       getHistory();
@@ -190,23 +204,43 @@ function SoldPro() {
     },
   ];
   return (
-    <div className="table-data">
-      <MaterialTable
-        title="Yetkazilgan buyurtmalar"
-        icons={tableIcons}
-        data={history}
-        columns={column}
-        responsive={true}
-      />
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
-      >
-        {body}
-      </Modal>
+    <div  style={!loaderUp ? {}: {height:"75vh",display:"flex", alignItems:"center", justifyContent:"center"}}>
+      {
+        loaderUp ? (
+          <Loader
+            type="ThreeDots"
+            color="#00BFFF"
+            height={50}
+            width={50}
+            timeout={3000} //3 secs
+          />
+        ) : (
+          <div className="table-data">
+            <MaterialTable
+              title="Yetkazilgan buyurtmalar"
+              icons={tableIcons}
+              data={history}
+              columns={column}
+              responsive={true}
+              localization={{
+                toolbar: {
+                  searchPlaceholder: "qidiruv"
+                },
+              }}
+            />
+            <Modal
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="simple-modal-title"
+              aria-describedby="simple-modal-description"
+            >
+              {body}
+            </Modal>
+          </div>
+        )
+      }
     </div>
+
   );
 }
 

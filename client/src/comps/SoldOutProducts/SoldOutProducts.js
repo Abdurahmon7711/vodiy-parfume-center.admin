@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { forwardRef } from "react";
 import Card from "@material-ui/core/Card";
 import List from "@material-ui/core/List";
+import Loader from "react-loader-spinner"
 import MaterialTable from "material-table";
 import Edit from "@material-ui/icons/Edit";
 import Clear from "@material-ui/icons/Clear";
@@ -23,7 +24,7 @@ import ChevronRight from "@material-ui/icons/ChevronRight";
 import ArrowDownward from "@material-ui/icons/ArrowDownward";
 import DeleteOutline from "@material-ui/icons/DeleteOutline";
 import IconButton from "@material-ui/core/IconButton";
-import { withRouter } from "react-router-dom";
+import { useHistory, withRouter } from "react-router-dom";
 import { StoreG } from "../../Store/Store";
 import { toast } from "react-toastify";
 import axios from "axios";
@@ -39,9 +40,20 @@ const initialState = {
 };
 
 const SoldOutProducts = () => {
+
+  const history = useHistory()
+  useEffect(()=>{
+    const gogo = localStorage.getItem("admin")
+    if(!gogo && gogo !== "1"){
+      history.push("/")
+      history.go()
+    }
+  },[]) 
+
   const [openAdd, setOpenAdd] = useState(false);
 
   const state = useContext(StoreG);
+  const [loaderUp, setLoaderUp] = useState(true)
   const [product, setProduct] = useState(initialState);
   const [eproduct, setEproduct] = useState({});
   const [productId, setId] = useState("");
@@ -67,6 +79,10 @@ const SoldOutProducts = () => {
     };
     changeNumber();
   }, [setNumber]);
+
+  useEffect(() => {
+    products.length ? setLoaderUp(false) : setLoaderUp(true)
+  }, [products])
 
   const handleClick = (rowData) => {
     setEproduct({
@@ -262,161 +278,179 @@ const SoldOutProducts = () => {
   };
 
   return (
-    <div className="admin-products">
-      <div>
-        {/*         <ListItem button onClick={handleClick}>
-          <ListItemIcon>
-            <InboxIcon />
-          </ListItemIcon>
-          <ListItemText primary="Mahsulotni yangilash" />
-          {open ? <ExpandLess /> : <ExpandMore />}
-        </ListItem> */}
-        <Collapse in={open} timeout="auto" unmountOnExit>
-          <List component="div" disablePadding>
-            <ListItem>
-              <div className="admin-product-edit">
-                <Card className="admin-product-edit-add">
-                  <form onSubmit={handleSubmit}>
-                    <TextField
-                      name="title"
-                      label="Product"
-                      className="textInput"
-                      onChange={handleChangeInput}
-                      value={eproduct.title}
-                    />
-                    <TextField
-                      name="description"
-                      value={eproduct.description}
-                      label="Ma'lumot"
-                      className="textInput"
-                      onChange={handleChangeInput}
-                    />
-                    <TextField
-                      name="price"
-                      value={eproduct.price}
-                      label="Narx"
-                      type="number"
-                      className="textInput"
-                      onChange={handleChangeInput}
-                    />
-                    <TextField
-                      name="number"
-                      value={eproduct.number}
-                      label="Soni"
-                      type="number"
-                      className="textInput"
-                      onChange={handleChangeInput}
-                    />
-                    <Autocomplete
-                      value={
-                        categories[
-                          categories.findIndex(
-                            (item) => item._id === eproduct.category
-                          )
-                        ]
-                      }
-                      options={categories}
-                      id="combo-box-demo"
-                      getOptionLabel={(option) => option.name}
-                      onChange={(event, newValue) => {
-                        setEproduct({ ...eproduct, category: newValue._id });
-                      }}
-                      name="category"
-                      renderInput={(params) => (
-                        <TextField
-                          className="textInput"
-                          {...params}
-                          label="Kategoriya"
-                          margin="normal"
-                        />
-                      )}
-                    />
-                    <Button
-                      type="submit"
-                      color="primary"
-                      variant="contained"
-                      className="btn-admin-add"
-                    >
-                      Yangilash
+    <div style={!loaderUp ? {}: {height:"75vh",display:"flex", alignItems:"center", justifyContent:"center"}}>
+      {
+        loaderUp ? (
+          <Loader
+            type="ThreeDots"
+            color="#00BFFF"
+            height={50}
+            width={50}
+            timeout={3000} //3 secs
+          />
+        ) : (
+          <div className="admin-products">
+            <div>
+              <Collapse in={open} timeout="auto" unmountOnExit>
+                <List component="div" disablePadding>
+                  <ListItem>
+                    <div className="admin-product-edit">
+                      <Card className="admin-product-edit-add">
+                        <form onSubmit={handleSubmit}>
+                          <TextField
+                            name="title"
+                            label="Product"
+                            className="textInput"
+                            onChange={handleChangeInput}
+                            value={eproduct.title}
+                          />
+                          <TextField
+                            name="description"
+                            value={eproduct.description}
+                            label="Ma'lumot"
+                            className="textInput"
+                            onChange={handleChangeInput}
+                          />
+                          <TextField
+                            name="price"
+                            value={eproduct.price}
+                            label="Narx"
+                            type="number"
+                            className="textInput"
+                            onChange={handleChangeInput}
+                          />
+                          <TextField
+                            name="number"
+                            value={eproduct.number}
+                            label="Soni"
+                            type="number"
+                            className="textInput"
+                            onChange={handleChangeInput}
+                          />
+                          <Autocomplete
+                            value={
+                              categories[
+                              categories.findIndex(
+                                (item) => item._id === eproduct.category
+                              )
+                              ]
+                            }
+                            options={categories}
+                            id="combo-box-demo"
+                            getOptionLabel={(option) => option.name}
+                            onChange={(event, newValue) => {
+                              setEproduct({ ...eproduct, category: newValue._id });
+                            }}
+                            name="category"
+                            renderInput={(params) => (
+                              <TextField
+                                className="textInput"
+                                {...params}
+                                label="Kategoriya"
+                                margin="normal"
+                              />
+                            )}
+                          />
+                          <Button
+                            type="submit"
+                            color="primary"
+                            variant="contained"
+                            className="btn-admin-add"
+                          >
+                            Yangilash
                     </Button>
-                  </form>
-                  <div>
-                    <span className="admin-add-img">
-                      <div className="upload">
-                        <input
-                          type="file"
-                          name="file"
-                          id="file_up"
-                          onChange={handleUpload}
-                        />
-                        {loading ? (
-                          <div id="file_img">
-                            <Loading />
-                          </div>
-                        ) : (
-                          <div id="file_img" style={estyleUpload}>
-                            <img src={eimages ? eimages.url : ""} alt="" />
-                            <span onClick={handleDestroy}>X</span>
-                          </div>
-                        )}
-                      </div>
-                    </span>
-                  </div>
-                </Card>
-              </div>
-            </ListItem>
-          </List>
-        </Collapse>
-      </div>
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-      >
-        <Card
-          className="card"
-          style={{ width: "48%", padding: "20px", textAlign: "center" }}
-        >
-          <h2>Kategoriya bo'yicha tartiblash</h2>
-        </Card>
-        <Autocomplete
-          id="combo-box-demo"
-          value={
-            categories[categories.findIndex((item) => item.name === category)]
-          }
-          onChange={(event, newValue) => {
-            newValue
-              ? setCategory("category=" + newValue.name)
-              : setCategory("");
-          }}
-          options={categories}
-          getOptionLabel={(option) => option.name}
-          style={{ width: "50%", margin: "10px 0" }}
-          renderInput={(params) => (
-            <TextField {...params} label="Kategoriya" variant="outlined" />
-          )}
-        />
-      </div>
-      <MaterialTable
-        title={productInfo.name}
-        columns={columns}
-        data={products}
-        icons={tableIcons}
-        options={{ exportButton: true }}
-        responsive={true}
-        editable={{
-          onRowDelete: (oldData) =>
-            new Promise((resolve, reject) => {
-              setTimeout(() => {
-                deleteProduct(oldData._id, oldData.images.public_id);
-                resolve();
-              }, 1000);
-            }),
-        }}
-      />
+                        </form>
+                        <div>
+                          <span className="admin-add-img">
+                            <div className="upload">
+                              <input
+                                type="file"
+                                name="file"
+                                id="file_up"
+                                onChange={handleUpload}
+                              />
+                              {loading ? (
+                                <div id="file_img">
+                                  <Loading />
+                                </div>
+                              ) : (
+                                <div id="file_img" style={estyleUpload}>
+                                  <img src={eimages ? eimages.url : ""} alt="" />
+                                  <span onClick={handleDestroy}>X</span>
+                                </div>
+                              )}
+                            </div>
+                          </span>
+                        </div>
+                      </Card>
+                    </div>
+                  </ListItem>
+                </List>
+              </Collapse>
+            </div>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              <Card
+                className="card"
+                style={{ width: "48%", padding: "20px", textAlign: "center" }}
+              >
+                <h2>Kategoriya bo'yicha tartiblash</h2>
+              </Card>
+              <Autocomplete
+                id="combo-box-demo"
+                value={
+                  categories[categories.findIndex((item) => item.name === category)]
+                }
+                onChange={(event, newValue) => {
+                  newValue
+                    ? setCategory("category=" + newValue.name)
+                    : setCategory("");
+                }}
+                options={categories}
+                getOptionLabel={(option) => option.name}
+                style={{ width: "50%", margin: "10px 0" }}
+                renderInput={(params) => (
+                  <TextField {...params} label="Kategoriya" variant="outlined" />
+                )}
+              />
+            </div>
+            <MaterialTable
+              title={productInfo.name}
+              columns={columns}
+              data={products}
+              icons={tableIcons}
+              options={{ exportButton: true }}
+              responsive={true}
+              editable={{
+                onRowDelete: (oldData) =>
+                  new Promise((resolve, reject) => {
+                    setTimeout(() => {
+                      deleteProduct(oldData._id, oldData.images.public_id);
+                      resolve();
+                    }, 1000);
+                  }),
+              }}
+              localization={{
+                body: {
+                  editRow: {
+                    deleteText: "Ma'lumotni o'chirishni tasdiqlaysizmi ?",
+                  },
+                },
+                toolbar: {
+                  searchPlaceholder: "qidiruv"
+                },
+              }}
+            />
+          </div>
+        )
+      }
     </div>
+
   );
 };
 

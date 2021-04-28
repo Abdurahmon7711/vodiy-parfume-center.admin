@@ -5,6 +5,7 @@ import AddBox from "@material-ui/icons/AddBox";
 import ArrowDownward from "@material-ui/icons/ArrowDownward";
 import Button from "@material-ui/core/Button";
 import Check from "@material-ui/icons/Check";
+import Loader from "react-loader-spinner"
 import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
 import ChevronLeft from "@material-ui/icons/ChevronLeft";
 import ChevronRight from "@material-ui/icons/ChevronRight";
@@ -223,22 +224,42 @@ export function Editable() {
     },
   ];
   return (
-    <div className="table-data">
-      <MaterialTable
-        title="Buyurtmalar"
-        icons={tableIcons}
-        data={history}
-        columns={column}
-        responsive={true}
-      />
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
-      >
-        {body}
-      </Modal>
+    <div style={history.length ? {}: {height:"75vh",display:"flex", alignItems:"center", justifyContent:"center"}}>
+      {
+        history.length ? (
+          <div div className="table-data" >
+            <MaterialTable
+              title="Buyurtmalar"
+              icons={tableIcons}
+              data={history}
+              columns={column}
+              responsive={true}
+              localization={{
+                toolbar: {
+                    searchPlaceholder: "qidiruv"
+                },
+              }}
+            />
+            <Modal
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="simple-modal-title"
+              aria-describedby="simple-modal-description"
+            >
+              {body}
+            </Modal>
+          </div>
+        ) : (
+          <Loader
+            type="ThreeDots"
+            color="#00BFFF"
+            height={50}
+            width={50}
+            timeout={3000} //3 secs
+          />
+        )
+      }
+
     </div>
   );
 }

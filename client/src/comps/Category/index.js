@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { forwardRef } from "react";
 import Card from "@material-ui/core/Card";
 import List from "@material-ui/core/List";
@@ -9,8 +9,10 @@ import Clear from "@material-ui/icons/Clear";
 import Check from "@material-ui/icons/Check";
 import Button from "@material-ui/core/Button";
 import AddBox from "@material-ui/icons/AddBox";
+import AddBoxIcon from '@material-ui/icons/AddBox';
 import Search from "@material-ui/icons/Search";
 import Remove from "@material-ui/icons/Remove";
+import Loader from "react-loader-spinner"
 import SaveAlt from "@material-ui/icons/SaveAlt";
 import Collapse from "@material-ui/core/Collapse";
 import ListItem from "@material-ui/core/ListItem";
@@ -19,7 +21,6 @@ import TextField from "@material-ui/core/TextField";
 import FirstPage from "@material-ui/icons/FirstPage";
 import FilterList from "@material-ui/icons/FilterList";
 import ViewColumn from "@material-ui/icons/ViewColumn";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
 import ExpandMore from "@material-ui/icons/ExpandMore";
 import ExpandLess from "@material-ui/icons/ExpandLess";
 import ChevronLeft from "@material-ui/icons/ChevronLeft";
@@ -29,7 +30,7 @@ import ChevronRight from "@material-ui/icons/ChevronRight";
 import ArrowDownward from "@material-ui/icons/ArrowDownward";
 import DeleteOutline from "@material-ui/icons/DeleteOutline";
 import IconButton from "@material-ui/core/IconButton";
-import { Link, withRouter } from "react-router-dom";
+import { Link, useHistory, withRouter } from "react-router-dom";
 import "./ImgUploadStyle.css";
 import { StoreG } from "../../Store/Store";
 import { toast } from "react-toastify";
@@ -37,6 +38,16 @@ import axios from "axios";
 import Loading from "../../utils/loading/Loading";
 
 const Products = () => {
+  const history = useHistory()
+
+  useEffect(()=>{
+    const gogo = localStorage.getItem("admin")
+    if(!gogo && gogo !== "1"){
+      history.push("/")
+      history.go()
+    }
+  },[]) 
+
   const [openAdd, setOpenAdd] = useState(false);
   const state = useContext(StoreG);
   const [category, setCategory] = useState("");
@@ -45,7 +56,7 @@ const Products = () => {
   const [images, setImages] = useState(false);
   const [eimages, setEimages] = useState(false);
   const [loading, setLoading] = useState(false);
-
+  const [loaderUp, setLoaderUp] = useState(true)
   const [isAdmin] = state.userAPI.isAdmin;
   const [token] = state.token;
 
@@ -334,145 +345,174 @@ const Products = () => {
     display: images ? "block" : "none",
   };
 
+  useEffect(() => {
+    categories.length ? setLoaderUp(false) : setLoaderUp(true)
+  }, [categories])
+
   return (
-    <div className="admin-categories">
-      <div>
-        <ListItem button onClick={handleClickAdd}>
-          <ListItemIcon>
-            <InboxIcon />
-          </ListItemIcon>
-          <ListItemText primary="Kategoriya qo'shish" />
-          {openAdd ? <ExpandLess /> : <ExpandMore />}
-        </ListItem>
-        <Collapse in={openAdd} timeout="auto" unmountOnExit>
-          <List component="div" disablePadding>
-            <ListItem>
-              <div className="admin-product-edit">
-                <Card className="admin-product-edit-add">
-                  <form onSubmit={handleSubmit}>
-                    <div>
-                      <TextField
-                        className="textInput"
-                        value={category}
-                        label="Kategoriya nomi"
-                        onChange={handleChangeInput}
-                      />
-                      <Button
-                        className="btn-admin-add"
-                        variant="contained"
-                        color="primary"
-                        type="submit"
-                      >
-                        Add
+    <div style={!loaderUp ? {}: {height:"75vh",display:"flex", alignItems:"center", justifyContent:"center"}}>
+      {
+        loaderUp ? (
+          <Loader
+            type="ThreeDots"
+            color="#00BFFF"
+            height={50}
+            width={50}
+            timeout={3000} //3 secs
+          />
+        ) : (
+          <div className="admin-categories">
+            <div>
+              <ListItem button onClick={handleClickAdd}>
+                <ListItemIcon>
+                  <AddBoxIcon />
+                </ListItemIcon>
+                <ListItemText primary="Kategoriya qo'shish" />
+                {openAdd ? <ExpandLess /> : <ExpandMore />}
+              </ListItem>
+              <Collapse in={openAdd} timeout="auto" unmountOnExit>
+                <List component="div" disablePadding>
+                  <ListItem>
+                    <div className="admin-product-edit">
+                      <Card className="admin-product-edit-add">
+                        <form onSubmit={handleSubmit}>
+                          <div>
+                            <TextField
+                              className="textInput"
+                              value={category}
+                              label="Kategoriya nomi"
+                              onChange={handleChangeInput}
+                            />
+                            <Button
+                              className="btn-admin-add"
+                              variant="contained"
+                              color="primary"
+                              type="submit"
+                            >
+                              Add
                       </Button>
+                          </div>
+                        </form>
+                        <div>
+                          <span className="admin-add-img">
+                            <div className="upload">
+                              <input
+                                type="file"
+                                name="file"
+                                id="file_up"
+                                onChange={handleUpload}
+                              />
+                              {loading ? (
+                                <div id="file_img">
+                                  <Loading />
+                                </div>
+                              ) : (
+                                <div id="file_img" style={styleUpload}>
+                                  <img src={images ? images.url : ""} alt="" />
+                                  <span onClick={handleDestroy}>X</span>
+                                </div>
+                              )}
+                            </div>
+                          </span>
+                        </div>
+                      </Card>
                     </div>
-                  </form>
-                  <div>
-                    <span className="admin-add-img">
-                      <div className="upload">
-                        <input
-                          type="file"
-                          name="file"
-                          id="file_up"
-                          onChange={handleUpload}
-                        />
-                        {loading ? (
-                          <div id="file_img">
-                            <Loading />
-                          </div>
-                        ) : (
-                          <div id="file_img" style={styleUpload}>
-                            <img src={images ? images.url : ""} alt="" />
-                            <span onClick={handleDestroy}>X</span>
-                          </div>
-                        )}
-                      </div>
-                    </span>
-                  </div>
-                </Card>
-              </div>
-            </ListItem>
-          </List>
-        </Collapse>
-      </div>
-      <div>
-        {/*         <ListItem button onClick={handleClick}>
+                  </ListItem>
+                </List>
+              </Collapse>
+            </div>
+            <div>
+              {/*         <ListItem button onClick={handleClick}>
           <ListItemIcon>
             <InboxIcon />
           </ListItemIcon>
           <ListItemText primary="Kategoriyani yangilash" />
           {open ? <ExpandLess /> : <ExpandMore />}
         </ListItem> */}
-        <Collapse in={open} timeout="auto" unmountOnExit>
-          <List component="div" disablePadding>
-            <ListItem>
-              <div className="admin-product-edit">
-                <Card className="admin-product-edit-add">
-                  <form onSubmit={ehandleSubmit}>
-                    <div>
-                      <TextField
-                        className="textInput"
-                        value={ecategory}
-                        placeholder="Kategoriya nomi"
-                        onChange={ehandleChangeInput}
-                        //   label="Kategoriya"
-                      />
-                      <Button
-                        type="submit"
-                        className="btn-admin-add"
-                        variant="contained"
-                        color="primary"
-                      >
-                        Yangilash
+              <Collapse in={open} timeout="auto" unmountOnExit>
+                <List component="div" disablePadding>
+                  <ListItem>
+                    <div className="admin-product-edit">
+                      <Card className="admin-product-edit-add">
+                        <form onSubmit={ehandleSubmit}>
+                          <div>
+                            <TextField
+                              className="textInput"
+                              value={ecategory}
+                              placeholder="Kategoriya nomi"
+                              onChange={ehandleChangeInput}
+                            //   label="Kategoriya"
+                            />
+                            <Button
+                              type="submit"
+                              className="btn-admin-add"
+                              variant="contained"
+                              color="primary"
+                            >
+                              Yangilash
                       </Button>
+                          </div>
+                        </form>
+                        <div>
+                          <span className="admin-add-img">
+                            <div className="upload">
+                              <input
+                                type="file"
+                                name="file"
+                                id="file_up"
+                                onChange={ehandleUpload}
+                              />
+                              {loading ? (
+                                <div id="file_img">
+                                  <Loading />
+                                </div>
+                              ) : (
+                                <div id="file_img" style={estyleUpload}>
+                                  <img src={eimages ? eimages.url : ""} alt="" />
+                                  <span onClick={ehandleDestroy}>X</span>
+                                </div>
+                              )}
+                            </div>
+                          </span>
+                        </div>
+                      </Card>
                     </div>
-                  </form>
-                  <div>
-                    <span className="admin-add-img">
-                      <div className="upload">
-                        <input
-                          type="file"
-                          name="file"
-                          id="file_up"
-                          onChange={ehandleUpload}
-                        />
-                        {loading ? (
-                          <div id="file_img">
-                            <Loading />
-                          </div>
-                        ) : (
-                          <div id="file_img" style={estyleUpload}>
-                            <img src={eimages ? eimages.url : ""} alt="" />
-                            <span onClick={ehandleDestroy}>X</span>
-                          </div>
-                        )}
-                      </div>
-                    </span>
-                  </div>
-                </Card>
-              </div>
-            </ListItem>
-          </List>
-        </Collapse>
-      </div>
-      <MaterialTable
-        title={productInfo.name}
-        columns={columns}
-        data={categories}
-        icons={tableIcons}
-        options={{ exportButton: true }}
-        responsive={true}
-        editable={{
-          onRowDelete: (oldData) =>
-            new Promise((resolve, reject) => {
-              setTimeout(() => {
-                deleteCategory(oldData._id, oldData.images.public_id);
-                resolve();
-              }, 1000);
-            }),
-        }}
-      />
+                  </ListItem>
+                </List>
+              </Collapse>
+            </div>
+            <MaterialTable
+              title={productInfo.name}
+              columns={columns}
+              data={categories}
+              icons={tableIcons}
+              options={{ exportButton: true }}
+              responsive={true}
+              editable={{
+                onRowDelete: (oldData) =>
+                  new Promise((resolve, reject) => {
+                    setTimeout(() => {
+                      deleteCategory(oldData._id, oldData.images.public_id);
+                      resolve();
+                    }, 1000);
+                  }),
+              }}
+              localization={{
+                toolbar: {
+                  searchPlaceholder: "qidiruv"
+                },
+                body: {
+                  editRow: {
+                    deleteText: "Ma'lumotni o'chirishni tasdiqlaysizmi ?",
+                  },
+                },
+              }}
+            />
+          </div>
+        )
+      }
     </div>
+
   );
 };
 
