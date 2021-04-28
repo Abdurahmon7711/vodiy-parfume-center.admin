@@ -82,7 +82,7 @@ const Products = () => {
       let formData = new FormData();
       formData.append("file", file);
       setLoading(true);
-      const res = await axios
+      await axios
         .post("/api/upload", formData, {
           headers: {
             "content-type": "multipart/form-data",
@@ -91,9 +91,10 @@ const Products = () => {
         })
         .then((res) => {
           toast.success(res.data.msg);
+          setLoading(false);
+          console.log(res);
+          setImages(res.data);
         });
-      setLoading(false);
-      setImages(res.data);
     } catch (err) {
       toast.error(err.response.data.msg);
     }
@@ -117,7 +118,7 @@ const Products = () => {
       let formData = new FormData();
       formData.append("file", file);
       setLoading(true);
-      const res = await axios
+      await axios
         .post("/api/upload", formData, {
           headers: {
             "content-type": "multipart/form-data",
@@ -126,9 +127,10 @@ const Products = () => {
         })
         .then((res) => {
           toast.success(res.data.msg);
+          console.log(res);
+          setLoading(false);
+          setEimages(res.data);
         });
-      setLoading(false);
-      setEimages(res.data);
     } catch (err) {
       toast.error(err.response.data.msg);
     }
@@ -190,10 +192,12 @@ const Products = () => {
           }
         )
         .then((res) => {
+          setCategory("");
           toast.success(res.data.msg);
+          setCallback(!callback);
+          setOpenAdd(!openAdd);
+          setImages(false);
         });
-      setCallback(!callback);
-      setOpenAdd(!openAdd);
     } catch (err) {
       toast.error(err.response.data.msg);
     }
