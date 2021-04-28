@@ -73,13 +73,13 @@ const CategoryProducts = (props) => {
   useEffect(() => {
     const getProducts = async () => {
       const res = await axios.get(
-        `/api/products?limit=${100}&category=${props.match.params.id}`
+        `/api/products?limit=${100}&category=${category}`
       );
       setProducts(res.data.products);
       setLoading(false);
     };
     getProducts();
-  }, [props]);
+  }, [category]);
 
   useEffect(() => {
     document.title = "VodiyParfum | Mahsulotlar";

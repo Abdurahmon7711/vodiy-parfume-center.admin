@@ -6,6 +6,7 @@ function UserAPI(token) {
   const [isLogged, setIsLogged] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [history, setHistory] = useState([]);
+  const [callback, setCallback] = useState(false);
   const [user, setUser] = useState([]);
   useEffect(() => {
     if (token) {
@@ -32,10 +33,11 @@ function UserAPI(token) {
 
       getUser();
     }
-  }, [token]);
+  }, [callback, token]);
 
   return {
     user: [user, setUser],
+    callback: [callback, setCallback],
     isLogged: [isLogged, setIsLogged],
     isAdmin: [isAdmin, setIsAdmin],
     history: [history, setHistory],

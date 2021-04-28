@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import PropTypes from "prop-types";
 import SwipeableViews from "react-swipeable-views";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
@@ -11,6 +11,8 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { withRouter } from "react-router-dom";
 import { StoreG } from "../../Store/Store";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -56,7 +58,17 @@ const useStyles = makeStyles((theme) => ({
 
 function FullWidthTabs() {
   const state = useContext(StoreG);
+  const [token] = state.token;
   const [user] = state.userAPI.user;
+  const [callback, setCallback] = state.userAPI.callback;
+  const [eUser, setEuser] = useState({
+    name: user.name,
+    lname: user.lname,
+    login: user.login,
+    password: user.password,
+    phoneNumber: user.phoneNumber,
+  });
+
   const classes = useStyles();
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
@@ -65,13 +77,32 @@ function FullWidthTabs() {
     setValue(newValue);
   };
 
+  const handleInput = (e, newValue) => {
+    setEuser({ ...eUser, [e.target.name]: e.target.value });
+  };
+
   const handleChangeIndex = (index) => {
     setValue(index);
   };
 
-  const changeAdmin = () => {
-    
-  }
+  const changeAdmin = async (e) => {
+    try {
+      //   setLoading(true);
+      e.preventDefault();
+      const updateAdmin = axios.put(`/user/users/${user._id}`, eUser, {
+        headers: { Authorization: token },
+      });
+
+      await updateAdmin;
+      //   setLoading(false);
+      toast.success("Admin o'zgartirildi", { autoClose: 1500 });
+      setValue(0);
+
+      setCallback(!callback);
+    } catch (err) {
+      toast.error(err.response.data.msg);
+    }
+  };
 
   return (
     <div className={classes.root}>
@@ -101,20 +132,58 @@ function FullWidthTabs() {
               <h3>Familiya: {user.lname}</h3>
               <h3>Login: {user.login}</h3>
               <h3>Parol: {user.password}</h3>
+              <h3>Tel Raqam: {user.phoneNumber}</h3>
             </div>
           </div>
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
-          <div className="tabPage tab-second">
-            <TextField id="outlined-basic" label="Ism" />
-            <TextField id="outlined-basic" label="Familiya" />
-            <TextField id="outlined-basic" label="Login" />
-            <TextField id="outlined-basic" label="Parol" />
-            <TextField id="outlined-basic" label="Yangi parol" />
-            <Button onClick={changeAdmin} className="btn-tab" variant="contained" color="primary">
-              O'zgarishlarni saqlash
-            </Button>
-          </div>
+          <form onSubmit={changeAdmin}>
+            <div className="tabPage tab-second">
+              <TextField
+                id="outlined-basic"
+                onChange={handleInput}
+                value={eUser.name}
+                name="name"
+                // label="Ism"
+              />
+              <TextField
+                id="outlined-basic"
+                onChange={handleInput}
+                value={eUser.lname}
+                name="lname"
+                // label="Familiya"
+              />
+              <TextField
+                id="outlined-basic"
+                onChange={handleInput}
+                value={eUser.login}
+                name="login"
+                // label="Login"
+              />
+              <TextField
+                id="outlined-basic"
+                onChange={handleInput}
+                value={eUser.password}
+                name="password"
+                // label="Yangi parol"
+              />
+              <TextField
+                id="outlined-basic"
+                onChange={handleInput}
+                name="phoneNumber"
+                value={eUser.phoneNumber}
+                // label="Yangi parol"
+              />
+              <Button
+                className="btn-tab"
+                variant="contained"
+                color="primary"
+                type="submit"
+              >
+                O'zgarishlarni saqlash
+              </Button>
+            </div>
+          </form>
         </TabPanel>
       </SwipeableViews>
     </div>
