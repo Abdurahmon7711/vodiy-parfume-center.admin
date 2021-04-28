@@ -4,7 +4,7 @@ import Loading from "../../utils/loading/Loading";
 
 function UploadImage() {
   return (
-
+    <div></div>
   );
 }
 

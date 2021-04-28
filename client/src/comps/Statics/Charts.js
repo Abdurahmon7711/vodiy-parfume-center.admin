@@ -33,6 +33,7 @@ const Charts = () => {
     >
       <Line
         data={chartData}
+        width={800} height={250}
         options={{
           responsive: true,
           title: {

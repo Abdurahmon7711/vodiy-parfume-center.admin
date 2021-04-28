@@ -16,6 +16,7 @@ import FilterList from "@material-ui/icons/FilterList";
 import ChevronLeft from "@material-ui/icons/ChevronLeft";
 import ChevronRight from "@material-ui/icons/ChevronRight";
 import DeleteOutline from "@material-ui/icons/DeleteOutline";
+import Loader from "react-loader-spinner"
 import ArrowDownward from "@material-ui/icons/ArrowDownward";
 import { withRouter } from "react-router-dom";
 import { StoreG } from "../../Store/Store";
@@ -68,6 +69,7 @@ const Users = () => {
 
   const [users, setUsers] = useState([]);
   const [callback, setCallback] = useState(false);
+  const [loader, setLoader] = useState(true)
 
   useEffect(() => {
     const getUsers = async () => {
@@ -75,23 +77,12 @@ const Users = () => {
         headers: { Authorization: token },
       });
       setUsers(res.data);
+      setLoader(false)
     };
 
     getUsers();
   }, [callback, token]);
-  // useEffect(() =>{
-  //     axios.post('https://jsonplaceholder.typicode.com/posts',
-  //         {malumot:data},
-  //         {
-  //             headers:{
-  //                 'Authorization': `Basic ${token}`
-  //             }
-  //         }
-  //     )
-  //     .then(response =>console.log(response))
-  //     .catch(err =>console.log(err))
-  // },[data])
-
+ 
   const deleteUser = async (id) => {
     try {
       //   setLoading(true);
@@ -130,8 +121,18 @@ const Users = () => {
     }
   };
   return (
-    <div>
-      <MaterialTable
+    <div style={!loader ? {}: {height:"75vh",display:"flex", alignItems:"center", justifyContent:"center"}}>
+      {
+        loader ? (
+          <Loader
+            type="ThreeDots"
+            color="#00BFFF"
+            height={50}
+            width={50}
+            timeout={3000} //3 secs
+          />
+        ):(
+          <MaterialTable
         title={productInfo.name}
         columns={columns}
         data={users}
@@ -161,7 +162,20 @@ const Users = () => {
               }, 1000);
             }),
         }}
+        localization={{
+          body: {
+            editRow: {
+              deleteText: "Foydalanuvchini o'chirishni tasdiqlaysizmi ?",
+            },
+          },
+          toolbar: {
+            searchPlaceholder: "qidiruv"
+          },
+        }}
       />
+        )
+      }
+      
     </div>
   );
 };

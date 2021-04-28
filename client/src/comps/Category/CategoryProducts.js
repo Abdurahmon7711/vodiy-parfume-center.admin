@@ -488,6 +488,16 @@ const CategoryProducts = (props) => {
               }, 1000);
             }),
         }}
+        localization={{
+          toolbar: {
+              searchPlaceholder: "qidiruv"
+          },
+          body: {
+            editRow: {
+              deleteText: "Ma'lumotni o'chirishni tasdiqlaysizmi ?",
+            },
+          },
+        }}
       />
     </div>
   );
