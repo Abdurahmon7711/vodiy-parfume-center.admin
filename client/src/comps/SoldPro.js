@@ -88,13 +88,15 @@ function SoldPro() {
             headers: { Authorization: token },
           });
           setHistory(res.data);
-          setLoaderUp(false);
         }
       };
       getHistory();
     }
   }, [token, isAdmin, setHistory]);
 
+  useEffect(() => {
+    history ? setLoaderUp(false) : setLoaderUp(true);
+  }, [history])
   // const payments = state.paymentsAPI.payments;
 
   const handleOpen = (data) => {
@@ -208,58 +210,45 @@ function SoldPro() {
     },
   ];
   return (
-    <div
-      style={
-        !loaderUp
-          ? {}
-          : {
-              height: "75vh",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }
-      }
-    >
-      {loaderUp ? (
+    <div>
+      <div className="table-data">
         <Loader
+          style={!loaderUp ? {textAlign: "center" }:{display: "none" }}
           type="ThreeDots"
           color="#00BFFF"
           height={50}
           width={50}
           timeout={3000} //3 secs
         />
-      ) : (
-        <div className="table-data">
-          <MaterialTable
-            title="Yetkazilgan buyurtmalar"
-            icons={tableIcons}
-            data={history}
-            columns={column}
-            responsive={true}
-            options={{ exportButton: true, selection: true }}
-            actions={[
-              {
-                tooltip: "Belgilangan ma'lumolarni o'chirish",
-                icon: DeleteIcon,
-                onClick: (evt, data) => alert( data.length + ' ta malumotni ochirishni tasdiqlash')
-              }
-            ]}
-            localization={{
-              toolbar: {
-                searchPlaceholder: "qidiruv",
-              },
-            }}
-          />
-          <Modal
-            open={open}
-            onClose={handleClose}
-            aria-labelledby="simple-modal-title"
-            aria-describedby="simple-modal-description"
-          >
-            {body}
-          </Modal>
-        </div>
-      )}
+        <MaterialTable
+          title="Yetkazilgan buyurtmalar"
+          icons={tableIcons}
+          data={history}
+          columns={column}
+          responsive={true}
+          options={{ exportButton: true, selection: true }}
+          actions={[
+            {
+              tooltip: "Belgilangan ma'lumolarni o'chirish",
+              icon: DeleteIcon,
+              onClick: (evt, data) => alert(data.length + ' ta malumotni ochirishni tasdiqlash')
+            }
+          ]}
+          localization={{
+            toolbar: {
+              searchPlaceholder: "qidiruv",
+            },
+          }}
+        />
+        <Modal
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="simple-modal-title"
+          aria-describedby="simple-modal-description"
+        >
+          {body}
+        </Modal>
+      </div>
     </div>
   );
 }

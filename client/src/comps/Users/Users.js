@@ -95,6 +95,10 @@ const Users = () => {
     }
   }, [callback, token]);
 
+  useEffect(() => {
+    users ? setLoader(false) : setLoader(true)
+  }, [users])
+
   const deleteUser = async (id) => {
     try {
       //   setLoading(true);
@@ -133,69 +137,56 @@ const Users = () => {
     }
   };
   return (
-    <div
-      style={
-        !loader
-          ? {}
-          : {
-              height: "75vh",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }
-      }
-    >
-      {loader ? (
-        <Loader
-          type="ThreeDots"
-          color="#00BFFF"
-          height={50}
-          width={50}
-          timeout={3000} //3 secs
-        />
-      ) : (
-        <MaterialTable
-          title={productInfo.name}
-          columns={columns}
-          data={users}
-          icons={tableIcons}
-          options={{ exportButton: true }}
-          responsive={true}
-          editable={{
-            onRowAdd: (newData) =>
-              new Promise((resolve, reject) => {
-                setTimeout(() => {
-                  addUser(newData);
-                  resolve();
-                }, 1000);
-              }),
-            onRowUpdate: (newData, oldData) =>
-              new Promise((resolve, reject) => {
-                setTimeout(() => {
-                  updateUser(oldData._id, newData);
-                  resolve();
-                }, 1000);
-              }),
-            onRowDelete: (oldData) =>
-              new Promise((resolve, reject) => {
-                setTimeout(() => {
-                  deleteUser(oldData._id);
-                  resolve();
-                }, 1000);
-              }),
-          }}
-          localization={{
-            body: {
-              editRow: {
-                deleteText: "Foydalanuvchini o'chirishni tasdiqlaysizmi ?",
-              },
+    <div>
+      <Loader
+        style={!loader ? { textAlign: "center" } : { display: "none" }}
+        type="ThreeDots"
+        color="#00BFFF"
+        height={50}
+        width={50}
+        timeout={3000} //3 secs
+      />
+      <MaterialTable
+        title={productInfo.name}
+        columns={columns}
+        data={users}
+        icons={tableIcons}
+        options={{ exportButton: true }}
+        responsive={true}
+        editable={{
+          onRowAdd: (newData) =>
+            new Promise((resolve, reject) => {
+              setTimeout(() => {
+                addUser(newData);
+                resolve();
+              }, 1000);
+            }),
+          onRowUpdate: (newData, oldData) =>
+            new Promise((resolve, reject) => {
+              setTimeout(() => {
+                updateUser(oldData._id, newData);
+                resolve();
+              }, 1000);
+            }),
+          onRowDelete: (oldData) =>
+            new Promise((resolve, reject) => {
+              setTimeout(() => {
+                deleteUser(oldData._id);
+                resolve();
+              }, 1000);
+            }),
+        }}
+        localization={{
+          body: {
+            editRow: {
+              deleteText: "Foydalanuvchini o'chirishni tasdiqlaysizmi ?",
             },
-            toolbar: {
-              searchPlaceholder: "qidiruv",
-            },
-          }}
-        />
-      )}
+          },
+          toolbar: {
+            searchPlaceholder: "qidiruv",
+          },
+        }}
+      />
     </div>
   );
 };
