@@ -17,23 +17,21 @@ import FilterList from "@material-ui/icons/FilterList";
 import ChevronLeft from "@material-ui/icons/ChevronLeft";
 import ChevronRight from "@material-ui/icons/ChevronRight";
 import DeleteOutline from "@material-ui/icons/DeleteOutline";
-import Loader from "react-loader-spinner"
+import Loader from "react-loader-spinner";
 import ArrowDownward from "@material-ui/icons/ArrowDownward";
 import { withRouter } from "react-router-dom";
 import { StoreG } from "../../Store/Store";
 import { toast } from "react-toastify";
 
 const Users = () => {
-
-  const history = useHistory()
-  useEffect(()=>{
-    const gogo = localStorage.getItem("admin")
-    if(!gogo && gogo !== "1"){
-      history.push("/")
-      history.go()
+  const history = useHistory();
+  useEffect(() => {
+    const gogo = localStorage.getItem("admin");
+    if (!gogo && gogo !== "1") {
+      history.push("/");
+      history.go();
     }
-  },[history]) 
-
+  }, [history]);
 
   const state = useContext(StoreG);
 
@@ -81,20 +79,22 @@ const Users = () => {
 
   const [users, setUsers] = useState([]);
   const [callback, setCallback] = useState(false);
-  const [loader, setLoader] = useState(true)
+  const [loader, setLoader] = useState(true);
 
   useEffect(() => {
-    const getUsers = async () => {
-      const res = await axios.get("/user/users", {
-        headers: { Authorization: token },
-      });
-      setUsers(res.data);
-      setLoader(false)
-    };
+    if (token) {
+      const getUsers = async () => {
+        const res = await axios.get("/user/users", {
+          headers: { Authorization: token },
+        });
+        setUsers(res.data);
+        setLoader(false);
+      };
 
-    getUsers();
+      getUsers();
+    }
   }, [callback, token]);
- 
+
   const deleteUser = async (id) => {
     try {
       //   setLoading(true);
@@ -133,61 +133,69 @@ const Users = () => {
     }
   };
   return (
-    <div style={!loader ? {}: {height:"75vh",display:"flex", alignItems:"center", justifyContent:"center"}}>
-      {
-        loader ? (
-          <Loader
-            type="ThreeDots"
-            color="#00BFFF"
-            height={50}
-            width={50}
-            timeout={3000} //3 secs
-          />
-        ):(
-          <MaterialTable
-        title={productInfo.name}
-        columns={columns}
-        data={users}
-        icons={tableIcons}
-        options={{ exportButton: true }}
-        responsive={true}
-        editable={{
-          onRowAdd: (newData) =>
-            new Promise((resolve, reject) => {
-              setTimeout(() => {
-                addUser(newData);
-                resolve();
-              }, 1000);
-            }),
-          onRowUpdate: (newData, oldData) =>
-            new Promise((resolve, reject) => {
-              setTimeout(() => {
-                updateUser(oldData._id, newData);
-                resolve();
-              }, 1000);
-            }),
-          onRowDelete: (oldData) =>
-            new Promise((resolve, reject) => {
-              setTimeout(() => {
-                deleteUser(oldData._id);
-                resolve();
-              }, 1000);
-            }),
-        }}
-        localization={{
-          body: {
-            editRow: {
-              deleteText: "Foydalanuvchini o'chirishni tasdiqlaysizmi ?",
-            },
-          },
-          toolbar: {
-            searchPlaceholder: "qidiruv"
-          },
-        }}
-      />
-        )
+    <div
+      style={
+        !loader
+          ? {}
+          : {
+              height: "75vh",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }
       }
-      
+    >
+      {loader ? (
+        <Loader
+          type="ThreeDots"
+          color="#00BFFF"
+          height={50}
+          width={50}
+          timeout={3000} //3 secs
+        />
+      ) : (
+        <MaterialTable
+          title={productInfo.name}
+          columns={columns}
+          data={users}
+          icons={tableIcons}
+          options={{ exportButton: true }}
+          responsive={true}
+          editable={{
+            onRowAdd: (newData) =>
+              new Promise((resolve, reject) => {
+                setTimeout(() => {
+                  addUser(newData);
+                  resolve();
+                }, 1000);
+              }),
+            onRowUpdate: (newData, oldData) =>
+              new Promise((resolve, reject) => {
+                setTimeout(() => {
+                  updateUser(oldData._id, newData);
+                  resolve();
+                }, 1000);
+              }),
+            onRowDelete: (oldData) =>
+              new Promise((resolve, reject) => {
+                setTimeout(() => {
+                  deleteUser(oldData._id);
+                  resolve();
+                }, 1000);
+              }),
+          }}
+          localization={{
+            body: {
+              editRow: {
+                deleteText: "Foydalanuvchini o'chirishni tasdiqlaysizmi ?",
+              },
+            },
+            toolbar: {
+              searchPlaceholder: "qidiruv",
+            },
+          }}
+        />
+      )}
     </div>
   );
 };

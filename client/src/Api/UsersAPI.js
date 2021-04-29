@@ -1,22 +1,23 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
+// import { useState, useEffect } from "react";
+// import axios from "axios";
 
-function UsersAPI() {
-  const [users, setUsers] = useState([]);
-  const [callback, setCallback] = useState(false);
+// function UsersAPI(token) {
+//   const [users, setUsers] = useState([]);
+//   const [callback, setCallback] = useState(false);
 
-  useEffect(() => {
-    const getUsers = async () => {
-      const res = await axios.get("/user/users");
-      setUsers(res.data);
-    };
+//   useEffect(() => {
+//     if (token) {
+//       const getUsers = async () => {
+//         const res = await axios.get("/user/users");
+//         setUsers(res.data);
+//       };
+//       getUsers();
+//     }
+//   }, [callback, token]);
+//   return {
+//     users: [users, setUsers],
+//     callback: [callback, setCallback],
+//   };
+// }
 
-    getUsers();
-  }, [callback]);
-  return {
-    users: [users, setUsers],
-    callback: [callback, setCallback],
-  };
-}
-
-export default UsersAPI;
+// export default UsersAPI;

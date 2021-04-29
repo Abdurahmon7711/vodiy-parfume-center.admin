@@ -192,7 +192,6 @@ const CategoryProducts = (props) => {
             setOpenAdd(!openAdd);
             setImages(false);
             toast.success(res.data.msg);
-            console.log(res);
           });
       }
       setCallback(!callback);

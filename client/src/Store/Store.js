@@ -2,11 +2,11 @@ import React, { createContext, useEffect, useState } from "react";
 import axios from "axios";
 import UserAPI from "../Api/UserAPI";
 import { toast } from "react-toastify";
-import UsersAPI from "../Api/UsersAPI";
+// import UsersAPI from "../Api/UsersAPI";
 import CategoriesAPI from "../Api/CategoriesAPI";
 import ProductsAPI from "../Api/ProductsAPI";
 import StaticsAPI from "../Api/StaticsAPI";
-import PaymentsAPI from "../Api/PaymentsAPI";
+// import PaymentsAPI from "../Api/PaymentsAPI";
 
 export const StoreG = createContext();
 
@@ -36,10 +36,10 @@ const Store = (props) => {
     token: [token, setToken],
     productsAPI: ProductsAPI(),
     userAPI: UserAPI(token),
-    usersAPI: UsersAPI(),
+    // usersAPI: UsersAPI(token),
     statics: StaticsAPI(),
     categoriesAPI: CategoriesAPI(),
-    paymentsAPI: PaymentsAPI(token),
+    // paymentsAPI: PaymentsAPI(token),
   };
 
   return <StoreG.Provider value={state}>{props.children}</StoreG.Provider>;

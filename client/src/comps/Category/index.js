@@ -92,7 +92,6 @@ const Products = () => {
         .then((res) => {
           toast.success(res.data.msg);
           setLoading(false);
-          console.log(res);
           setImages(res.data);
         });
     } catch (err) {
@@ -127,7 +126,6 @@ const Products = () => {
         })
         .then((res) => {
           toast.success(res.data.msg);
-          console.log(res);
           setLoading(false);
           setEimages(res.data);
         });

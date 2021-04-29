@@ -146,7 +146,6 @@ export default function MiniDrawer() {
   ]);
 
   let location = useLocation();
-  console.log(location);
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -170,8 +169,6 @@ export default function MiniDrawer() {
     localStorage.removeItem("admin");
     window.location.href = "/";
   };
-  // console.log(isAuth)
-  console.log(location.pathname.split("/").length);
   return (
     <React.Fragment>
       <Dialog

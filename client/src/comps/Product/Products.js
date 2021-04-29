@@ -201,7 +201,6 @@ const Products = () => {
             setOpenAdd(!openAdd);
             setImages(false);
             toast.success(res.data.msg);
-            console.log(res);
           });
       }
       setCallback(!callback);
@@ -306,7 +305,6 @@ const Products = () => {
   const estyleUpload = {
     display: eimages ? "block" : "none",
   };
-  // console.log(products)
 
   return (
     <div
