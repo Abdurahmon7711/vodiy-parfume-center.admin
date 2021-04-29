@@ -252,7 +252,16 @@ const SoldOutProducts = () => {
     { title: "Mahsulot", field: "title", width: "30%" },
     { title: "Soni", field: "number", type: "numeric", width: "10%" },
     { title: "Narx", field: "price", type: "numeric", width: "10%" },
-    { title: "Kategoriya", field: "category", width: "20%" },
+    {
+      title: "Kategoriya",
+      field: "category",
+      width: "20%",
+      render: (rowData) => (
+        <p>
+          {categories.filter((item) => item._id === rowData.category)[0].name}
+        </p>
+      ),
+    },
     { title: "Malumot", field: "description", width: "25%" },
     {
       title: "Rasm",

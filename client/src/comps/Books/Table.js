@@ -5,7 +5,7 @@ import AddBox from "@material-ui/icons/AddBox";
 import ArrowDownward from "@material-ui/icons/ArrowDownward";
 import Button from "@material-ui/core/Button";
 import Check from "@material-ui/icons/Check";
-import Loader from "react-loader-spinner"
+import Loader from "react-loader-spinner";
 import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
 import ChevronLeft from "@material-ui/icons/ChevronLeft";
 import ChevronRight from "@material-ui/icons/ChevronRight";
@@ -48,8 +48,8 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     position: "absolute",
     width: 400,
-    height:"90vh",
-    overflowY:"scroll",
+    height: "90vh",
+    overflowY: "scroll",
     backgroundColor: theme.palette.background.paper,
     border: "2px solid #000",
     boxShadow: theme.shadows[5],
@@ -71,7 +71,7 @@ export function Editable() {
   const [modalStyle] = React.useState(getModalStyle);
   const [open, setOpen] = React.useState(false);
   const [callback, setCallback] = state.statics.callback;
-  const [loader, setLoader] = useState(true)
+  const [loader, setLoader] = useState(true);
   useEffect(() => {
     if (token) {
       const getHistory = async () => {
@@ -105,7 +105,7 @@ export function Editable() {
           headers: { Authorization: token },
         });
         setHistory(res.data);
-        setLoader(false)
+        setLoader(false);
       }
     };
     getHistory();
@@ -120,35 +120,37 @@ export function Editable() {
 
   const body = (
     <div style={modalStyle} className={classes.paper}>
-      <h3>Ismi: {rowData.name}</h3>
-      <h3>Tel raqami: {rowData.phoneNumber}</h3>
-      <h3>Sana: {rowData.createdAt}</h3>
-      <h3>Xabar: {rowData.comment}</h3>
-      <hr />
       {Object.keys(rowData).length !== 0 ? (
-        <TableContainer component={Paper}>
-          <Table className={classes.table} aria-label="simple table">
-            <TableHead>
-              <TableRow>
-                <TableCell align="left">Nomi</TableCell>
-                <TableCell align="center">Soni</TableCell>
-                <TableCell align="right">Narx</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {rowData.cart.map((row) => (
-                <TableRow key={row.name}>
-                  <TableCell align="left">{row.title}</TableCell>
-                  <TableCell align="center">{row.quantity}</TableCell>
-                  <TableCell align="right">{row.price}</TableCell>
+        <React.Fragment>
+          <h3>Ismi: {rowData.name}</h3>
+          <h3>Tel raqami: {rowData.phoneNumber}</h3>
+          <h3>Sana: {newDate(rowData.createdAt)}</h3>
+          <h3>Xabar: {rowData.comment}</h3>
+          <hr />
+          <TableContainer component={Paper}>
+            <Table className={classes.table} aria-label="simple table">
+              <TableHead>
+                <TableRow>
+                  <TableCell align="left">Nomi</TableCell>
+                  <TableCell align="center">Soni</TableCell>
+                  <TableCell align="right">Narx</TableCell>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-          <div style={{ display: "flex", justifyContent: "flex-end" }}>
-            <Button>Jami: {totalSum(rowData)}</Button>
-          </div>
-        </TableContainer>
+              </TableHead>
+              <TableBody>
+                {rowData.cart.map((row) => (
+                  <TableRow key={row.name}>
+                    <TableCell align="left">{row.title}</TableCell>
+                    <TableCell align="center">{row.quantity}</TableCell>
+                    <TableCell align="right">{row.price}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+            <div style={{ display: "flex", justifyContent: "flex-end" }}>
+              <Button>Jami: {totalSum(rowData)}</Button>
+            </div>
+          </TableContainer>
+        </React.Fragment>
       ) : (
         ""
       )}
@@ -229,9 +231,9 @@ export function Editable() {
   ];
   return (
     <div>
-      <div div className="table-data" >
+      <div div className="table-data">
         <Loader
-          style={!loader ? {display: 'none'}:{textAlign: 'center'}}
+          style={!loader ? { display: "none" } : { textAlign: "center" }}
           type="ThreeDots"
           color="#00BFFF"
           height={50}
@@ -246,7 +248,7 @@ export function Editable() {
           responsive={true}
           localization={{
             toolbar: {
-              searchPlaceholder: "qidiruv"
+              searchPlaceholder: "qidiruv",
             },
           }}
         />
