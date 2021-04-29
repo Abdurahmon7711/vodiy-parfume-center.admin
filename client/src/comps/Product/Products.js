@@ -29,7 +29,7 @@ import ChevronRight from "@material-ui/icons/ChevronRight";
 import ArrowDownward from "@material-ui/icons/ArrowDownward";
 import DeleteOutline from "@material-ui/icons/DeleteOutline";
 import IconButton from "@material-ui/core/IconButton";
-import Loader from "react-loader-spinner"
+import Loader from "react-loader-spinner";
 import { withRouter } from "react-router-dom";
 import { StoreG } from "../../Store/Store";
 import { toast } from "react-toastify";
@@ -47,8 +47,7 @@ const initialState = {
 };
 
 const Products = () => {
-
-  const history = useHistory()
+  const history = useHistory();
   useEffect(() => {
     const gogo = localStorage.getItem("admin");
     if (!gogo && gogo !== "1") {
@@ -57,10 +56,8 @@ const Products = () => {
     }
   }, [history]);
 
-
-
   const [openAdd, setOpenAdd] = useState(false);
-  const [loaderUp, setLoaderUP] = useState(true)
+  const [loaderUp, setLoaderUP] = useState(true);
   const state = useContext(StoreG);
   const [product, setProduct] = useState(initialState);
   const [eproduct, setEproduct] = useState({});
@@ -87,8 +84,8 @@ const Products = () => {
     setOpenAdd(!openAdd);
   };
   useEffect(() => {
-    products.length ? setLoaderUP(false) : setLoaderUP(true)
-  }, [products])
+    products.length ? setLoaderUP(false) : setLoaderUP(true);
+  }, [products]);
   useEffect(() => {
     const changeNumber = () => {
       setNumber("");
@@ -274,7 +271,14 @@ const Products = () => {
     { title: "Mahsulot", field: "title", width: "30%" },
     { title: "Soni", field: "number", type: "numeric", width: "10%" },
     { title: "Narx", field: "price", type: "numeric", width: "10%" },
-    { title: "Kategoriya", field: "category", width: "20%" },
+    {
+      title: "Kategoriya",
+      field: "category",
+      width: "20%",
+      render: (rowData) => (
+        <p>{categories.filter((item) => item._id === rowData.category)[0].name}</p>
+      ),
+    },
     { title: "Malumot", field: "description", width: "25%" },
     {
       title: "Rasm",
@@ -373,7 +377,7 @@ const Products = () => {
                         className="btn-admin-add"
                       >
                         Qo'shish
-                        </Button>
+                      </Button>
                     </form>
                     <div>
                       <span className="admin-add-img">
@@ -450,9 +454,9 @@ const Products = () => {
                       <Autocomplete
                         value={
                           categories[
-                          categories.findIndex(
-                            (item) => item._id === eproduct.category
-                          )
+                            categories.findIndex(
+                              (item) => item._id === eproduct.category
+                            )
                           ]
                         }
                         options={categories}
@@ -478,7 +482,7 @@ const Products = () => {
                         className="btn-admin-add"
                       >
                         Yangilash
-                        </Button>
+                      </Button>
                     </form>
                     <div>
                       <span className="admin-add-img">
@@ -514,7 +518,7 @@ const Products = () => {
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
-            textAlign:"center"
+            textAlign: "center",
           }}
         >
           <Card
@@ -542,7 +546,7 @@ const Products = () => {
           />
         </div>
         <Loader
-          style={loaderUp ? { textAlign:"center"}:{display:"none"}}
+          style={loaderUp ? { textAlign: "center" } : { display: "none" }}
           type="ThreeDots"
           color="#00BFFF"
           height={50}
@@ -551,7 +555,7 @@ const Products = () => {
         />
         <MaterialTable
           title={productInfo.name}
-          style={loaderUp ? {display:"none"}:{display:"block"}}
+          style={loaderUp ? { display: "none" } : { display: "block" }}
           columns={columns}
           data={products}
           icons={tableIcons}
@@ -573,13 +577,13 @@ const Products = () => {
               },
             },
             toolbar: {
-              searchPlaceholder: "qidiruv"
+              searchPlaceholder: "qidiruv",
             },
           }}
         />
 
         <ReactPaginate
-          style={loaderUp ? {display:"none"}:{display:"block"}}
+          style={loaderUp ? { display: "none" } : { display: "block" }}
           previousLabel={"Oldingi"}
           nextLabel={"Keyingi"}
           pageCount={Math.ceil(result / limit)}
@@ -604,7 +608,6 @@ const Products = () => {
           />
         )
       } */}
-
     </div>
   );
 };

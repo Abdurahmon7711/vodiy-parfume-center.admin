@@ -65,6 +65,15 @@ const paymentCtrl = {
       return res.status(500).json({ msg: err.message });
     }
   },
+  deletePayments: async (req, res) => {
+    try {
+      await Payments.deleteMany({ status: true });
+      res.json({ msg: "Barcha buyurtmalar o'chirildi" });
+      
+    } catch (err) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
   createPayment: async (req, res) => {
     try {
       const user = await Users.findById(req.user.id).select(

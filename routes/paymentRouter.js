@@ -5,7 +5,10 @@ const authAdmin = require("../middleware/authAdmin");
 
 router.route("/payment/:id").get(auth, authAdmin, paymentCtrl.getPayments);
 
-router.route("/payment").post(auth, paymentCtrl.createPayment);
+router
+  .route("/payment")
+  .post(auth, paymentCtrl.createPayment)
+  .delete(auth, authAdmin, paymentCtrl.deletePayments);
 
 router.route("/payment/:id").put(paymentCtrl.sendConfirm);
 

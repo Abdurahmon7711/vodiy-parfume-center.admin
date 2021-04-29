@@ -114,35 +114,37 @@ function SoldPro() {
 
   const body = (
     <div style={modalStyle} className={classes.paper}>
-      <h3>Ismi: {rowData.name}</h3>
-      <h3>Tel raqami: {rowData.phoneNumber}</h3>
-      <h3>Sana: {rowData.createdAt}</h3>
-      <h3>Xabar: {rowData.comment}</h3>
-      <hr />
       {Object.keys(rowData).length !== 0 ? (
-        <TableContainer component={Paper}>
-          <Table className={classes.table} aria-label="simple table">
-            <TableHead>
-              <TableRow>
-                <TableCell align="left">Nomi</TableCell>
-                <TableCell align="center">Soni</TableCell>
-                <TableCell align="right">Narx</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {rowData.cart.map((row) => (
-                <TableRow key={row.name}>
-                  <TableCell align="left">{row.title}</TableCell>
-                  <TableCell align="center">{row.quantity}</TableCell>
-                  <TableCell align="right">{row.price}</TableCell>
+        <React.Fragment>
+          <h3>Ismi: {rowData.name}</h3>
+          <h3>Tel raqami: {rowData.phoneNumber}</h3>
+          <h3>Sana: {newDate(rowData.createdAt)}</h3>
+          <h3>Xabar: {rowData.comment}</h3>
+          <hr />
+          <TableContainer component={Paper}>
+            <Table className={classes.table} aria-label="simple table">
+              <TableHead>
+                <TableRow>
+                  <TableCell align="left">Nomi</TableCell>
+                  <TableCell align="center">Soni</TableCell>
+                  <TableCell align="right">Narx</TableCell>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-          <div style={{ display: "flex", justifyContent: "flex-end" }}>
-            <Button>Jami: {totalSum(rowData)}</Button>
-          </div>
-        </TableContainer>
+              </TableHead>
+              <TableBody>
+                {rowData.cart.map((row) => (
+                  <TableRow key={row.name}>
+                    <TableCell align="left">{row.title}</TableCell>
+                    <TableCell align="center">{row.quantity}</TableCell>
+                    <TableCell align="right">{row.price}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+            <div style={{ display: "flex", justifyContent: "flex-end" }}>
+              <Button>Jami: {totalSum(rowData)}</Button>
+            </div>
+          </TableContainer>
+        </React.Fragment>
       ) : (
         ""
       )}
