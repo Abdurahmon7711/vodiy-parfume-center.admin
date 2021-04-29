@@ -11,6 +11,7 @@ import ChevronRight from "@material-ui/icons/ChevronRight";
 import Clear from "@material-ui/icons/Clear";
 import DeleteOutline from "@material-ui/icons/DeleteOutline";
 import Edit from "@material-ui/icons/Edit";
+import DeleteIcon from '@material-ui/icons/Delete';
 import FilterList from "@material-ui/icons/FilterList";
 import FirstPage from "@material-ui/icons/FirstPage";
 import LastPage from "@material-ui/icons/LastPage";
@@ -235,6 +236,14 @@ function SoldPro() {
             data={history}
             columns={column}
             responsive={true}
+            options={{ exportButton: true, selection: true }}
+            actions={[
+              {
+                tooltip: "Belgilangan ma'lumolarni o'chirish",
+                icon: DeleteIcon,
+                onClick: (evt, data) => alert( data.length + ' ta malumotni ochirishni tasdiqlash')
+              }
+            ]}
             localization={{
               toolbar: {
                 searchPlaceholder: "qidiruv",
