@@ -288,7 +288,7 @@ export default function MiniDrawer() {
               "Tugagan-tovarlar",
               "Kategoriya",
             ].map((text, index) => (
-              <NavLink to={`${text}`} key={index}>
+              <NavLink to={`/${text}`} key={index}>
                 <ListItem button>
                   <ListItemIcon>
                     {index === 0 ? (
@@ -313,7 +313,7 @@ export default function MiniDrawer() {
           <Divider />
           <List>
             {["Yetkazilganlar"].map((text, index) => (
-              <NavLink to={`${text}`} key={index}>
+              <NavLink to={`/${text}`} key={index}>
                 <ListItem button>
                   <ListItemIcon>
                     {index % 2 === 0 ? <LocalOfferIcon /> : <ExitToAppIcon />}
