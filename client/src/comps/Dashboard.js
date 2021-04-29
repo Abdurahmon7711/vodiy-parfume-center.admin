@@ -133,17 +133,17 @@ export default function MiniDrawer() {
   const state = useContext(StoreG);
   const [open, setOpen] = React.useState(false);
   const [isAuth] = state.userAPI.isAdmin;
-  const [urlLink] = React.useState(
-    [
-      "/Statistika",
-      "/Buyurtmalar",
-      "/Foydalanuvchilar",
-      "/Tovarlar",
-      "/Tugagan-tovarlar",
-      "/Kategoriya",
-      "/Yetkazilganlar"
-    ]
-  )
+  const [urlLink] = React.useState([
+    "/Statistika",
+    "/Buyurtmalar",
+    "/Foydalanuvchilar",
+    "/Tovarlar",
+    "/Tugagan-tovarlar",
+    "/Kategoriya/:id",
+    "/Kategoriya",
+    "/Yetkazilganlar",
+    "/personal"
+  ]);
 
   let location = useLocation();
 
