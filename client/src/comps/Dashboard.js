@@ -142,11 +142,11 @@ export default function MiniDrawer() {
     "/Kategoriya/:id",
     "/Kategoriya",
     "/Yetkazilganlar",
-    "/personal"
+    "/personal",
   ]);
 
   let location = useLocation();
-
+  console.log(location);
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -171,6 +171,7 @@ export default function MiniDrawer() {
     window.location.href = "/";
   };
   // console.log(isAuth)
+  console.log(location.pathname.split("/").length);
   return (
     <React.Fragment>
       <Dialog
@@ -199,11 +200,13 @@ export default function MiniDrawer() {
         <AppBar
           position="fixed"
           className={
-            (location.pathname === "/" || (! urlLink.includes(location.pathname)) )
+            location.pathname === "/" &&
+            (location.pathname.split("/").length !== 3 ||
+              !urlLink.includes(location.pathname))
               ? classes.appBarAuth
               : clsx(classes.appBar, {
-                [classes.appBarShift]: open,
-              })
+                  [classes.appBarShift]: open,
+                })
           }
         >
           <Toolbar>
@@ -250,12 +253,14 @@ export default function MiniDrawer() {
         <Drawer
           variant="permanent"
           className={
-             (location.pathname === "/" || (! urlLink.includes(location.pathname)) )
+            location.pathname === "/" &&
+            (location.pathname.split("/").length !== 3 ||
+              !urlLink.includes(location.pathname))
               ? classes.drawerAuth
               : clsx(classes.drawer, {
-                [classes.drawerOpen]: open,
-                [classes.drawerClose]: !open,
-              })
+                  [classes.drawerOpen]: open,
+                  [classes.drawerClose]: !open,
+                })
           }
           classes={{
             paper: clsx({

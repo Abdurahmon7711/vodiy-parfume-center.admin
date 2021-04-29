@@ -43,7 +43,7 @@ const Statics = () => {
       history.push("/")
       history.go()
     }
-  },[]) 
+  },[history]) 
 
   const state = useContext(StoreG);
   const [statics] = state.statics.statics;

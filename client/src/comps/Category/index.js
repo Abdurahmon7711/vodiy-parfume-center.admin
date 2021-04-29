@@ -9,10 +9,10 @@ import Clear from "@material-ui/icons/Clear";
 import Check from "@material-ui/icons/Check";
 import Button from "@material-ui/core/Button";
 import AddBox from "@material-ui/icons/AddBox";
-import AddBoxIcon from '@material-ui/icons/AddBox';
+import AddBoxIcon from "@material-ui/icons/AddBox";
 import Search from "@material-ui/icons/Search";
 import Remove from "@material-ui/icons/Remove";
-import Loader from "react-loader-spinner"
+import Loader from "react-loader-spinner";
 import SaveAlt from "@material-ui/icons/SaveAlt";
 import Collapse from "@material-ui/core/Collapse";
 import ListItem from "@material-ui/core/ListItem";
@@ -38,15 +38,15 @@ import axios from "axios";
 import Loading from "../../utils/loading/Loading";
 
 const Products = () => {
-  const history = useHistory()
+  const history = useHistory();
 
-  useEffect(()=>{
-    const gogo = localStorage.getItem("admin")
-    if(!gogo && gogo !== "1"){
-      history.push("/")
-      history.go()
+  useEffect(() => {
+    const gogo = localStorage.getItem("admin");
+    if (!gogo && gogo !== "1") {
+      history.push("/");
+      history.go();
     }
-  },[]) 
+  }, [history]);
 
   const [openAdd, setOpenAdd] = useState(false);
   const state = useContext(StoreG);
@@ -56,7 +56,7 @@ const Products = () => {
   const [images, setImages] = useState(false);
   const [eimages, setEimages] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [loaderUp, setLoaderUp] = useState(true)
+  const [loaderUp, setLoaderUp] = useState(true);
   const [isAdmin] = state.userAPI.isAdmin;
   const [token] = state.token;
 
@@ -346,173 +346,181 @@ const Products = () => {
   };
 
   useEffect(() => {
-    categories.length ? setLoaderUp(false) : setLoaderUp(true)
-  }, [categories])
+    categories.length ? setLoaderUp(false) : setLoaderUp(true);
+  }, [categories]);
 
   return (
-    <div style={!loaderUp ? {}: {height:"75vh",display:"flex", alignItems:"center", justifyContent:"center"}}>
-      {
-        loaderUp ? (
-          <Loader
-            type="ThreeDots"
-            color="#00BFFF"
-            height={50}
-            width={50}
-            timeout={3000} //3 secs
-          />
-        ) : (
-          <div className="admin-categories">
-            <div>
-              <ListItem button onClick={handleClickAdd}>
-                <ListItemIcon>
-                  <AddBoxIcon />
-                </ListItemIcon>
-                <ListItemText primary="Kategoriya qo'shish" />
-                {openAdd ? <ExpandLess /> : <ExpandMore />}
-              </ListItem>
-              <Collapse in={openAdd} timeout="auto" unmountOnExit>
-                <List component="div" disablePadding>
-                  <ListItem>
-                    <div className="admin-product-edit">
-                      <Card className="admin-product-edit-add">
-                        <form onSubmit={handleSubmit}>
-                          <div>
-                            <TextField
-                              className="textInput"
-                              value={category}
-                              label="Kategoriya nomi"
-                              onChange={handleChangeInput}
-                            />
-                            <Button
-                              className="btn-admin-add"
-                              variant="contained"
-                              color="primary"
-                              type="submit"
-                            >
-                              Add
-                      </Button>
-                          </div>
-                        </form>
+    <div
+      style={
+        !loaderUp
+          ? {}
+          : {
+              height: "75vh",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }
+      }
+    >
+      {loaderUp ? (
+        <Loader
+          type="ThreeDots"
+          color="#00BFFF"
+          height={50}
+          width={50}
+          timeout={3000} //3 secs
+        />
+      ) : (
+        <div className="admin-categories">
+          <div>
+            <ListItem button onClick={handleClickAdd}>
+              <ListItemIcon>
+                <AddBoxIcon />
+              </ListItemIcon>
+              <ListItemText primary="Kategoriya qo'shish" />
+              {openAdd ? <ExpandLess /> : <ExpandMore />}
+            </ListItem>
+            <Collapse in={openAdd} timeout="auto" unmountOnExit>
+              <List component="div" disablePadding>
+                <ListItem>
+                  <div className="admin-product-edit">
+                    <Card className="admin-product-edit-add">
+                      <form onSubmit={handleSubmit}>
                         <div>
-                          <span className="admin-add-img">
-                            <div className="upload">
-                              <input
-                                type="file"
-                                name="file"
-                                id="file_up"
-                                onChange={handleUpload}
-                              />
-                              {loading ? (
-                                <div id="file_img">
-                                  <Loading />
-                                </div>
-                              ) : (
-                                <div id="file_img" style={styleUpload}>
-                                  <img src={images ? images.url : ""} alt="" />
-                                  <span onClick={handleDestroy}>X</span>
-                                </div>
-                              )}
-                            </div>
-                          </span>
+                          <TextField
+                            className="textInput"
+                            value={category}
+                            label="Kategoriya nomi"
+                            onChange={handleChangeInput}
+                          />
+                          <Button
+                            className="btn-admin-add"
+                            variant="contained"
+                            color="primary"
+                            type="submit"
+                          >
+                            Add
+                          </Button>
                         </div>
-                      </Card>
-                    </div>
-                  </ListItem>
-                </List>
-              </Collapse>
-            </div>
-            <div>
-              {/*         <ListItem button onClick={handleClick}>
+                      </form>
+                      <div>
+                        <span className="admin-add-img">
+                          <div className="upload">
+                            <input
+                              type="file"
+                              name="file"
+                              id="file_up"
+                              onChange={handleUpload}
+                            />
+                            {loading ? (
+                              <div id="file_img">
+                                <Loading />
+                              </div>
+                            ) : (
+                              <div id="file_img" style={styleUpload}>
+                                <img src={images ? images.url : ""} alt="" />
+                                <span onClick={handleDestroy}>X</span>
+                              </div>
+                            )}
+                          </div>
+                        </span>
+                      </div>
+                    </Card>
+                  </div>
+                </ListItem>
+              </List>
+            </Collapse>
+          </div>
+          <div>
+            {/*         <ListItem button onClick={handleClick}>
           <ListItemIcon>
             <InboxIcon />
           </ListItemIcon>
           <ListItemText primary="Kategoriyani yangilash" />
           {open ? <ExpandLess /> : <ExpandMore />}
         </ListItem> */}
-              <Collapse in={open} timeout="auto" unmountOnExit>
-                <List component="div" disablePadding>
-                  <ListItem>
-                    <div className="admin-product-edit">
-                      <Card className="admin-product-edit-add">
-                        <form onSubmit={ehandleSubmit}>
-                          <div>
-                            <TextField
-                              className="textInput"
-                              value={ecategory}
-                              placeholder="Kategoriya nomi"
-                              onChange={ehandleChangeInput}
-                            //   label="Kategoriya"
-                            />
-                            <Button
-                              type="submit"
-                              className="btn-admin-add"
-                              variant="contained"
-                              color="primary"
-                            >
-                              Yangilash
-                      </Button>
-                          </div>
-                        </form>
+            <Collapse in={open} timeout="auto" unmountOnExit>
+              <List component="div" disablePadding>
+                <ListItem>
+                  <div className="admin-product-edit">
+                    <Card className="admin-product-edit-add">
+                      <form onSubmit={ehandleSubmit}>
                         <div>
-                          <span className="admin-add-img">
-                            <div className="upload">
-                              <input
-                                type="file"
-                                name="file"
-                                id="file_up"
-                                onChange={ehandleUpload}
-                              />
-                              {loading ? (
-                                <div id="file_img">
-                                  <Loading />
-                                </div>
-                              ) : (
-                                <div id="file_img" style={estyleUpload}>
-                                  <img src={eimages ? eimages.url : ""} alt="" />
-                                  <span onClick={ehandleDestroy}>X</span>
-                                </div>
-                              )}
-                            </div>
-                          </span>
+                          <TextField
+                            className="textInput"
+                            value={ecategory}
+                            placeholder="Kategoriya nomi"
+                            onChange={ehandleChangeInput}
+                            //   label="Kategoriya"
+                          />
+                          <Button
+                            type="submit"
+                            className="btn-admin-add"
+                            variant="contained"
+                            color="primary"
+                          >
+                            Yangilash
+                          </Button>
                         </div>
-                      </Card>
-                    </div>
-                  </ListItem>
-                </List>
-              </Collapse>
-            </div>
-            <MaterialTable
-              title={productInfo.name}
-              columns={columns}
-              data={categories}
-              icons={tableIcons}
-              options={{ exportButton: true }}
-              responsive={true}
-              editable={{
-                onRowDelete: (oldData) =>
-                  new Promise((resolve, reject) => {
-                    setTimeout(() => {
-                      deleteCategory(oldData._id, oldData.images.public_id);
-                      resolve();
-                    }, 1000);
-                  }),
-              }}
-              localization={{
-                toolbar: {
-                  searchPlaceholder: "qidiruv"
-                },
-                body: {
-                  editRow: {
-                    deleteText: "Ma'lumotni o'chirishni tasdiqlaysizmi ?",
-                  },
-                },
-              }}
-            />
+                      </form>
+                      <div>
+                        <span className="admin-add-img">
+                          <div className="upload">
+                            <input
+                              type="file"
+                              name="file"
+                              id="file_up"
+                              onChange={ehandleUpload}
+                            />
+                            {loading ? (
+                              <div id="file_img">
+                                <Loading />
+                              </div>
+                            ) : (
+                              <div id="file_img" style={estyleUpload}>
+                                <img src={eimages ? eimages.url : ""} alt="" />
+                                <span onClick={ehandleDestroy}>X</span>
+                              </div>
+                            )}
+                          </div>
+                        </span>
+                      </div>
+                    </Card>
+                  </div>
+                </ListItem>
+              </List>
+            </Collapse>
           </div>
-        )
-      }
+          <MaterialTable
+            title={productInfo.name}
+            columns={columns}
+            data={categories}
+            icons={tableIcons}
+            options={{ exportButton: true }}
+            responsive={true}
+            editable={{
+              onRowDelete: (oldData) =>
+                new Promise((resolve, reject) => {
+                  setTimeout(() => {
+                    deleteCategory(oldData._id, oldData.images.public_id);
+                    resolve();
+                  }, 1000);
+                }),
+            }}
+            localization={{
+              toolbar: {
+                searchPlaceholder: "qidiruv",
+              },
+              body: {
+                editRow: {
+                  deleteText: "Ma'lumotni o'chirishni tasdiqlaysizmi ?",
+                },
+              },
+            }}
+          />
+        </div>
+      )}
     </div>
-
   );
 };
 

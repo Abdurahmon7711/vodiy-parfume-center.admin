@@ -24,7 +24,7 @@ function TabPanel(props) {
       history.push("/")
       history.go()
     }
-  },[])
+  },[history])
   
   return (
     <div

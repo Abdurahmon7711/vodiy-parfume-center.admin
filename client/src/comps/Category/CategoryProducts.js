@@ -28,7 +28,7 @@ import ChevronRight from "@material-ui/icons/ChevronRight";
 import ArrowDownward from "@material-ui/icons/ArrowDownward";
 import DeleteOutline from "@material-ui/icons/DeleteOutline";
 import IconButton from "@material-ui/core/IconButton";
-import { withRouter, useLocation } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import { StoreG } from "../../Store/Store";
 import { toast } from "react-toastify";
 import axios from "axios";
@@ -42,9 +42,6 @@ const CategoryProducts = (props) => {
     number: 0,
     category: props.match.params.id,
   };
-
-  const location = useLocation()
-  
   
   const productInfo = {
     name: "Mahsulotlar",
@@ -85,7 +82,6 @@ const CategoryProducts = (props) => {
 
   useEffect(() =>{
     document.title="Vodiyparfum | Admin"
-    console.log(location.pathname)
   },[])
 
   const [open, setOpen] = useState(false);
