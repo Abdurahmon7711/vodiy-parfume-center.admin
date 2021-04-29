@@ -12,6 +12,7 @@ export const StoreG = createContext();
 
 const Store = (props) => {
   const [token, setToken] = useState(false);
+  const [categoryInnerUrl, setCategoryInnerUrl] = useState('')
 
   useEffect(() => {
     const firstLogin = localStorage.getItem("firstLogin");
@@ -32,7 +33,7 @@ const Store = (props) => {
       refreshToken();
     }
   }, []);
-
+  console.log(categoryInnerUrl)
   const state = {
     token: [token, setToken],
     productsAPI: ProductsAPI(),

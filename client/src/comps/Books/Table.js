@@ -48,6 +48,8 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     position: "absolute",
     width: 400,
+    height:"90vh",
+    overflowY:"scroll",
     backgroundColor: theme.palette.background.paper,
     border: "2px solid #000",
     boxShadow: theme.shadows[5],
@@ -69,6 +71,7 @@ export function Editable() {
   const [modalStyle] = React.useState(getModalStyle);
   const [open, setOpen] = React.useState(false);
   const [callback, setCallback] = state.statics.callback;
+  const [loader, setLoader] = useState(true)
   useEffect(() => {
     if (token) {
       const getHistory = async () => {
@@ -102,6 +105,7 @@ export function Editable() {
           headers: { Authorization: token },
         });
         setHistory(res.data);
+        setLoader(false)
       }
     };
     getHistory();
@@ -224,42 +228,37 @@ export function Editable() {
     },
   ];
   return (
-    <div style={history.length ? {}: {height:"75vh",display:"flex", alignItems:"center", justifyContent:"center"}}>
-      {
-        history.length ? (
-          <div div className="table-data" >
-            <MaterialTable
-              title="Buyurtmalar"
-              icons={tableIcons}
-              data={history}
-              columns={column}
-              responsive={true}
-              localization={{
-                toolbar: {
-                    searchPlaceholder: "qidiruv"
-                },
-              }}
-            />
-            <Modal
-              open={open}
-              onClose={handleClose}
-              aria-labelledby="simple-modal-title"
-              aria-describedby="simple-modal-description"
-            >
-              {body}
-            </Modal>
-          </div>
-        ) : (
-          <Loader
-            type="ThreeDots"
-            color="#00BFFF"
-            height={50}
-            width={50}
-            timeout={3000} //3 secs
-          />
-        )
-      }
-
+    <div>
+      <div div className="table-data" >
+        <Loader
+          style={!loader ? {display: 'none'}:{textAlign: 'center'}}
+          type="ThreeDots"
+          color="#00BFFF"
+          height={50}
+          width={50}
+          timeout={3000} //3 secs
+        />
+        <MaterialTable
+          title="Buyurtmalar"
+          icons={tableIcons}
+          data={history}
+          columns={column}
+          responsive={true}
+          localization={{
+            toolbar: {
+              searchPlaceholder: "qidiruv"
+            },
+          }}
+        />
+        <Modal
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="simple-modal-title"
+          aria-describedby="simple-modal-description"
+        >
+          {body}
+        </Modal>
+      </div>
     </div>
   );
 }

@@ -31,7 +31,7 @@ const Exit = () => {
         localStorage.setItem("admin", res.data.user.role);
         localStorage.setItem("firstLogin", true);
         res.data.user.role === 1
-          ? (window.location.href = "/Buyurtmalar")
+          ? (window.location.href = "/Statistika")
           : toast.error("Siz admin emassiz");
         setLoader(false)
       });
