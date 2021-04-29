@@ -133,20 +133,20 @@ export default function MiniDrawer() {
   const state = useContext(StoreG);
   const [open, setOpen] = React.useState(false);
   const [isAuth] = state.userAPI.isAdmin;
-  const [urlLink] = React.useState(
-    [
-      "/Statistika",
-      "/Buyurtmalar",
-      "/Foydalanuvchilar",
-      "/Tovarlar",
-      "/Tugagan-tovarlar",
-      "/Kategoriya",
-      "/Yetkazilganlar"
-    ]
-  )
+  const [urlLink] = React.useState([
+    "/Statistika",
+    "/Buyurtmalar",
+    "/Foydalanuvchilar",
+    "/Tovarlar",
+    "/Tugagan-tovarlar",
+    "/Kategoriya/:id",
+    "/Kategoriya",
+    "/Yetkazilganlar",
+    "/personal",
+  ]);
 
   let location = useLocation();
-
+  console.log(location);
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -171,6 +171,7 @@ export default function MiniDrawer() {
     window.location.href = "/";
   };
   // console.log(isAuth)
+  console.log(location.pathname.split("/").length);
   return (
     <React.Fragment>
       <Dialog
@@ -199,11 +200,13 @@ export default function MiniDrawer() {
         <AppBar
           position="fixed"
           className={
-            (location.pathname === "/" || (! urlLink.includes(location.pathname)) )
+            location.pathname === "/" &&
+            (location.pathname.split("/").length !== 3 ||
+              !urlLink.includes(location.pathname))
               ? classes.appBarAuth
               : clsx(classes.appBar, {
-                [classes.appBarShift]: open,
-              })
+                  [classes.appBarShift]: open,
+                })
           }
         >
           <Toolbar>
@@ -250,12 +253,14 @@ export default function MiniDrawer() {
         <Drawer
           variant="permanent"
           className={
-             (location.pathname === "/" || (! urlLink.includes(location.pathname)) )
+            location.pathname === "/" &&
+            (location.pathname.split("/").length !== 3 ||
+              !urlLink.includes(location.pathname))
               ? classes.drawerAuth
               : clsx(classes.drawer, {
-                [classes.drawerOpen]: open,
-                [classes.drawerClose]: !open,
-              })
+                  [classes.drawerOpen]: open,
+                  [classes.drawerClose]: !open,
+                })
           }
           classes={{
             paper: clsx({
@@ -283,7 +288,7 @@ export default function MiniDrawer() {
               "Tugagan-tovarlar",
               "Kategoriya",
             ].map((text, index) => (
-              <NavLink to={`${text}`} key={index}>
+              <NavLink to={`/${text}`} key={index}>
                 <ListItem button>
                   <ListItemIcon>
                     {index === 0 ? (
@@ -308,7 +313,7 @@ export default function MiniDrawer() {
           <Divider />
           <List>
             {["Yetkazilganlar"].map((text, index) => (
-              <NavLink to={`${text}`} key={index}>
+              <NavLink to={`/${text}`} key={index}>
                 <ListItem button>
                   <ListItemIcon>
                     {index % 2 === 0 ? <LocalOfferIcon /> : <ExitToAppIcon />}

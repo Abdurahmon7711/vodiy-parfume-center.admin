@@ -32,7 +32,7 @@ const Users = () => {
       history.push("/")
       history.go()
     }
-  },[]) 
+  },[history]) 
 
 
   const state = useContext(StoreG);
