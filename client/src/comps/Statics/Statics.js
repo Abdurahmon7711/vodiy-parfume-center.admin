@@ -39,7 +39,7 @@ const Statics = () => {
   const history = useHistory()
   useEffect(()=>{
     const gogo = localStorage.getItem("admin")
-    if(!gogo && gogo !== "1"){
+    if(!gogo){
       history.push("/")
       history.go()
     }
