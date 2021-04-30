@@ -18,6 +18,7 @@ import ChevronLeft from "@material-ui/icons/ChevronLeft";
 import ChevronRight from "@material-ui/icons/ChevronRight";
 import DeleteOutline from "@material-ui/icons/DeleteOutline";
 import Loader from "react-loader-spinner";
+import ComboBox from './Dropdown'
 import ArrowDownward from "@material-ui/icons/ArrowDownward";
 import { withRouter } from "react-router-dom";
 import { StoreG } from "../../Store/Store";
@@ -148,6 +149,7 @@ const Users = () => {
         width={50}
         timeout={1400} 
       />
+      <ComboBox/>
       <MaterialTable
         title={productInfo.name}
         columns={columns}

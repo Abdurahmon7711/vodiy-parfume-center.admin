@@ -9,8 +9,8 @@ export default function ComboBox() {
       id="combo-box-demo"
       options={top100Films}
       getOptionLabel={(option) => option.title}
-      style={{ width: '48%', margin:'10px 0' }}
-      renderInput={(params) => <TextField {...params} label="Kategoriya" variant="outlined" />}
+      style={{ width: '100%', margin:'10px auto' }}
+      renderInput={(params) => <TextField {...params} label="Manzil bo'yicha saralash" variant="outlined" />}
     />
   );
 }
