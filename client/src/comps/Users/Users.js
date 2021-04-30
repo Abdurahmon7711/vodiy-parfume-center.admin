@@ -73,6 +73,8 @@ const Users = () => {
     { title: "Login", field: "login" },
     { title: "Parol", field: "password", type: "numeric" },
     { title: "Raqam", field: "phoneNumber", type: "numeric" },
+    { title: "Buyurtmalar miqdori", field: "books", type:"numeric" },
+    { title: "Manzil", field: "location"},
   ]);
   // const token = 'aksdfkaklALKJDlhfg'
   const [token] = state.token;

@@ -10,6 +10,7 @@ import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
 import ChevronLeft from "@material-ui/icons/ChevronLeft";
 import ChevronRight from "@material-ui/icons/ChevronRight";
 import Clear from "@material-ui/icons/Clear";
+import CancelPresentationIcon from '@material-ui/icons/CancelPresentation';
 import DeleteOutline from "@material-ui/icons/DeleteOutline";
 import Edit from "@material-ui/icons/Edit";
 import FilterList from "@material-ui/icons/FilterList";
@@ -246,6 +247,14 @@ export function Editable() {
           data={history}
           columns={column}
           responsive={true}
+          options={{ exportButton: true, selection: true }}
+          actions={[
+            {
+              tooltip: "Belgilangan ma'lumolarni o'chirish",
+              icon: CancelPresentationIcon,
+              onClick: (evt, data) => console.log(data)
+            }
+          ]}
           localization={{
             toolbar: {
               searchPlaceholder: "qidiruv",
