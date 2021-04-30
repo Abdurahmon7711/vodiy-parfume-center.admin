@@ -31,6 +31,8 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
+import { toast } from "react-toastify";
+import { Dialog, DialogActions, DialogTitle } from "@material-ui/core";
 
 function getModalStyle() {
   const top = 50;
@@ -78,8 +80,10 @@ function SoldPro() {
   const classes = useStyles();
   const [modalStyle] = React.useState(getModalStyle);
   const [open, setOpen] = React.useState(false);
+  const [openDel, setOpenDel] = React.useState(false);
   const [loaderUp, setLoaderUp] = useState(true);
-
+  const [callback, setCallback] = useState(false);
+  const [data, setData] = useState([]);
   useEffect(() => {
     if (token) {
       const getHistory = async () => {
@@ -92,11 +96,11 @@ function SoldPro() {
       };
       getHistory();
     }
-  }, [token, isAdmin, setHistory]);
+  }, [callback, token, isAdmin, setHistory]);
 
   useEffect(() => {
     history ? setLoaderUp(false) : setLoaderUp(true);
-  }, [history])
+  }, [history]);
   // const payments = state.paymentsAPI.payments;
 
   const handleOpen = (data) => {
@@ -209,11 +213,42 @@ function SoldPro() {
       render: (rowData) => rowData && <p>Yetkazib berilgan</p>,
     },
   ];
+  const deleteBook = async (data) => {
+    data.forEach((item) => {
+      axios.delete("/api/payment/" + item._id, {
+        headers: { Authorization: token },
+      });
+    });
+    setCallback(!callback);
+    toast.success("Mahsulotlar o'chirildi");
+    handleDelClose();
+  };
+  const handleDelClose = () => {
+    setOpenDel(!openDel);
+  };
   return (
     <div>
+      <Dialog
+        open={openDel}
+        onClose={handleDelClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          Siz rostdan ham o'chirmoqchimisiz ?
+        </DialogTitle>
+        <DialogActions>
+          <Button onClick={handleDelClose} color="primary">
+            Yo'q
+          </Button>
+          <Button onClick={() => deleteBook(data)} color="primary" autoFocus>
+            Ha
+          </Button>
+        </DialogActions>
+      </Dialog>
       <div className="table-data">
         <Loader
-          style={!loaderUp ? {textAlign: "center" }:{display: "none" }}
+          style={!loaderUp ? { textAlign: "center" } : { display: "none" }}
           type="ThreeDots"
           color="#00BFFF"
           height={50}
@@ -231,8 +266,11 @@ function SoldPro() {
             {
               tooltip: "Belgilangan ma'lumolarni o'chirish",
               icon: DeleteIcon,
-              onClick: (evt, data) => alert(data.length + ' ta malumotni ochirishni tasdiqlash')
-            }
+              onClick: (evt, data) => {
+                setData(data);
+                handleDelClose();
+              },
+            },
           ]}
           localization={{
             toolbar: {
