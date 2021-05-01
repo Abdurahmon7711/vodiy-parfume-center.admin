@@ -6,7 +6,7 @@ html, body {
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
   text-decoration: none;
-  font-family: 'Poppins', sans-serif !important;
+  font-family: "Poppins", sans-serif !important;
 }
 
 h1, h2, h3, h4, h5, h6, p {
@@ -30,7 +30,6 @@ a {
           justify-content: space-between;
   width: 100%;
 }
-
 .app-bar-items h2 {
   font-weight: 500;
 }
@@ -49,15 +48,13 @@ a {
   width: 100%;
   height: auto;
 }
-
 .card-part .card {
-  -webkit-box-flex: 1;
-      -ms-flex-positive: 1;
-          flex-grow: 1;
+  -webkit-box-flex: 1 !important;
+      -ms-flex: 1 !important;
+          flex: 1 !important;
   margin: 10px;
   color: #fff;
 }
-
 .card-part .card2 {
   -webkit-box-flex: 1;
       -ms-flex-positive: 1;
@@ -65,23 +62,18 @@ a {
   margin: 10px;
   color: #fff;
 }
-
 .card-part .card:nth-child(1) {
   background-color: #f75d81;
 }
-
 .card-part .card:nth-child(2) {
   background-color: rgba(125, 212, 32, 0.8);
 }
-
 .card-part .card:nth-child(3) {
   background-color: #42a5fe;
 }
-
 .card-part .card:nth-child(4) {
   background-color: #7267b9;
 }
-
 .card-part .card-wrapper {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -95,7 +87,6 @@ a {
   padding: 10px;
   margin: 10px;
 }
-
 .card-part .card-wrapper2 {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -121,7 +112,6 @@ a {
       -ms-flex-pack: center;
           justify-content: center;
 }
-
 .chart-part-wrapper .card-chart {
   -webkit-box-flex: 1;
       -ms-flex: 1;
@@ -131,7 +121,6 @@ a {
   margin: 10px;
   padding: 10px;
 }
-
 @media (max-width: 775px) {
   .chart-part-wrapper {
     -ms-flex-wrap: wrap;
@@ -143,7 +132,6 @@ a {
   width: 100%;
   margin-bottom: 20px;
 }
-
 .admin-product-edit-add {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -156,27 +144,22 @@ a {
           justify-content: space-between;
   padding: 20px;
 }
-
 .admin-product-edit-add div:nth-child(1) {
   -webkit-box-flex: 1;
       -ms-flex-positive: 1;
           flex-grow: 1;
 }
-
 .admin-product-edit-add input {
   padding: 0;
 }
-
 .admin-product-edit-add .textInput {
   width: 80%;
 }
-
 .admin-product-edit-add .btn-admin-add {
   width: 100px;
   margin-top: 20px;
   padding: 4px 15%;
 }
-
 .admin-product-edit-add .uploadPictureContainer {
   max-width: 450px;
 }
@@ -197,7 +180,6 @@ a {
 .tab-first {
   text-align: center;
 }
-
 .tab-first div {
   display: inline-block;
   text-align: left;
@@ -218,12 +200,10 @@ a {
       -ms-flex-direction: column;
           flex-direction: column;
 }
-
 .tab-second #outlined-basic {
   width: 400px;
   padding: 0;
 }
-
 .tab-second .btn-tab {
   margin-top: 20px;
 }
@@ -244,14 +224,12 @@ a {
           justify-content: center;
   text-align: center;
 }
-
 .container-login-card {
   width: 500px;
   height: auto;
   padding: 30px;
   margin-top: 50px;
 }
-
 .container-login .login {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -266,20 +244,16 @@ a {
   height: auto;
   padding: 10px;
 }
-
 .container-login .login form {
   width: 100%;
   min-width: 200px;
 }
-
 .container-login .login form input {
   margin: 10px 0;
 }
-
 .container-login .login form p {
   color: red;
 }
-
 .container-login .login form .btn-auth {
   margin-top: 20px;
 }
@@ -288,7 +262,6 @@ a {
   padding: 10px;
   margin: 0 auto;
 }
-
 .add-category-card form {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -306,7 +279,6 @@ a {
       -ms-flex-direction: column;
           flex-direction: column;
 }
-
 .add-category-card form span {
   text-align: center;
   display: -webkit-box;
@@ -318,13 +290,11 @@ a {
   -ms-flex-pack: distribute;
       justify-content: space-around;
 }
-
 .add-category-card .card-input {
   width: 400px;
   padding: 0;
   margin: 20px auto;
 }
-
 .add-category-card .btn-category {
   margin-left: 40px;
 }
@@ -335,7 +305,6 @@ a {
   height: 200px;
   text-align: center;
 }
-
 .imageUpload-btn {
   position: absolute;
   bottom: -10%;
@@ -364,16 +333,12 @@ tr td:last-child, tr th:last-child {
 .MuiList-root a.active {
   color: #fff;
 }
-
 .MuiList-root a.active .MuiListItem-button {
   background-color: #3f51b5;
 }
-
 .MuiList-root a.active .MuiSvgIcon-root {
   color: #fff !important;
 }
-
 .MuiList-root a.active:hover {
   color: #fff !important;
-}
-/*# sourceMappingURL=style.css.map */
+}/*# sourceMappingURL=style.css.map */

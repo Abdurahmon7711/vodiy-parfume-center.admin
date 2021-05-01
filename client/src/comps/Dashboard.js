@@ -169,6 +169,7 @@ export default function MiniDrawer() {
     localStorage.removeItem("admin");
     window.location.href = "/";
   };
+
   return (
     <React.Fragment>
       <Dialog
@@ -196,6 +197,7 @@ export default function MiniDrawer() {
         <CssBaseline />
         <AppBar
           position="fixed"
+          style={state.notFound ? {display: "none"}:{}}
           className={
             location.pathname === "/" &&
             (location.pathname.split("/").length !== 3 ||
@@ -249,6 +251,7 @@ export default function MiniDrawer() {
         </AppBar>
         <Drawer
           variant="permanent"
+          style={state.notFound ? {display: "none"}:{}}
           className={
             location.pathname === "/" &&
             (location.pathname.split("/").length !== 3 ||

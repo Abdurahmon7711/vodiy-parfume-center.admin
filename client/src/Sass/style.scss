@@ -42,7 +42,7 @@ a{
     width: 100%;
     height: auto;
     .card{
-        flex-grow: 1;
+        flex: 1 !important;
         margin: 10px;
         color: #fff;
     }

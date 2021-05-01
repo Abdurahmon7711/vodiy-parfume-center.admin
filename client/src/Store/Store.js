@@ -11,6 +11,7 @@ import StaticsAPI from "../Api/StaticsAPI";
 export const StoreG = createContext();
 
 const Store = (props) => {
+  const [notFound, setNotFound] = useState(false)
   const [token, setToken] = useState(false);
 
   useEffect(() => {
@@ -39,6 +40,8 @@ const Store = (props) => {
     // usersAPI: UsersAPI(token),
     statics: StaticsAPI(),
     categoriesAPI: CategoriesAPI(),
+    setNotFound,
+    notFound
     // paymentsAPI: PaymentsAPI(token),
   };
 

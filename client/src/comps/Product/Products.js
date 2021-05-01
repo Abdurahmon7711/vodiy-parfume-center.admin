@@ -19,7 +19,6 @@ import TextField from "@material-ui/core/TextField";
 import FirstPage from "@material-ui/icons/FirstPage";
 import FilterList from "@material-ui/icons/FilterList";
 import ViewColumn from "@material-ui/icons/ViewColumn";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
 import ExpandMore from "@material-ui/icons/ExpandMore";
 import ExpandLess from "@material-ui/icons/ExpandLess";
 import ChevronLeft from "@material-ui/icons/ChevronLeft";
@@ -29,6 +28,7 @@ import ChevronRight from "@material-ui/icons/ChevronRight";
 import ArrowDownward from "@material-ui/icons/ArrowDownward";
 import DeleteOutline from "@material-ui/icons/DeleteOutline";
 import IconButton from "@material-ui/core/IconButton";
+import AddBoxIcon from "@material-ui/icons/AddBox";
 import { withRouter } from "react-router-dom";
 import { StoreG } from "../../Store/Store";
 import { toast } from "react-toastify";
@@ -314,7 +314,7 @@ const Products = () => {
         <div>
           <ListItem button onClick={handleClickAdd}>
             <ListItemIcon>
-              <InboxIcon />
+              <AddBoxIcon/>
             </ListItemIcon>
             <ListItemText primary="Mahsulot qo'shish" />
             {openAdd ? <ExpandLess /> : <ExpandMore />}
@@ -408,7 +408,7 @@ const Products = () => {
         <div>
           {/*         <ListItem button onClick={handleClick}>
               <ListItemIcon>
-                <InboxIcon />
+                <AddBoxIcon />
               </ListItemIcon>
               <ListItemText primary="Mahsulotni yangilash" />
               {open ? <ExpandLess /> : <ExpandMore />}
@@ -588,19 +588,6 @@ const Products = () => {
           </React.Fragment>
         )}
       </div>
-      {/* {
-        !loaderUp ? (
-         
-        ):(
-          <Loader
-            type="ThreeDots"
-            color="#00BFFF"
-            height={50}
-            width={50}
-            timeout={3000} //3 secs
-          />
-        )
-      } */}
     </div>
   );
 };

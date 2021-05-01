@@ -12,7 +12,6 @@ import AddBox from "@material-ui/icons/AddBox";
 import AddBoxIcon from "@material-ui/icons/AddBox";
 import Search from "@material-ui/icons/Search";
 import Remove from "@material-ui/icons/Remove";
-import Loader from "react-loader-spinner";
 import SaveAlt from "@material-ui/icons/SaveAlt";
 import Collapse from "@material-ui/core/Collapse";
 import ListItem from "@material-ui/core/ListItem";
@@ -357,13 +356,7 @@ const Products = () => {
       }
     >
       {loader ? (
-        <Loader
-          type="ThreeDots"
-          color="#00BFFF"
-          height={50}
-          width={50}
-          timeout={3000} //3 secs
-        />
+        <Loading />
       ) : (
         <div className="admin-categories">
           <div>
