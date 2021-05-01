@@ -73,8 +73,8 @@ const Users = () => {
     { title: "Login", field: "login" },
     { title: "Parol", field: "password", type: "numeric" },
     { title: "Raqam", field: "phoneNumber", type: "numeric" },
-    { title: "Buyurtmalar miqdori", field: "books", type:"numeric" },
-    { title: "Manzil", field: "location"},
+    { title: "Buyurtmalar miqdori", field: "books", type: "numeric" },
+    { title: "Manzil", field: "location" },
   ]);
   // const token = 'aksdfkaklALKJDlhfg'
   const [token] = state.token;
@@ -96,10 +96,6 @@ const Users = () => {
       getUsers();
     }
   }, [callback, token]);
-
-  useEffect(() => {
-    users ? setLoader(false) : setLoader(true)
-  }, [users])
 
   const deleteUser = async (id) => {
     try {
@@ -140,55 +136,58 @@ const Users = () => {
   };
   return (
     <div>
-      <Loader
-        style={!loader ? { textAlign: "center" } : { display: "none" }}
-        type="ThreeDots"
-        color="#00BFFF"
-        height={50}
-        width={50}
-        timeout={1400} 
-      />
-      <MaterialTable
-        title={productInfo.name}
-        columns={columns}
-        data={users}
-        icons={tableIcons}
-        options={{ exportButton: true }}
-        responsive={true}
-        editable={{
-          onRowAdd: (newData) =>
-            new Promise((resolve, reject) => {
-              setTimeout(() => {
-                addUser(newData);
-                resolve();
-              }, 1000);
-            }),
-          onRowUpdate: (newData, oldData) =>
-            new Promise((resolve, reject) => {
-              setTimeout(() => {
-                updateUser(oldData._id, newData);
-                resolve();
-              }, 1000);
-            }),
-          onRowDelete: (oldData) =>
-            new Promise((resolve, reject) => {
-              setTimeout(() => {
-                deleteUser(oldData._id);
-                resolve();
-              }, 1000);
-            }),
-        }}
-        localization={{
-          body: {
-            editRow: {
-              deleteText: "Foydalanuvchini o'chirishni tasdiqlaysizmi ?",
+      {loader ? (
+        <Loader
+          style={{ textAlign: "center" }}
+          type="ThreeDots"
+          color="#00BFFF"
+          height={50}
+          width={50}
+          timeout={1400}
+        />
+      ) : (
+        <MaterialTable
+          title={productInfo.name}
+          columns={columns}
+          data={users}
+          icons={tableIcons}
+          options={{ exportButton: true }}
+          responsive={true}
+          editable={{
+            onRowAdd: (newData) =>
+              new Promise((resolve, reject) => {
+                setTimeout(() => {
+                  addUser(newData);
+                  resolve();
+                }, 1000);
+              }),
+            onRowUpdate: (newData, oldData) =>
+              new Promise((resolve, reject) => {
+                setTimeout(() => {
+                  updateUser(oldData._id, newData);
+                  resolve();
+                }, 1000);
+              }),
+            onRowDelete: (oldData) =>
+              new Promise((resolve, reject) => {
+                setTimeout(() => {
+                  deleteUser(oldData._id);
+                  resolve();
+                }, 1000);
+              }),
+          }}
+          localization={{
+            body: {
+              editRow: {
+                deleteText: "Foydalanuvchini o'chirishni tasdiqlaysizmi ?",
+              },
             },
-          },
-          toolbar: {
-            searchPlaceholder: "qidiruv",
-          },
-        }}
-      />
+            toolbar: {
+              searchPlaceholder: "qidiruv",
+            },
+          }}
+        />
+      )}
     </div>
   );
 };

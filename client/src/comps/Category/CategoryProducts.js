@@ -58,6 +58,7 @@ const CategoryProducts = (props) => {
   const [loading, setLoading] = useState(false);
   const category = props.match.params.id;
   const [isAdmin] = state.userAPI.isAdmin;
+  const [loader, setLoader] = useState(true)
   const [token] = state.token;
 
   const [products, setProducts] = useState([]);
@@ -71,11 +72,13 @@ const CategoryProducts = (props) => {
 
   useEffect(() => {
     const getProducts = async () => {
+      setLoader(true)
       const res = await axios.get(
         `/api/products?limit=${100}&category=${category}`
       );
       setProducts(res.data.products);
       setLoading(false);
+      setLoader(false)
     };
     getProducts();
   }, [category]);
@@ -470,6 +473,7 @@ const CategoryProducts = (props) => {
           </h2>
         </Card>
       </div>
+      { loader ? <Loading /> :
       <MaterialTable
         title={productInfo.name}
         columns={columns}
@@ -496,7 +500,7 @@ const CategoryProducts = (props) => {
             },
           },
         }}
-      />
+      />}
     </div>
   );
 };

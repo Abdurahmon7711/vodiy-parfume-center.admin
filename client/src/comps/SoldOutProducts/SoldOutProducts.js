@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from "react";
 import { forwardRef } from "react";
 import Card from "@material-ui/core/Card";
 import List from "@material-ui/core/List";
-import Loader from "react-loader-spinner"
 import MaterialTable from "material-table";
 import Edit from "@material-ui/icons/Edit";
 import Clear from "@material-ui/icons/Clear";
@@ -30,6 +29,7 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import Loading from "../../utils/loading/Loading";
 import Autocomplete from "@material-ui/lab/Autocomplete";
+import Loading2 from "../Loading";
 
 const initialState = {
   title: "",
@@ -40,8 +40,7 @@ const initialState = {
 };
 
 const SoldOutProducts = () => {
-
-  const history = useHistory()
+  const history = useHistory();
   useEffect(() => {
     const gogo = localStorage.getItem("admin");
     if (!gogo && gogo !== "1") {
@@ -53,7 +52,7 @@ const SoldOutProducts = () => {
   const [openAdd, setOpenAdd] = useState(false);
 
   const state = useContext(StoreG);
-  const [loaderUp, setLoaderUp] = useState(true)
+  const [loader] = state.productsAPI.loader;
   const [product, setProduct] = useState(initialState);
   const [eproduct, setEproduct] = useState({});
   const [productId, setId] = useState("");
@@ -79,10 +78,6 @@ const SoldOutProducts = () => {
     };
     changeNumber();
   }, [setNumber]);
-
-  useEffect(() => {
-    products.length ? setLoaderUp(false) : setLoaderUp(true)
-  }, [products])
 
   const handleClick = (rowData) => {
     setEproduct({
@@ -329,9 +324,9 @@ const SoldOutProducts = () => {
                       <Autocomplete
                         value={
                           categories[
-                          categories.findIndex(
-                            (item) => item._id === eproduct.category
-                          )
+                            categories.findIndex(
+                              (item) => item._id === eproduct.category
+                            )
                           ]
                         }
                         options={categories}
@@ -357,7 +352,7 @@ const SoldOutProducts = () => {
                         className="btn-admin-add"
                       >
                         Yangilash
-                    </Button>
+                      </Button>
                     </form>
                     <div>
                       <span className="admin-add-img">
@@ -418,44 +413,39 @@ const SoldOutProducts = () => {
             )}
           />
         </div>
-        <Loader
-          type="ThreeDots"
-          style={loaderUp ? {textAlign: 'center'}:{display:"none"}}
-          color="#00BFFF"
-          height={50}
-          width={50}
-          timeout={500} //3 secs
-        />
-        <MaterialTable
-          title={productInfo.name}
-          columns={columns}
-          data={products}
-          icons={tableIcons}
-          options={{ exportButton: true }}
-          responsive={true}
-          editable={{
-            onRowDelete: (oldData) =>
-              new Promise((resolve, reject) => {
-                setTimeout(() => {
-                  deleteProduct(oldData._id, oldData.images.public_id);
-                  resolve();
-                }, 1000);
-              }),
-          }}
-          localization={{
-            body: {
-              editRow: {
-                deleteText: "Ma'lumotni o'chirishni tasdiqlaysizmi ?",
+        {loader ? (
+          <Loading2 />
+        ) : (
+          <MaterialTable
+            title={productInfo.name}
+            columns={columns}
+            data={products}
+            icons={tableIcons}
+            options={{ exportButton: true }}
+            responsive={true}
+            editable={{
+              onRowDelete: (oldData) =>
+                new Promise((resolve, reject) => {
+                  setTimeout(() => {
+                    deleteProduct(oldData._id, oldData.images.public_id);
+                    resolve();
+                  }, 1000);
+                }),
+            }}
+            localization={{
+              body: {
+                editRow: {
+                  deleteText: "Ma'lumotni o'chirishni tasdiqlaysizmi ?",
+                },
               },
-            },
-            toolbar: {
-              searchPlaceholder: "qidiruv"
-            },
-          }}
-        />
+              toolbar: {
+                searchPlaceholder: "qidiruv",
+              },
+            }}
+          />
+        )}
       </div>
     </div>
-
   );
 };
 

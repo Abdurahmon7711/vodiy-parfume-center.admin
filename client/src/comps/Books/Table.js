@@ -10,7 +10,7 @@ import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
 import ChevronLeft from "@material-ui/icons/ChevronLeft";
 import ChevronRight from "@material-ui/icons/ChevronRight";
 import Clear from "@material-ui/icons/Clear";
-import CancelPresentationIcon from '@material-ui/icons/CancelPresentation';
+import CancelPresentationIcon from "@material-ui/icons/CancelPresentation";
 import DeleteOutline from "@material-ui/icons/DeleteOutline";
 import Edit from "@material-ui/icons/Edit";
 import FilterList from "@material-ui/icons/FilterList";
@@ -81,6 +81,7 @@ export function Editable() {
             headers: { Authorization: token },
           });
           setHistory(res.data);
+          setLoader(false);
         }
       };
       getHistory();
@@ -96,12 +97,14 @@ export function Editable() {
     setOpen(false);
   };
 
-  const handleClick = (data) => {
+  const handleClick = async (data) => {
     axios
       .put("/api/payment/" + data._id)
       .then((res) => toast.success(res.data.msg));
     const getHistory = async () => {
       if (isAdmin) {
+        setLoader(true);
+
         const res = await axios.get("/api/payment/false", {
           headers: { Authorization: token },
         });
@@ -233,34 +236,37 @@ export function Editable() {
   return (
     <div>
       <div div className="table-data">
-        <Loader
-          style={!loader ? { display: "none" } : { textAlign: "center" }}
-          type="ThreeDots"
-          color="#00BFFF"
-          height={50}
-          width={50}
-          timeout={3000} //3 secs
-        />
-        <MaterialTable
-          title="Buyurtmalar"
-          icons={tableIcons}
-          data={history}
-          columns={column}
-          responsive={true}
-          options={{ exportButton: true, selection: true }}
-          actions={[
-            {
-              tooltip: "Belgilangan ma'lumolarni o'chirish",
-              icon: CancelPresentationIcon,
-              onClick: (evt, data) => console.log(data)
-            }
-          ]}
-          localization={{
-            toolbar: {
-              searchPlaceholder: "qidiruv",
-            },
-          }}
-        />
+        {loader ? (
+          <Loader
+            style={{ textAlign: "center" }}
+            type="ThreeDots"
+            color="#00BFFF"
+            height={50}
+            width={50}
+            timeout={3000} //3 secs
+          />
+        ) : (
+          <MaterialTable
+            title="Buyurtmalar"
+            icons={tableIcons}
+            data={history}
+            columns={column}
+            responsive={true}
+            options={{ exportButton: true, selection: true }}
+            actions={[
+              {
+                tooltip: "Belgilangan ma'lumolarni o'chirish",
+                icon: CancelPresentationIcon,
+                onClick: (evt, data) => console.log(data),
+              },
+            ]}
+            localization={{
+              toolbar: {
+                searchPlaceholder: "qidiruv",
+              },
+            }}
+          />
+        )}
         <Modal
           open={open}
           onClose={handleClose}

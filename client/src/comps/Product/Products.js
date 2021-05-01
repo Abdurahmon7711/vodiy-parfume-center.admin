@@ -29,7 +29,6 @@ import ChevronRight from "@material-ui/icons/ChevronRight";
 import ArrowDownward from "@material-ui/icons/ArrowDownward";
 import DeleteOutline from "@material-ui/icons/DeleteOutline";
 import IconButton from "@material-ui/core/IconButton";
-import Loader from "react-loader-spinner";
 import { withRouter } from "react-router-dom";
 import { StoreG } from "../../Store/Store";
 import { toast } from "react-toastify";
@@ -37,6 +36,7 @@ import axios from "axios";
 import Loading from "../../utils/loading/Loading";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import ReactPaginate from "react-paginate";
+import Loading2 from "../Loading";
 
 const initialState = {
   title: "",
@@ -57,7 +57,6 @@ const Products = () => {
   }, [history]);
 
   const [openAdd, setOpenAdd] = useState(false);
-  const [loaderUp, setLoaderUP] = useState(true);
   const state = useContext(StoreG);
   const [product, setProduct] = useState(initialState);
   const [eproduct, setEproduct] = useState({});
@@ -68,6 +67,7 @@ const Products = () => {
   const [loading, setLoading] = useState(false);
   const [category, setCategory] = state.productsAPI.category;
   const [, setNumber] = state.productsAPI.number;
+  const [loader] = state.productsAPI.loader;
   const [, setPage] = state.productsAPI.page;
   const [result] = state.productsAPI.result;
   const [limit] = state.productsAPI.limit;
@@ -83,16 +83,14 @@ const Products = () => {
   const handleClickAdd = () => {
     setOpenAdd(!openAdd);
   };
-  useEffect(() => {
-    products.length ? setLoaderUP(false) : setLoaderUP(true);
-  }, [products]);
+
   useEffect(() => {
     const changeNumber = () => {
       setNumber("");
     };
     changeNumber();
   }, [setNumber]);
-  // const [loader, setLoader] = useState(true)
+
   const [open, setOpen] = useState(false);
 
   const handleClick = (rowData) => {
@@ -275,7 +273,9 @@ const Products = () => {
       field: "category",
       width: "20%",
       render: (rowData) => (
-        <p>{categories.filter((item) => item._id === rowData.category)[0].name}</p>
+        <p>
+          {categories.filter((item) => item._id === rowData.category)[0].name}
+        </p>
       ),
     },
     { title: "Malumot", field: "description", width: "25%" },
@@ -543,55 +543,50 @@ const Products = () => {
             )}
           />
         </div>
-        <Loader
-          style={loaderUp ? { textAlign: "center" } : { display: "none" }}
-          type="ThreeDots"
-          color="#00BFFF"
-          height={50}
-          width={50}
-          timeout={500} //3 secs
-        />
-        <MaterialTable
-          title={productInfo.name}
-          style={loaderUp ? { display: "none" } : { display: "block" }}
-          columns={columns}
-          data={products}
-          icons={tableIcons}
-          options={{ exportButton: true }}
-          responsive={true}
-          editable={{
-            onRowDelete: (oldData) =>
-              new Promise((resolve, reject) => {
-                setTimeout(() => {
-                  deleteProduct(oldData._id, oldData.images.public_id);
-                  resolve();
-                }, 1000);
-              }),
-          }}
-          localization={{
-            body: {
-              editRow: {
-                deleteText: "Ma'lumotni o'chirishni tasdiqlaysizmi ?",
-              },
-            },
-            toolbar: {
-              searchPlaceholder: "qidiruv",
-            },
-          }}
-        />
-
-        <ReactPaginate
-          style={loaderUp ? { display: "none" } : { display: "block" }}
-          previousLabel={"Oldingi"}
-          nextLabel={"Keyingi"}
-          pageCount={Math.ceil(result / limit)}
-          onPageChange={({ selected }) => setPage(selected + 1)}
-          containerClassName={"paginationBttns"}
-          previousLinkClassName={"previousBttn"}
-          nextLinkClassName={"nextBttn"}
-          disabledClassName={"paginationDisabled"}
-          activeClassName={"paginationActive"}
-        />
+        {loader ? (
+          <Loading2 />
+        ) : (
+          <React.Fragment>
+            <MaterialTable
+              title={productInfo.name}
+              columns={columns}
+              data={products}
+              icons={tableIcons}
+              options={{ exportButton: true }}
+              responsive={true}
+              editable={{
+                onRowDelete: (oldData) =>
+                  new Promise((resolve, reject) => {
+                    setTimeout(() => {
+                      deleteProduct(oldData._id, oldData.images.public_id);
+                      resolve();
+                    }, 1000);
+                  }),
+              }}
+              localization={{
+                body: {
+                  editRow: {
+                    deleteText: "Ma'lumotni o'chirishni tasdiqlaysizmi ?",
+                  },
+                },
+                toolbar: {
+                  searchPlaceholder: "qidiruv",
+                },
+              }}
+            />
+            <ReactPaginate
+              previousLabel={"Oldingi"}
+              nextLabel={"Keyingi"}
+              pageCount={Math.ceil(result / limit)}
+              onPageChange={({ selected }) => setPage(selected + 1)}
+              containerClassName={"paginationBttns"}
+              previousLinkClassName={"previousBttn"}
+              nextLinkClassName={"nextBttn"}
+              disabledClassName={"paginationDisabled"}
+              activeClassName={"paginationActive"}
+            />
+          </React.Fragment>
+        )}
       </div>
       {/* {
         !loaderUp ? (

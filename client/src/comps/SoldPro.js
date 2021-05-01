@@ -92,15 +92,16 @@ function SoldPro() {
             headers: { Authorization: token },
           });
           setHistory(res.data);
+          setLoaderUp(false);
         }
       };
       getHistory();
     }
   }, [callback, token, isAdmin, setHistory]);
 
-  useEffect(() => {
-    history ? setLoaderUp(false) : setLoaderUp(true);
-  }, [history]);
+  // useEffect(() => {
+  //   history ? setLoaderUp(false) : setLoaderUp(true);
+  // }, [history]);
   // const payments = state.paymentsAPI.payments;
 
   const handleOpen = (data) => {
@@ -214,12 +215,13 @@ function SoldPro() {
     },
   ];
   const deleteBook = async (data) => {
-    data.forEach((item) => {
-      axios.delete("/api/payment/" + item._id, {
-        headers: { Authorization: token },
-      });
+    await data.forEach((item) => {
+      axios
+        .delete("/api/payment/" + item._id, {
+          headers: { Authorization: token },
+        })
+        .then((res) => setCallback(!callback));
     });
-    setCallback(!callback);
     toast.success("Mahsulotlar o'chirildi");
     handleDelClose();
   };
@@ -247,37 +249,40 @@ function SoldPro() {
         </DialogActions>
       </Dialog>
       <div className="table-data">
-        <Loader
-          style={!loaderUp ? { textAlign: "center" } : { display: "none" }}
-          type="ThreeDots"
-          color="#00BFFF"
-          height={50}
-          width={50}
-          timeout={3000} //3 secs
-        />
-        <MaterialTable
-          title="Yetkazilgan buyurtmalar"
-          icons={tableIcons}
-          data={history}
-          columns={column}
-          responsive={true}
-          options={{ exportButton: true, selection: true }}
-          actions={[
-            {
-              tooltip: "Belgilangan ma'lumolarni o'chirish",
-              icon: DeleteIcon,
-              onClick: (evt, data) => {
-                setData(data);
-                handleDelClose();
+        {loaderUp ? (
+          <Loader
+            style={{ textAlign: "center" }}
+            type="ThreeDots"
+            color="#00BFFF"
+            height={50}
+            width={50}
+            timeout={3000} //3 secs
+          />
+        ) : (
+          <MaterialTable
+            title="Yetkazilgan buyurtmalar"
+            icons={tableIcons}
+            data={history}
+            columns={column}
+            responsive={true}
+            options={{ exportButton: true, selection: true }}
+            actions={[
+              {
+                tooltip: "Belgilangan ma'lumolarni o'chirish",
+                icon: DeleteIcon,
+                onClick: (evt, data) => {
+                  setData(data);
+                  handleDelClose();
+                },
               },
-            },
-          ]}
-          localization={{
-            toolbar: {
-              searchPlaceholder: "qidiruv",
-            },
-          }}
-        />
+            ]}
+            localization={{
+              toolbar: {
+                searchPlaceholder: "qidiruv",
+              },
+            }}
+          />
+        )}
         <Modal
           open={open}
           onClose={handleClose}

@@ -56,11 +56,11 @@ const Products = () => {
   const [images, setImages] = useState(false);
   const [eimages, setEimages] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [loaderUp, setLoaderUp] = useState(true);
   const [isAdmin] = state.userAPI.isAdmin;
   const [token] = state.token;
 
   const [categories] = state.categoriesAPI.categories;
+  const [loader] = state.categoriesAPI.loader;
 
   const [callback, setCallback] = state.categoriesAPI.callback;
   const handleUpload = async (e) => {
@@ -343,14 +343,10 @@ const Products = () => {
     display: images ? "block" : "none",
   };
 
-  useEffect(() => {
-    categories.length ? setLoaderUp(false) : setLoaderUp(true);
-  }, [categories]);
-
   return (
     <div
       style={
-        !loaderUp
+        !loader
           ? {}
           : {
               height: "75vh",
@@ -360,7 +356,7 @@ const Products = () => {
             }
       }
     >
-      {loaderUp ? (
+      {loader ? (
         <Loader
           type="ThreeDots"
           color="#00BFFF"
