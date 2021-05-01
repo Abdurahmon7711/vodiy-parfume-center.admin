@@ -24,7 +24,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
 import { StoreG } from "../../Store/Store";
 import axios from "axios";
-// import { makeStyles } from "@material-ui/core/styles";
+import { Dialog, DialogActions, DialogTitle } from "@material-ui/core";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -73,6 +73,9 @@ export function Editable() {
   const [open, setOpen] = React.useState(false);
   const [callback, setCallback] = state.statics.callback;
   const [loader, setLoader] = useState(true);
+  const [openDel, setOpenDel] = React.useState(false);
+  const [data, setData] = useState([]);
+
   useEffect(() => {
     if (token) {
       const getHistory = async () => {
@@ -231,8 +234,31 @@ export function Editable() {
         ),
     },
   ];
+
+  const handleDelClose = () => {
+    setOpenDel(!openDel);
+  };
+
   return (
     <div>
+      <Dialog
+          open={openDel}
+          onClose={handleDelClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">
+            Siz rostdan ham o'chirmoqchimisiz ?
+        </DialogTitle>
+          <DialogActions>
+            <Button onClick={handleDelClose} color="primary">
+              Yo'q
+          </Button>
+            <Button  color="primary" autoFocus>
+              Ha
+          </Button>
+          </DialogActions>
+        </Dialog>
       <div div className="table-data">
         {loader ? (
           <Loader
@@ -255,12 +281,16 @@ export function Editable() {
               {
                 tooltip: "Belgilangan ma'lumolarni o'chirish",
                 icon: CancelPresentationIcon,
-                onClick: (evt, data) => console.log(data),
+                onClick: (evt, data) => {
+                  setData(data);
+                  handleDelClose();
+                },
               },
             ]}
             localization={{
               toolbar: {
                 searchPlaceholder: "qidiruv",
+                nRowsSelected: '{0} ta mahsulot belgilandi'
               },
             }}
           />
@@ -273,6 +303,7 @@ export function Editable() {
         >
           {body}
         </Modal>
+        
       </div>
     </div>
   );
