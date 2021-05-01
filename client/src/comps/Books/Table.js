@@ -97,23 +97,21 @@ export function Editable() {
     setOpen(false);
   };
 
-  const handleClick = async (data) => {
-    axios
-      .put("/api/payment/" + data._id)
-      .then((res) => toast.success(res.data.msg));
-    const getHistory = async () => {
-      if (isAdmin) {
-        setLoader(true);
-
-        const res = await axios.get("/api/payment/false", {
-          headers: { Authorization: token },
-        });
-        setHistory(res.data);
-        setLoader(false);
-      }
-    };
-    getHistory();
-    setCallback(!callback);
+  const handleClick = (data) => {
+    axios.put("/api/payment/" + data._id).then((res) => {
+      toast.success(res.data.msg, { autoClose: 1500 });
+      const getHistory = async () => {
+        if (isAdmin) {
+          const res = await axios.get("/api/payment/false", {
+            headers: { Authorization: token },
+          });
+          setHistory(res.data);
+          setLoader(false);
+          setCallback(!callback);
+        }
+      };
+      getHistory();
+    });
   };
 
   const totalSum = (data) => {
