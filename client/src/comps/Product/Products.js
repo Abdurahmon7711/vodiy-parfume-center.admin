@@ -71,7 +71,7 @@ const Products = () => {
   const [, setPage] = state.productsAPI.page;
   const [result] = state.productsAPI.result;
   const [limit] = state.productsAPI.limit;
-
+  
   const [isAdmin] = state.userAPI.isAdmin;
   const [token] = state.token;
 
@@ -311,242 +311,257 @@ const Products = () => {
     // style={!loaderUp ? {}: {height:"75vh",display:"flex", alignItems:"center", justifyContent:"center"}}
     >
       <div className="admin-products">
-        <div>
-          <ListItem button onClick={handleClickAdd}>
-            <ListItemIcon>
-              <AddBoxIcon/>
-            </ListItemIcon>
-            <ListItemText primary="Mahsulot qo'shish" />
-            {openAdd ? <ExpandLess /> : <ExpandMore />}
-          </ListItem>
-          <Collapse in={openAdd} timeout="auto" unmountOnExit>
-            <List component="div" disablePadding>
-              <ListItem>
-                <div className="admin-product-edit">
-                  <Card className="admin-product-edit-add">
-                    <form onSubmit={handleSubmit}>
-                      <TextField
-                        name="title"
-                        label="Product"
-                        className="textInput"
-                        onChange={handleChangeInput}
-                      />
-                      <TextField
-                        name="description"
-                        label="Ma'lumot"
-                        className="textInput"
-                        onChange={handleChangeInput}
-                      />
-                      <TextField
-                        name="price"
-                        label="Narx"
-                        type="number"
-                        className="textInput"
-                        onChange={handleChangeInput}
-                      />
-                      <TextField
-                        name="number"
-                        label="Mahsulot soni"
-                        type="number"
-                        className="textInput"
-                        onChange={handleChangeInput}
-                      />
-                      <Autocomplete
-                        options={categories}
-                        id="combo-box-demo"
-                        getOptionLabel={(option) => option.name}
-                        onChange={(event, newValue) => {
-                          setProduct({ ...product, category: newValue._id });
-                        }}
-                        name="category"
-                        renderInput={(params) => (
-                          <TextField
-                            className="textInput"
-                            {...params}
-                            label="Kategoriya"
-                            margin="normal"
-                          />
-                        )}
-                      />
-                      <Button
-                        type="submit"
-                        color="primary"
-                        variant="contained"
-                        className="btn-admin-add"
-                      >
-                        Qo'shish
-                      </Button>
-                    </form>
-                    <div>
-                      <span className="admin-add-img">
-                        <div className="upload">
-                          <input
-                            type="file"
-                            name="file"
-                            id="file_up"
-                            onChange={handleUpload}
-                          />
-                          {loading ? (
-                            <div id="file_img">
-                              <Loading />
-                            </div>
-                          ) : (
-                            <div id="file_img" style={styleUpload}>
-                              <img src={images ? images.url : ""} alt="" />
-                              <span onClick={handleDestroy}>X</span>
-                            </div>
-                          )}
-                        </div>
-                      </span>
-                    </div>
-                  </Card>
-                </div>
+        {loader ? (
+          <Loading2 />
+        ) : (
+          <React.Fragment>
+            <div>
+              <ListItem button onClick={handleClickAdd}>
+                <ListItemIcon>
+                  <AddBoxIcon />
+                </ListItemIcon>
+                <ListItemText primary="Mahsulot qo'shish" />
+                {openAdd ? <ExpandLess /> : <ExpandMore />}
               </ListItem>
-            </List>
-          </Collapse>
-        </div>
-        <div>
-          {/*         <ListItem button onClick={handleClick}>
+              <Collapse in={openAdd} timeout="auto" unmountOnExit>
+                <List component="div" disablePadding>
+                  <ListItem>
+                    <div className="admin-product-edit">
+                      <Card className="admin-product-edit-add">
+                        <form onSubmit={handleSubmit}>
+                          <TextField
+                            name="title"
+                            label="Product"
+                            className="textInput"
+                            onChange={handleChangeInput}
+                          />
+                          <TextField
+                            name="description"
+                            label="Ma'lumot"
+                            className="textInput"
+                            onChange={handleChangeInput}
+                          />
+                          <TextField
+                            name="price"
+                            label="Narx"
+                            type="number"
+                            className="textInput"
+                            onChange={handleChangeInput}
+                          />
+                          <TextField
+                            name="number"
+                            label="Mahsulot soni"
+                            type="number"
+                            className="textInput"
+                            onChange={handleChangeInput}
+                          />
+                          <Autocomplete
+                            options={categories}
+                            id="combo-box-demo"
+                            getOptionLabel={(option) => option.name}
+                            onChange={(event, newValue) => {
+                              setProduct({
+                                ...product,
+                                category: newValue._id,
+                              });
+                            }}
+                            name="category"
+                            renderInput={(params) => (
+                              <TextField
+                                className="textInput"
+                                {...params}
+                                label="Kategoriya"
+                                margin="normal"
+                              />
+                            )}
+                          />
+                          <Button
+                            type="submit"
+                            color="primary"
+                            variant="contained"
+                            className="btn-admin-add"
+                          >
+                            Qo'shish
+                          </Button>
+                        </form>
+                        <div>
+                          <span className="admin-add-img">
+                            <div className="upload">
+                              <input
+                                type="file"
+                                name="file"
+                                id="file_up"
+                                onChange={handleUpload}
+                              />
+                              {loading ? (
+                                <div id="file_img">
+                                  <Loading />
+                                </div>
+                              ) : (
+                                <div id="file_img" style={styleUpload}>
+                                  <img src={images ? images.url : ""} alt="" />
+                                  <span onClick={handleDestroy}>X</span>
+                                </div>
+                              )}
+                            </div>
+                          </span>
+                        </div>
+                      </Card>
+                    </div>
+                  </ListItem>
+                </List>
+              </Collapse>
+            </div>
+            <div>
+              {/*         <ListItem button onClick={handleClick}>
               <ListItemIcon>
                 <AddBoxIcon />
               </ListItemIcon>
               <ListItemText primary="Mahsulotni yangilash" />
               {open ? <ExpandLess /> : <ExpandMore />}
             </ListItem> */}
-          <Collapse in={open} timeout="auto" unmountOnExit>
-            <List component="div" disablePadding>
-              <ListItem>
-                <div className="admin-product-edit">
-                  <Card className="admin-product-edit-add">
-                    <form onSubmit={handleSubmit}>
-                      <TextField
-                        name="title"
-                        label="Product"
-                        className="textInput"
-                        onChange={handleChangeInput}
-                        value={eproduct.title}
-                      />
-                      <TextField
-                        name="description"
-                        value={eproduct.description}
-                        label="Ma'lumot"
-                        className="textInput"
-                        onChange={handleChangeInput}
-                      />
-                      <TextField
-                        name="price"
-                        value={eproduct.price}
-                        label="Narx"
-                        type="number"
-                        className="textInput"
-                        onChange={handleChangeInput}
-                      />
-                      <TextField
-                        name="number"
-                        value={eproduct.number}
-                        label="Soni"
-                        type="number"
-                        className="textInput"
-                        onChange={handleChangeInput}
-                      />
-                      <Autocomplete
-                        value={
-                          categories[
-                            categories.findIndex(
-                              (item) => item._id === eproduct.category
-                            )
-                          ]
-                        }
-                        options={categories}
-                        id="combo-box-demo"
-                        getOptionLabel={(option) => option.name}
-                        onChange={(event, newValue) => {
-                          setEproduct({ ...eproduct, category: newValue._id });
-                        }}
-                        name="category"
-                        renderInput={(params) => (
+              <Collapse in={open} timeout="auto" unmountOnExit>
+                <List component="div" disablePadding>
+                  <ListItem>
+                    <div className="admin-product-edit">
+                      <Card className="admin-product-edit-add">
+                        <form onSubmit={handleSubmit}>
                           <TextField
+                            name="title"
+                            label="Product"
                             className="textInput"
-                            {...params}
-                            label="Kategoriya"
-                            margin="normal"
+                            onChange={handleChangeInput}
+                            value={eproduct.title}
                           />
-                        )}
-                      />
-                      <Button
-                        type="submit"
-                        color="primary"
-                        variant="contained"
-                        className="btn-admin-add"
-                      >
-                        Yangilash
-                      </Button>
-                    </form>
-                    <div>
-                      <span className="admin-add-img">
-                        <div className="upload">
-                          <input
-                            type="file"
-                            name="file"
-                            id="file_up"
-                            onChange={handleUpload}
+                          <TextField
+                            name="description"
+                            value={eproduct.description}
+                            label="Ma'lumot"
+                            className="textInput"
+                            onChange={handleChangeInput}
                           />
-                          {loading ? (
-                            <div id="file_img">
-                              <Loading />
+                          <TextField
+                            name="price"
+                            value={eproduct.price}
+                            label="Narx"
+                            type="number"
+                            className="textInput"
+                            onChange={handleChangeInput}
+                          />
+                          <TextField
+                            name="number"
+                            value={eproduct.number}
+                            label="Soni"
+                            type="number"
+                            className="textInput"
+                            onChange={handleChangeInput}
+                          />
+                          <Autocomplete
+                            value={
+                              categories[
+                                categories.findIndex(
+                                  (item) => item._id === eproduct.category
+                                )
+                              ]
+                            }
+                            options={categories}
+                            id="combo-box-demo"
+                            getOptionLabel={(option) => option.name}
+                            onChange={(event, newValue) => {
+                              setEproduct({
+                                ...eproduct,
+                                category: newValue._id,
+                              });
+                            }}
+                            name="category"
+                            renderInput={(params) => (
+                              <TextField
+                                className="textInput"
+                                {...params}
+                                label="Kategoriya"
+                                margin="normal"
+                              />
+                            )}
+                          />
+                          <Button
+                            type="submit"
+                            color="primary"
+                            variant="contained"
+                            className="btn-admin-add"
+                          >
+                            Yangilash
+                          </Button>
+                        </form>
+                        <div>
+                          <span className="admin-add-img">
+                            <div className="upload">
+                              <input
+                                type="file"
+                                name="file"
+                                id="file_up"
+                                onChange={handleUpload}
+                              />
+                              {loading ? (
+                                <div id="file_img">
+                                  <Loading />
+                                </div>
+                              ) : (
+                                <div id="file_img" style={estyleUpload}>
+                                  <img
+                                    src={eimages ? eimages.url : ""}
+                                    alt=""
+                                  />
+                                  <span onClick={handleDestroy}>X</span>
+                                </div>
+                              )}
                             </div>
-                          ) : (
-                            <div id="file_img" style={estyleUpload}>
-                              <img src={eimages ? eimages.url : ""} alt="" />
-                              <span onClick={handleDestroy}>X</span>
-                            </div>
-                          )}
+                          </span>
                         </div>
-                      </span>
+                      </Card>
                     </div>
-                  </Card>
-                </div>
-              </ListItem>
-            </List>
-          </Collapse>
-        </div>
+                  </ListItem>
+                </List>
+              </Collapse>
+            </div>
 
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            textAlign: "center",
-          }}
-        >
-          <Card
-            className="card"
-            style={{ width: "48%", padding: "20px", textAlign: "center" }}
-          >
-            <h2>Kategoriya bo'yicha tartiblash</h2>
-          </Card>
-          <Autocomplete
-            id="combo-box-demo"
-            value={
-              categories[categories.findIndex((item) => item._id === category)]
-            }
-            onChange={(event, newValue) => {
-              newValue
-                ? setCategory("category=" + newValue._id)
-                : setCategory("");
-            }}
-            options={categories}
-            getOptionLabel={(option) => option.name}
-            style={{ width: "50%", margin: "10px 0" }}
-            renderInput={(params) => (
-              <TextField {...params} label="Kategoriya" variant="outlined" />
-            )}
-          />
-        </div>
-        {loader ? (
-          <Loading2 />
-        ) : (
-          <React.Fragment>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                textAlign: "center",
+              }}
+            >
+              <Card
+                className="card"
+                style={{ width: "48%", padding: "20px", textAlign: "center" }}
+              >
+                <h2>Kategoriya bo'yicha tartiblash</h2>
+              </Card>
+              <Autocomplete
+                id="combo-box-demo"
+                value={
+                  categories[
+                    categories.findIndex((item) => item._id === category)
+                  ]
+                }
+                onChange={(event, newValue) => {
+                  newValue
+                    ? setCategory("category=" + newValue._id)
+                    : setCategory("");
+                }}
+                options={categories}
+                getOptionLabel={(option) => option.name}
+                style={{ width: "50%", margin: "10px 0" }}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Kategoriya"
+                    variant="outlined"
+                  />
+                )}
+              />
+            </div>
             <MaterialTable
               title={productInfo.name}
               columns={columns}
