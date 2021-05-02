@@ -1,6 +1,6 @@
 import React, { useEffect, useContext } from "react";
 import axios from "axios";
-import { useHistory } from "react-router-dom";
+import { useHistory, Route } from "react-router-dom";
 import { forwardRef } from "react";
 import MaterialTable from "material-table";
 import Edit from "@material-ui/icons/Edit";
@@ -22,6 +22,7 @@ import ArrowDownward from "@material-ui/icons/ArrowDownward";
 import { withRouter } from "react-router-dom";
 import { StoreG } from "../../Store/Store";
 import { toast } from "react-toastify";
+
 
 const Users = () => {
   const history = useHistory();
@@ -136,6 +137,7 @@ const Users = () => {
   };
   return (
     <div>
+      {/* <Route path="/Foydalanuvchilar/:id" component={UsersLocal}/> */}
       {loader ? (
         <Loader
           style={{ textAlign: "center" }}

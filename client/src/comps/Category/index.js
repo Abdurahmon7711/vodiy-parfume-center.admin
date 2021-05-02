@@ -4,7 +4,6 @@ import Card from "@material-ui/core/Card";
 import List from "@material-ui/core/List";
 import MaterialTable from "material-table";
 import Edit from "@material-ui/icons/Edit";
-// import DeleteIcon from "@material-ui/icons/Delete";
 import Clear from "@material-ui/icons/Clear";
 import Check from "@material-ui/icons/Check";
 import Button from "@material-ui/core/Button";
