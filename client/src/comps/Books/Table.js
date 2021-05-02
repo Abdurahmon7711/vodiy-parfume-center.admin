@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { forwardRef } from "react";
 import MaterialTable from "material-table";
 import AddBox from "@material-ui/icons/AddBox";
+import { useHistory, useParams } from "react-router-dom";
 import ArrowDownward from "@material-ui/icons/ArrowDownward";
 import Button from "@material-ui/core/Button";
 import Check from "@material-ui/icons/Check";
@@ -63,6 +64,7 @@ const newDate = (a) => {
 };
 
 export function Editable() {
+  const match = useParams()
   const state = useContext(StoreG);
   const [isAdmin] = state.userAPI.isAdmin;
   const [token] = state.token;
@@ -75,6 +77,10 @@ export function Editable() {
   const [loader, setLoader] = useState(true);
   const [openDel, setOpenDel] = React.useState(false);
   const [data, setData] = useState([]);
+
+  const productInfo = {
+    name: "Buyurtmalar: " + match.id,
+  };
 
   useEffect(() => {
     if (token) {
@@ -271,7 +277,7 @@ export function Editable() {
           />
         ) : (
           <MaterialTable
-            title="Buyurtmalar"
+            title={productInfo.name}
             icons={tableIcons}
             data={history}
             columns={column}

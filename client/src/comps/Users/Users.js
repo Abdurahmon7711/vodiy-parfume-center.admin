@@ -39,7 +39,7 @@ const Users = () => {
   const state = useContext(StoreG);
 
   const productInfo = {
-    name: match.id + " tumani foydalanuvchilari",
+    name:"Foydalanuvchilar: " + match.id,
   };
   const tableIcons = {
     Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),

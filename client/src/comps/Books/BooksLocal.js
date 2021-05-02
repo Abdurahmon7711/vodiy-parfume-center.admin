@@ -1,5 +1,6 @@
-import React, {useState } from "react";
+import React, {useState, useEffect } from "react";
 import { forwardRef } from "react";
+import { useHistory, useParams } from "react-router-dom";
 import MaterialTable from "material-table";
 import Edit from "@material-ui/icons/Edit";
 import Clear from "@material-ui/icons/Clear";
@@ -19,11 +20,23 @@ import DeleteOutline from "@material-ui/icons/DeleteOutline";
 import { Link } from "react-router-dom";
 
 const BooksLocal = () => {
+
+  const history = useHistory();
+
+  useEffect(() => {
+    const gogo = localStorage.getItem("admin");
+    if (!gogo && gogo !== "1") {
+      history.push("/");
+      history.go();
+    }
+  }, [history]);
+
+
     const [region] = useState([
-        { name: "Beshariq", amountBooks:12 },
-        { name: "Buvayda", amountBooks:12 },
-        { name: "Dang'ara", amountBooks:12 },
-        { name: "Furqat", amountBooks:12 },
+        { name: "Beshariq tumani", amountBooks:12 },
+        { name: "Buvayda tumani", amountBooks:12 },
+        { name: "Dang'ara tumani", amountBooks:12 },
+        { name: "Furqat tumani", amountBooks:12 },
     ])
     
     const [columns] = useState([
@@ -66,6 +79,7 @@ const BooksLocal = () => {
         )),
         ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
     };
+    
     return (
         <div>
             <MaterialTable

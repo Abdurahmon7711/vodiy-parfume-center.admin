@@ -20,10 +20,10 @@ import { Link } from "react-router-dom";
 
 const UsersLocal = () => {
     const [region, setRegion] = useState([
-        { name: "Beshariq" },
-        { name: "Buvayda" },
-        { name: "Dang'ara" },
-        { name: "Furqat" },
+        { name: "Beshariq tumani" },
+        { name: "Buvayda tumani" },
+        { name: "Dang'ara tumani" },
+        { name: "Furqat tumani" },
     ])
     
     const [columns] = useState([
