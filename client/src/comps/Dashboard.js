@@ -53,6 +53,7 @@ import Statics from "./Statics/Statics";
 import CategoryProducts from "./Category/CategoryProducts";
 import NotFound from "./NotFound";
 import UsersLocal from "./Users/UsersLocal";
+import BooksLocal from "./Books/BooksLocal";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -345,8 +346,13 @@ export default function MiniDrawer() {
               isAuth={isAuth}
             />
             <ProtectedRoute
-              path="/Buyurtmalar"
+              path="/Buyurtmalar/:id"
               component={Books}
+              isAuth={isAuth}
+            />
+            <ProtectedRoute
+              path="/Buyurtmalar"
+              component={BooksLocal}
               isAuth={isAuth}
             />
             <ProtectedRoute 

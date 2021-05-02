@@ -18,23 +18,24 @@ import ArrowDownward from "@material-ui/icons/ArrowDownward";
 import DeleteOutline from "@material-ui/icons/DeleteOutline";
 import { Link } from "react-router-dom";
 
-const UsersLocal = () => {
-    const [region, setRegion] = useState([
-        { name: "Beshariq" },
-        { name: "Buvayda" },
-        { name: "Dang'ara" },
-        { name: "Furqat" },
+const BooksLocal = () => {
+    const [region] = useState([
+        { name: "Beshariq", amountBooks:12 },
+        { name: "Buvayda", amountBooks:12 },
+        { name: "Dang'ara", amountBooks:12 },
+        { name: "Furqat", amountBooks:12 },
     ])
     
     const [columns] = useState([
-        { title: "Manzil", field: "name", align: "center", width: "30%" },
+        { title: "Manzil", field: "name", align: "center", width: "50%" },
+        { title:"Buyurtmalar soni", align: "center", field: "amountBooks"},
         {
-            title: "Foydalanuvchilarni ko'rish",
+            title: "Buyurtmalarni ko'rish",
             field: "_id",
             align:"center",
             editable: false,
             render: (rowData) => (
-                <Link to={`/Foydalanuvchilar/${rowData.name}`}>Manzil foydalanuvchilari</Link>
+                <Link to={`/Buyurtmalar/${rowData.name}`}>Manzil buyurtmalari</Link>
             ),
         },
     ]);
@@ -68,41 +69,11 @@ const UsersLocal = () => {
     return (
         <div>
             <MaterialTable
-                title="Foydalanuvchilar"
+                title="Buyurtmalar"
                 columns={columns}
                 data={region}
                 icons={tableIcons}
                 responsive={true}
-                editable={{
-                    onRowDelete: (oldData) =>
-                        new Promise((resolve, reject) => {
-                            setTimeout(() => {
-                                const dataDelete = [...region];
-                                const index = oldData.tableData.id;
-                                dataDelete.splice(index, 1);
-                                setRegion([...dataDelete]);
-                                resolve()
-                            }, 1000);
-                        }),
-
-                    onRowAdd: newData =>
-                        new Promise((resolve, reject) => {
-                            setTimeout(() => {
-                                 setRegion([...region, newData]); 
-                                resolve();
-                            }, 1000);
-                        }),
-                    onRowUpdate: (newData, oldData) =>
-                        new Promise((resolve, reject) => {
-                            setTimeout(() => {
-                                const dataUpdate = [...region];
-                                const index = oldData.tableData.id;
-                                dataUpdate[index] = newData;
-                                setRegion([...dataUpdate]);
-                                resolve();
-                            }, 1000);
-                        }),
-                }}
                 localization={{
                     toolbar: {
                         searchPlaceholder: "qidiruv",
@@ -118,4 +89,4 @@ const UsersLocal = () => {
     )
 }
 
-export default UsersLocal
+export default BooksLocal

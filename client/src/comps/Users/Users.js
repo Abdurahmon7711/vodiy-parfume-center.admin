@@ -1,6 +1,6 @@
 import React, { useEffect, useContext } from "react";
 import axios from "axios";
-import { useHistory, Route } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { forwardRef } from "react";
 import MaterialTable from "material-table";
 import Edit from "@material-ui/icons/Edit";
@@ -25,7 +25,9 @@ import { toast } from "react-toastify";
 
 
 const Users = () => {
+  const match = useParams()
   const history = useHistory();
+
   useEffect(() => {
     const gogo = localStorage.getItem("admin");
     if (!gogo && gogo !== "1") {
@@ -37,7 +39,7 @@ const Users = () => {
   const state = useContext(StoreG);
 
   const productInfo = {
-    name: "Xaridorlar",
+    name: match.id + " tumani foydalanuvchilari",
   };
   const tableIcons = {
     Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -75,7 +77,6 @@ const Users = () => {
     { title: "Parol", field: "password", type: "numeric" },
     { title: "Raqam", field: "phoneNumber", type: "numeric" },
     { title: "Buyurtmalar miqdori", field: "books", type: "numeric" },
-    { title: "Manzil", field: "location" },
   ]);
   // const token = 'aksdfkaklALKJDlhfg'
   const [token] = state.token;
