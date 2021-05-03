@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-function AddressesAPI() {
+function AddressesAPI(token) {
   const [addresses, setAddresses] = useState([]);
   const [callback, setCallback] = useState(false);
   const [loader, setLoader] = useState(true);
@@ -9,13 +9,15 @@ function AddressesAPI() {
   useEffect(() => {
     setLoader(true);
     const getAddresses = async () => {
-      const res = await axios.get("/api/address");
+      const res = await axios.get("/api/address", {
+        headers: { Authorization: token },
+      });
       setAddresses(res.data);
       setLoader(false);
     };
 
     getAddresses();
-  }, [callback]);
+  }, [callback, token]);
   return {
     loader: [loader, setLoader],
     addresses: [addresses, setAddresses],

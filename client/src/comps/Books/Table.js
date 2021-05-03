@@ -67,6 +67,7 @@ export function Editable(props) {
   const match = useParams();
   const state = useContext(StoreG);
   const [isAdmin] = state.userAPI.isAdmin;
+  const [addresses] = state.addressesAPI.addresses;
   const [token] = state.token;
   const [history, setHistory] = useState([]);
   const [rowData, setRowData] = useState({});
@@ -78,9 +79,9 @@ export function Editable(props) {
   const [openDel, setOpenDel] = React.useState(false);
   const [, setData] = useState([]);
   const address_id = props.match.params.id;
-
+  const address = addresses.filter((item) => item._id === match.id)[0].name;
   const productInfo = {
-    name: "Buyurtmalar: " + match.id,
+    name: address + " buyurtmalari",
   };
 
   useEffect(() => {

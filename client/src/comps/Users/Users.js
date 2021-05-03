@@ -36,9 +36,11 @@ const Users = (props) => {
   }, [history]);
 
   const state = useContext(StoreG);
+  const [addresses] = state.addressesAPI.addresses;
+  const address = addresses.filter((item) => item._id === match.id)[0].name;
 
   const productInfo = {
-    name: "Foydalanuvchilar: " + match.id,
+    name: address + " foydanaluvchilari",
   };
   const tableIcons = {
     Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),

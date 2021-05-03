@@ -181,7 +181,7 @@ const userCtrl = {
     try {
       const history = await Payments.find({ user_id: req.user.id });
 
-      res.json(history);
+      res.json(history.slice(0, 5));
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }

@@ -1,13 +1,13 @@
-import React,{ useContext, useEffect} from "react";
-import {StoreG} from "../Store/Store";
-
+import React, { useContext, useEffect } from "react";
+import { StoreG } from "../Store/Store";
+  
 const NotFound = () => {
-  const {setNotFound} = useContext(StoreG);
+  const { setNotFound } = useContext(StoreG);
   useEffect(() => {
     setNotFound(true);
-  },[])
+  }, [setNotFound]);
   return (
-    <div style={{textAlign:"center"}}>
+    <div style={{ textAlign: "center" }}>
       <h2>Sahifa topilmadi !!!</h2>
     </div>
   );

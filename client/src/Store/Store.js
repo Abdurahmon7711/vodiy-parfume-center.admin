@@ -6,12 +6,13 @@ import { toast } from "react-toastify";
 import CategoriesAPI from "../Api/CategoriesAPI";
 import ProductsAPI from "../Api/ProductsAPI";
 import StaticsAPI from "../Api/StaticsAPI";
+import AddressesAPI from "../Api/AddressesAPI";
 // import PaymentsAPI from "../Api/PaymentsAPI";
 
 export const StoreG = createContext();
 
 const Store = (props) => {
-  const [notFound, setNotFound] = useState(false)
+  const [notFound, setNotFound] = useState(false);
   const [token, setToken] = useState(false);
 
   useEffect(() => {
@@ -40,8 +41,9 @@ const Store = (props) => {
     // usersAPI: UsersAPI(token),
     statics: StaticsAPI(),
     categoriesAPI: CategoriesAPI(),
+    addressesAPI: AddressesAPI(token),
     setNotFound,
-    notFound
+    notFound,
     // paymentsAPI: PaymentsAPI(token),
   };
 

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { forwardRef } from "react";
 import MaterialTable from "material-table";
 import Edit from "@material-ui/icons/Edit";
@@ -26,8 +26,8 @@ const UsersLocal = () => {
   const state = useContext(StoreG);
   const [token] = state.token;
   const [callback, setCallback] = useState(false);
-  const [addresses, setAddresses] = useState([]);
-  const [loader, setLoader] = useState(true);
+  const [addresses] = state.addressesAPI.addresses;
+  const [loader] = state.addressesAPI.loader;
 
   const [columns] = useState([
     { title: "Manzil", field: "name", align: "center", width: "30%" },
@@ -72,19 +72,6 @@ const UsersLocal = () => {
     ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
   };
 
-  useEffect(() => {
-    if (token) {
-      const getAddresses = async () => {
-        const res = await axios.get("/api/address", {
-          headers: { Authorization: token },
-        });
-        setAddresses(res.data);
-        setLoader(false);
-      };
-
-      getAddresses();
-    }
-  }, [callback, token]);
 
   const deleteAddress = (id) => {
     try {
@@ -145,7 +132,7 @@ const UsersLocal = () => {
         />
       ) : (
         <MaterialTable
-          title="Foydalanuvchilar"
+          title="Foydalanuvchi Manzillari"
           columns={columns}
           data={addresses}
           icons={tableIcons}

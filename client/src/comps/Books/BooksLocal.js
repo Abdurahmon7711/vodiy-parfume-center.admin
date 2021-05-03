@@ -18,7 +18,6 @@ import ChevronRight from "@material-ui/icons/ChevronRight";
 import ArrowDownward from "@material-ui/icons/ArrowDownward";
 import DeleteOutline from "@material-ui/icons/DeleteOutline";
 import { Link } from "react-router-dom";
-import axios from "axios";
 import { StoreG } from "../../Store/Store";
 import Loader from "react-loader-spinner";
 
@@ -34,23 +33,8 @@ const BooksLocal = () => {
   }, [history]);
 
   const state = useContext(StoreG);
-  const [token] = state.token;
-  const [callback, setCallback] = useState(false);
-  const [addresses, setAddresses] = useState([]);
-  const [loader, setLoader] = useState(true);
-  useEffect(() => {
-    if (token) {
-      const getAddresses = async () => {
-        const res = await axios.get("/api/address", {
-          headers: { Authorization: token },
-        });
-        setAddresses(res.data);
-        setCallback(!callback);
-        setLoader(false);
-      };
-      getAddresses();
-    }
-  }, [callback, token]);
+  const [addresses] = state.addressesAPI.addresses;
+  const [loader] = state.addressesAPI.loader;
 
   const [columns] = useState([
     { title: "Manzil", field: "name", align: "center", width: "50%" },
@@ -106,7 +90,7 @@ const BooksLocal = () => {
         />
       ) : (
         <MaterialTable
-          title="Buyurtmalar"
+          title="Buyurtma manzillari"
           columns={columns}
           data={addresses}
           icons={tableIcons}

@@ -83,7 +83,7 @@ const Products = () => {
   const handleClickAdd = () => {
     setOpenAdd(!openAdd);
   };
-
+    
   useEffect(() => {
     const changeNumber = () => {
       setNumber("");
