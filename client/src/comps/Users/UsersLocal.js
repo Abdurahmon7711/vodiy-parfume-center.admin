@@ -25,7 +25,7 @@ import Loader from "react-loader-spinner";
 const UsersLocal = () => {
   const state = useContext(StoreG);
   const [token] = state.token;
-  const [callback, setCallback] = useState(false);
+  const [callback, setCallback] = state.addressesAPI.callback;
   const [addresses] = state.addressesAPI.addresses;
   const [loader] = state.addressesAPI.loader;
 
@@ -72,7 +72,6 @@ const UsersLocal = () => {
     ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
   };
 
-
   const deleteAddress = (id) => {
     try {
       //   setLoading(true);
@@ -83,9 +82,12 @@ const UsersLocal = () => {
         .then((res) => {
           toast.success(res.data.msg, { autoClose: 1500 });
           setCallback(!callback);
+        })
+        .catch((err) => {
+          toast.error(err.response.data.msg);
         });
     } catch (err) {
-      toast.error(err.response.data.msg);
+      toast.error(err.response);
     }
   };
   const updateAddress = (id, newData) => {

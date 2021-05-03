@@ -28,10 +28,10 @@ const addressCtrl = {
   },
   deleteAddress: async (req, res) => {
     try {
-      const addresses = await Addresses.findOne({ address: req.params.id });
+      const addresses = await Users.findOne({ address: req.params.id });
       if (addresses)
         return res.status(400).json({
-          msg: "Avval manzilga tegishli mahsulotlarni o'chiring",
+          msg: "Avval manzilga tegishli foydalanuvchilarni o'chiring",
         });
 
       await Addresses.findByIdAndDelete(req.params.id);
