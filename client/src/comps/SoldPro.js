@@ -88,7 +88,7 @@ function SoldPro() {
     if (token) {
       const getHistory = async () => {
         if (isAdmin) {
-          const res = await axios.get("/api/payment/true", {
+          const res = await axios.get("/api/paymentTrue", {
             headers: { Authorization: token },
           });
           setHistory(res.data);

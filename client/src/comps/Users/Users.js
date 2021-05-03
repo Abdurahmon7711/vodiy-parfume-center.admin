@@ -23,9 +23,8 @@ import { withRouter } from "react-router-dom";
 import { StoreG } from "../../Store/Store";
 import { toast } from "react-toastify";
 
-
-const Users = () => {
-  const match = useParams()
+const Users = (props) => {
+  const match = useParams();
   const history = useHistory();
 
   useEffect(() => {
@@ -39,7 +38,7 @@ const Users = () => {
   const state = useContext(StoreG);
 
   const productInfo = {
-    name:"Foydalanuvchilar: " + match.id,
+    name: "Foydalanuvchilar: " + match.id,
   };
   const tableIcons = {
     Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -76,7 +75,12 @@ const Users = () => {
     { title: "Login", field: "login" },
     { title: "Parol", field: "password", type: "numeric" },
     { title: "Raqam", field: "phoneNumber", type: "numeric" },
-    { title: "Buyurtmalar miqdori", field: "books", type: "numeric" },
+    {
+      title: "Buyurtmalar miqdori",
+      render: (rowData) => {
+        return <p>{rowData.cart.length}</p>;
+      },
+    },
   ]);
   // const token = 'aksdfkaklALKJDlhfg'
   const [token] = state.token;
@@ -84,11 +88,12 @@ const Users = () => {
   const [users, setUsers] = useState([]);
   const [callback, setCallback] = useState(false);
   const [loader, setLoader] = useState(true);
+  const address_id = props.match.params.id;
 
   useEffect(() => {
     if (token) {
       const getUsers = async () => {
-        const res = await axios.get("/user/users", {
+        const res = await axios.get("/user/users/" + address_id, {
           headers: { Authorization: token },
         });
         setUsers(res.data);
@@ -97,7 +102,7 @@ const Users = () => {
 
       getUsers();
     }
-  }, [callback, token]);
+  }, [callback, token, address_id]);
 
   const deleteUser = async (id) => {
     try {
@@ -116,9 +121,13 @@ const Users = () => {
   const updateUser = async (id, newData) => {
     try {
       //   setLoading(true);
-      const deleteProduct = axios.put(`/user/users/${id}`, newData, {
-        headers: { Authorization: token },
-      });
+      const deleteProduct = axios.put(
+        `/user/users/${id}`,
+        { ...newData, address: address_id },
+        {
+          headers: { Authorization: token },
+        }
+      );
 
       await deleteProduct;
       setCallback(!callback);
@@ -129,7 +138,10 @@ const Users = () => {
   };
   const addUser = async (newData) => {
     try {
-      const addProduct = axios.post("/user/register", newData);
+      const addProduct = axios.post("/user/register", {
+        ...newData,
+        address: address_id,
+      });
       await addProduct;
       setCallback(!callback);
     } catch (err) {

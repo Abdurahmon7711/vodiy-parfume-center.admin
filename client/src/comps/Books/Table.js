@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { forwardRef } from "react";
 import MaterialTable from "material-table";
 import AddBox from "@material-ui/icons/AddBox";
-import { useHistory, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import ArrowDownward from "@material-ui/icons/ArrowDownward";
 import Button from "@material-ui/core/Button";
 import Check from "@material-ui/icons/Check";
@@ -63,8 +63,8 @@ const newDate = (a) => {
   return a.split("T")[0];
 };
 
-export function Editable() {
-  const match = useParams()
+export function Editable(props) {
+  const match = useParams();
   const state = useContext(StoreG);
   const [isAdmin] = state.userAPI.isAdmin;
   const [token] = state.token;
@@ -76,7 +76,8 @@ export function Editable() {
   const [callback, setCallback] = state.statics.callback;
   const [loader, setLoader] = useState(true);
   const [openDel, setOpenDel] = React.useState(false);
-  const [data, setData] = useState([]);
+  const [, setData] = useState([]);
+  const address_id = props.match.params.id;
 
   const productInfo = {
     name: "Buyurtmalar: " + match.id,
@@ -86,7 +87,7 @@ export function Editable() {
     if (token) {
       const getHistory = async () => {
         if (isAdmin) {
-          const res = await axios.get("/api/payment/false", {
+          const res = await axios.get("/api/payment/" + address_id, {
             headers: { Authorization: token },
           });
           setHistory(res.data);
@@ -95,7 +96,7 @@ export function Editable() {
       };
       getHistory();
     }
-  }, [token, isAdmin, setHistory]);
+  }, [callback, token, isAdmin, setHistory, address_id]);
 
   const handleOpen = (data) => {
     setOpen(true);
@@ -109,17 +110,7 @@ export function Editable() {
   const handleClick = (data) => {
     axios.put("/api/payment/" + data._id).then((res) => {
       toast.success(res.data.msg, { autoClose: 1500 });
-      const getHistory = async () => {
-        if (isAdmin) {
-          const res = await axios.get("/api/payment/false", {
-            headers: { Authorization: token },
-          });
-          setHistory(res.data);
-          setLoader(false);
-          setCallback(!callback);
-        }
-      };
-      getHistory();
+      setCallback(!callback);
     });
   };
 
@@ -248,23 +239,23 @@ export function Editable() {
   return (
     <div>
       <Dialog
-          open={openDel}
-          onClose={handleDelClose}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
-        >
-          <DialogTitle id="alert-dialog-title">
-            Siz rostdan ham o'chirmoqchimisiz ?
+        open={openDel}
+        onClose={handleDelClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          Siz rostdan ham o'chirmoqchimisiz ?
         </DialogTitle>
-          <DialogActions>
-            <Button onClick={handleDelClose} color="primary">
-              Yo'q
+        <DialogActions>
+          <Button onClick={handleDelClose} color="primary">
+            Yo'q
           </Button>
-            <Button  color="primary" autoFocus>
-              Ha
+          <Button color="primary" autoFocus>
+            Ha
           </Button>
-          </DialogActions>
-        </Dialog>
+        </DialogActions>
+      </Dialog>
       <div div className="table-data">
         {loader ? (
           <Loader
@@ -296,7 +287,7 @@ export function Editable() {
             localization={{
               toolbar: {
                 searchPlaceholder: "qidiruv",
-                nRowsSelected: '{0} ta mahsulot belgilandi'
+                nRowsSelected: "{0} ta mahsulot belgilandi",
               },
             }}
           />
@@ -309,7 +300,6 @@ export function Editable() {
         >
           {body}
         </Modal>
-        
       </div>
     </div>
   );

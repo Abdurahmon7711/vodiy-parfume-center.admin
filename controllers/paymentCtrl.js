@@ -65,6 +65,25 @@ const paymentCtrl = {
       return res.status(500).json({ msg: err.message });
     }
   },
+  getTruePayments: async (req, res) => {
+    try {
+      const payments = await Payments.find({ status: true });
+      res.json(payments);
+    } catch (err) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
+  getAddressPayments: async (req, res) => {
+    try {
+      const payments = await Payments.find({
+        address: req.params.id,
+        status: false,
+      });
+      res.json(payments);
+    } catch (err) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
   deletePayments: async (req, res) => {
     try {
       await Payments.deleteMany({ status: true });
@@ -84,13 +103,13 @@ const paymentCtrl = {
   createPayment: async (req, res) => {
     try {
       const user = await Users.findById(req.user.id).select(
-        "name lname login phoneNumber"
+        "name lname login phoneNumber address"
       );
       if (!user)
         return res.status(400).json({ msg: "Foydalanuvchi mavjud emas !" });
       const { cart, comment } = req.body;
 
-      const { _id, name, lname, login, phoneNumber } = user;
+      const { _id, name, lname, login, phoneNumber, address } = user;
 
       // cart.forEach((item) => {
       //   if (item.quantity > item.number) {
@@ -106,6 +125,7 @@ const paymentCtrl = {
         lname,
         login,
         phoneNumber,
+        address,
         cart,
         comment,
       });

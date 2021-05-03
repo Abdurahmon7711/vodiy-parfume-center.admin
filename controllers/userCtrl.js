@@ -6,7 +6,7 @@ const jwt = require("jsonwebtoken");
 const userCtrl = {
   register: async (req, res) => {
     try {
-      const { name, lname, login, phoneNumber, password } = req.body;
+      const { name, lname, login, address, phoneNumber, password } = req.body;
 
       const user = await Users.findOne({ login });
       if (user) return res.status(400).json({ msg: "Bu foydalanuvchi mavjud" });
@@ -19,6 +19,7 @@ const userCtrl = {
         name,
         lname,
         login,
+        address,
         phoneNumber,
         password,
         // password: passwordHash,
@@ -111,6 +112,14 @@ const userCtrl = {
   getUsers: async (req, res) => {
     try {
       const users = await Users.find({ role: 0 });
+      res.json(users);
+    } catch (err) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
+  getAddressUsers: async (req, res) => {
+    try {
+      const users = await Users.find({ address: req.params.id, role: 0 });
       res.json(users);
     } catch (err) {
       return res.status(500).json({ msg: err.message });

@@ -14,8 +14,11 @@ router.get("/refresh_token", userCtrl.refreshToken);
 router.get("/infor", auth, userCtrl.getUser);
 
 router.get("/users", auth, authAdmin, userCtrl.getUsers);
-router.put("/users/:id", auth, authAdmin, userCtrl.updateUser);
-router.delete("/users/:id", auth, authAdmin, userCtrl.deleteUser);
+router
+  .route("/users/:id")
+  .get(auth, authAdmin, userCtrl.getAddressUsers)
+  .put(auth, authAdmin, userCtrl.updateUser)
+  .delete(auth, authAdmin, userCtrl.deleteUser);
 
 router.patch("/addcart", auth, userCtrl.addCart);
 
