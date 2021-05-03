@@ -117,7 +117,7 @@ const productCtrl = {
   getLastTenDayStatics: async (req, res) => {
     try {
       const today_date = new Date();
-      const payments = await Payments.find();
+      const payments = await Payments.find({status: true});
       days = parseInt(req.params.id);
 
       dates = Array(days).fill(0);
