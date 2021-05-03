@@ -279,7 +279,7 @@ function SoldPro() {
             localization={{
               toolbar: {
                 searchPlaceholder: "qidiruv",
-                nRowsSelected: '{0} ta mahsulot belgilandi'
+                nRowsSelected: "{0} ta mahsulot belgilandi",
               },
             }}
           />
