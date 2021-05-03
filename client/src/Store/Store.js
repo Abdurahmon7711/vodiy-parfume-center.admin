@@ -7,6 +7,7 @@ import CategoriesAPI from "../Api/CategoriesAPI";
 import ProductsAPI from "../Api/ProductsAPI";
 import StaticsAPI from "../Api/StaticsAPI";
 import AddressesAPI from "../Api/AddressesAPI";
+import PaymentsAPI from "../Api/PaymentsAPI";
 // import PaymentsAPI from "../Api/PaymentsAPI";
 
 export const StoreG = createContext();
@@ -44,7 +45,7 @@ const Store = (props) => {
     addressesAPI: AddressesAPI(token),
     setNotFound,
     notFound,
-    // paymentsAPI: PaymentsAPI(token),
+    paymentsAPI: PaymentsAPI(token),
   };
 
   return <StoreG.Provider value={state}>{props.children}</StoreG.Provider>;

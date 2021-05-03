@@ -34,11 +34,18 @@ const BooksLocal = () => {
 
   const state = useContext(StoreG);
   const [addresses] = state.addressesAPI.addresses;
+  const [payments] = state.paymentsAPI.payments;
   const [loader] = state.addressesAPI.loader;
 
   const [columns] = useState([
     { title: "Manzil", field: "name", align: "center", width: "50%" },
-    { title: "Buyurtmalar soni", align: "center", field: "amountBooks" },
+    {
+      title: "Buyurtmalar soni",
+      align: "center",
+      render: (rowData) => (
+        <p>{payments.filter((item) => item.address === rowData._id).length}</p>
+      ),
+    },
     {
       title: "Buyurtmalarni ko'rish",
       field: "_id",

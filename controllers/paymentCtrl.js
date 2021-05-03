@@ -73,6 +73,14 @@ const paymentCtrl = {
       return res.status(500).json({ msg: err.message });
     }
   },
+  getFalsePayments: async (req, res) => {
+    try {
+      const payments = await Payments.find({ status: false });
+      res.json(payments);
+    } catch (err) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
   getAddressPayments: async (req, res) => {
     try {
       const payments = await Payments.find({

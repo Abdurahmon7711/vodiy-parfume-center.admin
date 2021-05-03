@@ -15,5 +15,6 @@ router
 
 router.route("/payment/:id").put(paymentCtrl.sendConfirm);
 router.route("/paymentTrue").get(paymentCtrl.getTruePayments);
+router.route("/paymentFalse").get(paymentCtrl.getFalsePayments);
 
 module.exports = router;
