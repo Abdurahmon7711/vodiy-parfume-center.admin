@@ -133,7 +133,7 @@ export function Editable(props) {
     doc.setFont("courier");
     doc.text(50, 100, "Xabar: " + data.comment);
     doc.setFont("courier");
-    doc.text(50, 125, "Umumiy summa: " + totalSum(rowData));
+    doc.text(50, 125, "Umumiy summa: " + totalSum(rowData) + " so'm");
     doc.setFont("courier");
     const headers = [["Mahsulot nomi", "Soni", "Narxi"]];
 
