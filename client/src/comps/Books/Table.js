@@ -34,6 +34,8 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import { toast } from "react-toastify";
+import jsPDF from "jspdf";
+import "jspdf-autotable";
 
 function getModalStyle() {
   const top = 50;
@@ -79,7 +81,9 @@ export function Editable(props) {
   const [openDel, setOpenDel] = React.useState(false);
   const [, setData] = useState([]);
   const address_id = props.match.params.id;
-  const address = addresses.filter((item) => item._id === match.id)[0].name;
+  const address =
+    addresses.length !== 0 &&
+    addresses.filter((item) => item._id === match.id)[0].name;
   const productInfo = {
     name: address + " buyurtmalari",
   };
@@ -121,6 +125,29 @@ export function Editable(props) {
     return s;
   };
 
+  const getPdf = (data) => {
+    var doc = new jsPDF("p", "pt");
+    doc.text(50, 50, "Ismi: " + data.name);
+    doc.setFont("courier");
+    doc.text(50, 75, "Tel raqami: " + data.phoneNumber);
+    doc.setFont("courier");
+    doc.text(50, 100, "Xabar: " + data.comment);
+    doc.setFont("courier");
+    doc.text(50, 125, "Umumiy summa: " + totalSum(rowData));
+    doc.setFont("courier");
+    const headers = [["Mahsulot nomi", "Soni", "Narxi"]];
+
+    const data2 = data.cart.map((elt) => [elt.title, elt.quantity, elt.price]);
+
+    let content = {
+      startY: 150,
+      head: headers,
+      body: data2,
+    };
+
+    doc.autoTable(content);
+    doc.save("generated.pdf");
+  };
   const body = (
     <div style={modalStyle} className={classes.paper}>
       {Object.keys(rowData).length !== 0 ? (
@@ -153,6 +180,24 @@ export function Editable(props) {
               <Button>Jami: {totalSum(rowData)}</Button>
             </div>
           </TableContainer>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              marginTop: "20px",
+            }}
+          >
+            <Button variant="contained" color="secondary" onClick={handleClose}>
+              Yopish
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => getPdf(rowData)}
+            >
+              Pdf yuklash
+            </Button>
+          </div>
         </React.Fragment>
       ) : (
         ""
