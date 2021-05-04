@@ -1,7 +1,7 @@
 const Payments = require("../models/paymentModel");
 const Users = require("../models/userModel");
 const Products = require("../models/productModel");
-
+const Addresses = require("../models/addressModel");
 class APIfeatures {
   constructor(query, queryString) {
     this.query = query;
@@ -76,7 +76,23 @@ const paymentCtrl = {
   getFalsePayments: async (req, res) => {
     try {
       const payments = await Payments.find({ status: false });
-      res.json(payments);
+      const addresses = await Addresses.find();
+      let falseAddresses = addresses.filter((item) =>
+        payments.map((item2) => item2.address).includes(item.id)
+      );
+
+      falseAddresses = falseAddresses.map((item) => {
+        return {
+          _id: item.id,
+          name: item.name,
+          createdAt: item.createdAt,
+          updatedAt: item.updatedAt,
+          bookNumber: payments.filter((item2) => item2.address === item.id)
+            .length,
+        };
+      });
+      console.log(falseAddresses);
+      res.json(falseAddresses);
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }

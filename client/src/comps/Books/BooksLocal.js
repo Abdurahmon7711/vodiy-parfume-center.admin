@@ -33,7 +33,7 @@ const BooksLocal = () => {
   }, [history]);
 
   const state = useContext(StoreG);
-  const [addresses] = state.addressesAPI.addresses;
+  // const [addresses] = state.addressesAPI.addresses;
   const [payments] = state.paymentsAPI.payments;
   const [loader] = state.addressesAPI.loader;
 
@@ -42,9 +42,7 @@ const BooksLocal = () => {
     {
       title: "Buyurtmalar soni",
       align: "center",
-      render: (rowData) => (
-        <p>{payments.filter((item) => item.address === rowData._id).length}</p>
-      ),
+      field: "bookNumber",
     },
     {
       title: "Buyurtmalarni ko'rish",
@@ -99,7 +97,7 @@ const BooksLocal = () => {
         <MaterialTable
           title="Buyurtma manzillari"
           columns={columns}
-          data={addresses}
+          data={payments}
           icons={tableIcons}
           responsive={true}
           localization={{
