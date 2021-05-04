@@ -127,7 +127,7 @@ export function Editable(props) {
 
   const getPdf = (data) => {
     var doc = new jsPDF("p", "pt");
-    doc.text(50, 50, "Ismi: " + data.name);
+    doc.text(50, 50, "Familiya Ismi: " + data.lname + " " + data.name);
     doc.setFont("courier");
     doc.text(50, 75, "Tel raqami: " + data.phoneNumber);
     doc.setFont("courier");
