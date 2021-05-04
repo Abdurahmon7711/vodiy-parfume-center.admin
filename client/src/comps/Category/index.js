@@ -225,28 +225,28 @@ const Products = () => {
   const deleteCategory = async (id, public_id) => {
     try {
       setLoading(true);
-      const destroyImg = axios
-        .post(
-          "/api/destroy",
-          { public_id },
-          {
-            headers: { Authorization: token },
-          }
-        )
-        .then((res) => {
-          toast.success(res.data.msg);
-        });
-      const deleteProduct = axios
+      axios
         .delete(`/api/category/${id}`, {
           headers: { Authorization: token },
         })
         .then((res) => {
           toast.success(res.data.msg);
+          axios
+            .post(
+              "/api/destroy",
+              { public_id },
+              {
+                headers: { Authorization: token },
+              }
+            )
+            .then((res) => {
+              toast.success(res.data.msg);
+            });
+          setCallback(!callback);
+        })
+        .catch((err) => {
+          toast.error(err.response.data.msg, { autoClose: 1500 });
         });
-
-      await destroyImg;
-      await deleteProduct;
-      setCallback(!callback);
       setLoading(false);
     } catch (err) {
       toast.error(err.response.data.msg);
@@ -439,14 +439,30 @@ const Products = () => {
                             onChange={ehandleChangeInput}
                             //   label="Kategoriya"
                           />
-                          <Button
-                            type="submit"
-                            className="btn-admin-add"
-                            variant="contained"
-                            color="primary"
+                          <div
+                            style={{
+                              display: "flex",
+                              justifyContent: "space-between",
+                            }}
                           >
-                            Yangilash
-                          </Button>
+                            <Button
+                              type="submit"
+                              className="btn-admin-add"
+                              variant="contained"
+                              color="primary"
+                            >
+                              Yangilash
+                            </Button>
+                            <Button
+                              type="button"
+                              className="btn-admin-add"
+                              variant="contained"
+                              color="secondary"
+                              onClick={() => setOpen(false)}
+                            >
+                              Yopish
+                            </Button>
+                          </div>
                         </div>
                       </form>
                       <div>

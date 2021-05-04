@@ -42,7 +42,7 @@ const CategoryProducts = (props) => {
     number: 0,
     category: props.match.params.id,
   };
-  
+
   const productInfo = {
     name: "Mahsulotlar",
   };
@@ -58,7 +58,7 @@ const CategoryProducts = (props) => {
   const [loading, setLoading] = useState(false);
   const category = props.match.params.id;
   const [isAdmin] = state.userAPI.isAdmin;
-  const [loader, setLoader] = useState(true)
+  const [loader, setLoader] = useState(true);
   const [token] = state.token;
 
   const [products, setProducts] = useState([]);
@@ -72,20 +72,20 @@ const CategoryProducts = (props) => {
 
   useEffect(() => {
     const getProducts = async () => {
-      setLoader(true)
+      setLoader(true);
       const res = await axios.get(
         `/api/products?limit=${100}&category=${category}`
       );
       setProducts(res.data.products);
       setLoading(false);
-      setLoader(false)
+      setLoader(false);
     };
     getProducts();
   }, [category]);
 
-  useEffect(() =>{
-    document.title="Vodiyparfum | Admin"
-  },[])
+  useEffect(() => {
+    document.title = "Vodiyparfum | Admin";
+  }, []);
 
   const [open, setOpen] = useState(false);
 
@@ -412,14 +412,30 @@ const CategoryProducts = (props) => {
                       className="textInput"
                       onChange={handleChangeInput}
                     />
-                    <Button
-                      type="submit"
-                      color="primary"
-                      variant="contained"
-                      className="btn-admin-add"
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                      }}
                     >
-                      Yangilash
-                    </Button>
+                      <Button
+                        type="submit"
+                        color="primary"
+                        variant="contained"
+                        className="btn-admin-add"
+                      >
+                        Yangilash
+                      </Button>
+                      <Button
+                        type="button"
+                        className="btn-admin-add"
+                        variant="contained"
+                        color="secondary"
+                        onClick={() => setOpen(false)}
+                      >
+                        Yopish
+                      </Button>
+                    </div>
                   </form>
                   <div>
                     <span className="admin-add-img">
@@ -473,34 +489,37 @@ const CategoryProducts = (props) => {
           </h2>
         </Card>
       </div>
-      { loader ? <Loading /> :
-      <MaterialTable
-        title={productInfo.name}
-        columns={columns}
-        data={products}
-        icons={tableIcons}
-        options={{ exportButton: true }}
-        responsive={true}
-        editable={{
-          onRowDelete: (oldData) =>
-            new Promise((resolve, reject) => {
-              setTimeout(() => {
-                deleteProduct(oldData._id, oldData.images.public_id);
-                resolve();
-              }, 1000);
-            }),
-        }}
-        localization={{
-          toolbar: {
-              searchPlaceholder: "qidiruv"
-          },
-          body: {
-            editRow: {
-              deleteText: "Ma'lumotni o'chirishni tasdiqlaysizmi ?",
+      {loader ? (
+        <Loading />
+      ) : (
+        <MaterialTable
+          title={productInfo.name}
+          columns={columns}
+          data={products}
+          icons={tableIcons}
+          options={{ exportButton: true }}
+          responsive={true}
+          editable={{
+            onRowDelete: (oldData) =>
+              new Promise((resolve, reject) => {
+                setTimeout(() => {
+                  deleteProduct(oldData._id, oldData.images.public_id);
+                  resolve();
+                }, 1000);
+              }),
+          }}
+          localization={{
+            toolbar: {
+              searchPlaceholder: "qidiruv",
             },
-          },
-        }}
-      />}
+            body: {
+              editRow: {
+                deleteText: "Ma'lumotni o'chirishni tasdiqlaysizmi ?",
+              },
+            },
+          }}
+        />
+      )}
     </div>
   );
 };

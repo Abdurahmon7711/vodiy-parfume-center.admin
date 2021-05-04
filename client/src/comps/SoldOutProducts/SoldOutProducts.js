@@ -352,14 +352,30 @@ const SoldOutProducts = () => {
                               />
                             )}
                           />
-                          <Button
-                            type="submit"
-                            color="primary"
-                            variant="contained"
-                            className="btn-admin-add"
+                          <div
+                            style={{
+                              display: "flex",
+                              justifyContent: "space-between",
+                            }}
                           >
-                            Yangilash
-                          </Button>
+                            <Button
+                              type="submit"
+                              color="primary"
+                              variant="contained"
+                              className="btn-admin-add"
+                            >
+                              Yangilash
+                            </Button>
+                            <Button
+                              type="button"
+                              className="btn-admin-add"
+                              variant="contained"
+                              color="secondary"
+                              onClick={() => setOpen(false)}
+                            >
+                              Yopish
+                            </Button>
+                          </div>
                         </form>
                         <div>
                           <span className="admin-add-img">

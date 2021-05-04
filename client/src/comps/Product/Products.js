@@ -71,7 +71,7 @@ const Products = () => {
   const [, setPage] = state.productsAPI.page;
   const [result] = state.productsAPI.result;
   const [limit] = state.productsAPI.limit;
-  
+
   const [isAdmin] = state.userAPI.isAdmin;
   const [token] = state.token;
 
@@ -83,7 +83,7 @@ const Products = () => {
   const handleClickAdd = () => {
     setOpenAdd(!openAdd);
   };
-    
+
   useEffect(() => {
     const changeNumber = () => {
       setNumber("");
@@ -483,14 +483,30 @@ const Products = () => {
                               />
                             )}
                           />
-                          <Button
-                            type="submit"
-                            color="primary"
-                            variant="contained"
-                            className="btn-admin-add"
+                          <div
+                            style={{
+                              display: "flex",
+                              justifyContent: "space-between",
+                            }}
                           >
-                            Yangilash
-                          </Button>
+                            <Button
+                              type="submit"
+                              color="primary"
+                              variant="contained"
+                              className="btn-admin-add"
+                            >
+                              Yangilash
+                            </Button>
+                            <Button
+                              type="button"
+                              className="btn-admin-add"
+                              variant="contained"
+                              color="secondary"
+                              onClick={() => setOpen(false)}
+                            >
+                              Yopish
+                            </Button>
+                          </div>
                         </form>
                         <div>
                           <span className="admin-add-img">
