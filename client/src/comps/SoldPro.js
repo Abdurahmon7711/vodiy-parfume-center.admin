@@ -33,6 +33,7 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import { toast } from "react-toastify";
 import { Dialog, DialogActions, DialogTitle } from "@material-ui/core";
+import { date, time } from "../utils/functions";
 
 function getModalStyle() {
   const top = 50;
@@ -125,7 +126,8 @@ function SoldPro() {
         <React.Fragment>
           <h3>Ismi: {rowData.name}</h3>
           <h3>Tel raqami: {rowData.phoneNumber}</h3>
-          <h3>Sana: {newDate(rowData.createdAt)}</h3>
+          <h3>Sana: {date(rowData.createdAt)}</h3>
+          <h3>Vaqti: {time(rowData.createdAt)}</h3>
           <h3>Xabar: {rowData.comment}</h3>
           <hr />
           <TableContainer component={Paper}>

@@ -36,6 +36,7 @@ import Paper from "@material-ui/core/Paper";
 import { toast } from "react-toastify";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
+import { date, time } from "../../utils/functions";
 
 function getModalStyle() {
   const top = 50;
@@ -127,35 +128,56 @@ export function Editable(props) {
 
   const getPdf = (data) => {
     var doc = new jsPDF("p", "pt");
-    doc.text(50, 50, "Familiya Ismi: " + data.lname + " " + data.name);
+    doc.text(50, 50, "To'lov Id: " + data._id);
     doc.setFont("courier");
-    doc.text(50, 75, "Tel raqami: " + data.phoneNumber);
+    doc.text(50, 75, "Familiya Ismi: " + data.lname + " " + data.name);
     doc.setFont("courier");
-    doc.text(50, 100, "Xabar: " + data.comment);
+    doc.text(50, 100, "Tel raqami: " + data.phoneNumber);
     doc.setFont("courier");
-    doc.text(50, 125, "Umumiy summa: " + totalSum(rowData) + " so'm");
+    doc.text(50, 125, "Buyurtma sanasi: " + date(data.createdAt));
     doc.setFont("courier");
-    const headers = [["Mahsulot nomi", "Soni", "Narxi"]];
+    doc.text(50, 150, "Buyurtma vaqti: " + time(data.createdAt));
+    doc.setFont("courier");
+    doc.text(50, 175, "Umumiy summa: " + totalSum(rowData) + " so'm");
+    doc.setFont("courier");
+    doc.text(
+      50,
+      200,
+      "Xabar: " + (data.comment.trim().length === 0 ? "Yo'q" : data.comment)
+    );
+    doc.setFont("courier");
+    const headers = [["Nomer", "Mahsulot nomi", "Soni", "Narxi"]];
 
-    const data2 = data.cart.map((elt) => [elt.title, elt.quantity, elt.price]);
+    const data2 = data.cart.map((elt, index) => [
+      index + 1,
+      elt.title,
+      elt.quantity,
+      elt.price,
+    ]);
 
     let content = {
-      startY: 150,
+      startY: 250,
       head: headers,
       body: data2,
+      theme: "grid",
     };
 
     doc.autoTable(content);
-    doc.save("generated.pdf");
+    doc.save(data._id + ".pdf");
   };
   const body = (
     <div style={modalStyle} className={classes.paper}>
       {Object.keys(rowData).length !== 0 ? (
         <React.Fragment>
+          <h3>Familiyasi: {rowData.lname}</h3>
           <h3>Ismi: {rowData.name}</h3>
           <h3>Tel raqami: {rowData.phoneNumber}</h3>
-          <h3>Sana: {newDate(rowData.createdAt)}</h3>
-          <h3>Xabar: {rowData.comment}</h3>
+          <h3>Sana: {date(rowData.createdAt)}</h3>
+          <h3>Vaqti: {time(rowData.createdAt)}</h3>
+          <h3>
+            Xabar:{" "}
+            {rowData.comment.trim().length === 0 ? "Yo'q" : rowData.comment}
+          </h3>
           <hr />
           <TableContainer component={Paper}>
             <Table className={classes.table} aria-label="simple table">
@@ -261,7 +283,7 @@ export function Editable(props) {
       render: (rowData) => rowData && <p>Bajarilmagan</p>,
     },
     {
-      title: "Holati",
+      title: "Tasdiqlash",
       field: "done",
       editable: false,
       render: (rowData) =>

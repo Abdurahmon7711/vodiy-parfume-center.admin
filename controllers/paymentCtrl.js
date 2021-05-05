@@ -91,7 +91,6 @@ const paymentCtrl = {
             .length,
         };
       });
-      console.log(falseAddresses);
       res.json(falseAddresses);
     } catch (err) {
       return res.status(500).json({ msg: err.message });
