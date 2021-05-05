@@ -464,6 +464,7 @@ const SoldOutProducts = () => {
               }}
               localization={{
                 body: {
+                  emptyDataSourceMessage:"Ma'lumot mavjud emas",
                   editRow: {
                     deleteText: "Ma'lumotni o'chirishni tasdiqlaysizmi ?",
                   },

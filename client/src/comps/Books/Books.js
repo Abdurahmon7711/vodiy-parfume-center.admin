@@ -10,7 +10,7 @@ const Books = (props) => {
       history.push("/");
       history.go();
     }
-  }, [history]);
+  }, []);
 
   return (
     <React.Fragment>

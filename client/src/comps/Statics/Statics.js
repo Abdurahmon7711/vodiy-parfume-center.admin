@@ -148,6 +148,7 @@ const Statics = () => {
               columns={column}
               responsive={true}
               localization={{
+                body:{ emptyDataSourceMessage:"Ma'lumot mavjud emas"},
                 toolbar: {
                   searchPlaceholder: "qidiruv",
                 },

@@ -30,7 +30,7 @@ const BooksLocal = () => {
       history.push("/");
       history.go();
     }
-  }, [history]);
+  }, []);
 
   const state = useContext(StoreG);
   // const [addresses] = state.addressesAPI.addresses;
@@ -105,6 +105,7 @@ const BooksLocal = () => {
               searchPlaceholder: "qidiruv",
             },
             body: {
+              body:{ emptyDataSourceMessage:"Ma'lumot mavjud emas"},
               editRow: {
                 deleteText: "Ma'lumotni o'chirishni tasdiqlaysizmi ?",
               },

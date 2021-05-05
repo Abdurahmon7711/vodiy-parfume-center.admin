@@ -241,7 +241,7 @@ function SoldPro() {
         <DialogTitle id="alert-dialog-title">
           Siz rostdan ham o'chirmoqchimisiz ?
         </DialogTitle>
-        <DialogActions>
+        <DialogActions style={{display:"flex", justifyContent:"space-around"}}>
           <Button onClick={handleDelClose} color="primary">
             Yo'q
           </Button>
@@ -279,6 +279,7 @@ function SoldPro() {
               },
             ]}
             localization={{
+              body:{ emptyDataSourceMessage:"Ma'lumot mavjud emas"},
               toolbar: {
                 searchPlaceholder: "qidiruv",
                 nRowsSelected: "{0} ta mahsulot belgilandi",

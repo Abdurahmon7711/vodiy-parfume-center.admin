@@ -315,7 +315,7 @@ export function Editable(props) {
         <DialogTitle id="alert-dialog-title">
           Siz rostdan ham o'chirmoqchimisiz ?
         </DialogTitle>
-        <DialogActions>
+        <DialogActions style={{display:"flex", justifyContent:"space-around"}}>
           <Button onClick={handleDelClose} color="primary">
             Yo'q
           </Button>
@@ -353,6 +353,7 @@ export function Editable(props) {
               },
             ]}
             localization={{
+              body:{ emptyDataSourceMessage:"Ma'lumot mavjud emas"},
               toolbar: {
                 searchPlaceholder: "qidiruv",
                 nRowsSelected: "{0} ta mahsulot belgilandi",

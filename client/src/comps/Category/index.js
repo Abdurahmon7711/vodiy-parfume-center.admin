@@ -514,6 +514,7 @@ const Products = () => {
                 searchPlaceholder: "qidiruv",
               },
               body: {
+                emptyDataSourceMessage:"Ma'lumot mavjud emas",
                 editRow: {
                   deleteText: "Ma'lumotni o'chirishni tasdiqlaysizmi ?",
                 },

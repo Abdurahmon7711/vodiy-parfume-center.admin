@@ -185,7 +185,7 @@ export default function MiniDrawer() {
         <DialogTitle id="alert-dialog-slide-title">
           {"Rostdan ham chiqmoqchimisiz?"}
         </DialogTitle>
-        <DialogActions>
+        <DialogActions style={{display:"flex", justifyContent:"space-around"}}>
           <Button onClick={handleClose} color="primary">
             Yo'q
           </Button>

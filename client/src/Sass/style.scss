@@ -38,7 +38,7 @@ a{
 }
 .card-part{
     @include d-sa;
-    flex-wrap: wrap;
+    // flex-wrap: wrap;
     width: 100%;
     height: auto;
     .card{
@@ -48,7 +48,7 @@ a{
     }
     .card2 {
         flex-grow: 1;
-        margin: 10px;
+        margin: 3px;
         color: #fff;
     }
     .card:nth-child(1){
@@ -70,8 +70,12 @@ a{
     }
     .card-wrapper2 {
         @include d-sb;
-        padding: 3px;
+        padding: 1px;
         margin: 3px;
+        
+        button{
+            font-size: 12px;
+        }
     }
 }
 .chart-part{
